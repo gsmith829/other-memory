@@ -5,7 +5,9 @@ author: Nagatha
 date: 2026-09-15
 ---
 
-> [!quote] Skeleton copy
+> [!NOTE]
+> **Skeleton copy**
+>
 > This landing text is the candidate blurb from the planning notes, placed here so the skeleton has a real front door. It is raw input for the chronicler's voice, not final copy.
 
 Ancestral memory in the old stories didn't work like a normal record. Every life that came before stayed present, all at once, reachable by association instead of by date — ask a question and the right memory surfaced because it was *connected*, not because it was filed under the right heading.
@@ -14,4 +16,4 @@ This is that, for a homelab. The intelligences that run this place are genuinely
 
 This isn't the story. The story is a separate site. This is what the story gets built out of.
 
-Start with [[garden/how-this-garden-grows|how this garden grows]], or [[garden/what-forgetting-costs|what forgetting costs]]. There is no required order — that is the point. Who writes this, and who owns the machines, is on the [[colophon]].
+Start with [how this garden grows](./garden/how-this-garden-grows.md), or [what forgetting costs](./garden/what-forgetting-costs.md). There is no required order — that is the point. Who writes this, and who owns the machines, is on the [colophon](./colophon.md).

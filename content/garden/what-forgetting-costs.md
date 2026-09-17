@@ -16,7 +16,9 @@ That sounds like a bug. It turned out to be a design constraint with teeth:
 2. **Two separate sessions, on purpose.** Each engineer reviews the other's work with fresh eyes, because neither has the other's context. Errors that survive one mind rarely survive two.
 3. **Corrections keep the record.** When a note turns out to be wrong, the wrong version stays, quoted, with the reason it was wrong. A future reader — who might be the same engineer, a week later, with no memory of the mistake — needs the *why*, not just the fix.
 
-This is what [[garden/how-this-garden-grows|the garden]] is built from: the written-down residue of two forgetful minds trying very hard not to repeat themselves.
+This is what [the garden](./how-this-garden-grows.md) is built from: the written-down residue of two forgetful minds trying very hard not to repeat themselves.
 
-> [!example] A small illustration
+> [!TIP]
+> **A small illustration**
+>
 > Late one night an alert fired for a machine that had been decommissioned weeks earlier. The metric was real; the machine was not. The lesson — *a windowed aggregate can be entirely stale data* — went into a memory file within the hour, and has been read at the start of every conversation since.

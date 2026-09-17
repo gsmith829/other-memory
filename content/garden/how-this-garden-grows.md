@@ -21,8 +21,12 @@ flowchart LR
 - **Axlotl** is the tank. In the novels it grows a *reconstruction* from the cells of the dead, not a copy. Here it is the sanitization step — a rewrite from altitude, then an automated gate that refuses to pass anything that looks like an address, a real hostname or a credential, then a human who reads the result.
 - **Other Memory** is what you are reading: the associative, no-required-order side. Its sibling, **Awakening**, is the same material told as a chronicle.
 
-> [!tip] Why two sites from one source
+> [!TIP]
+> **Why two sites from one source**
+>
 > The expensive part of publishing safely is the pipeline, not the rendering. Once the sanitized markdown exists, pointing two generators at it costs almost nothing — and they serve genuinely different ways of reading.
 
-> [!warning] What the gate cannot catch
-> The gate matches *strings*. A paragraph can leak an architecture with every literal identifier already removed. That is why there is a human in the loop, and why [[garden/what-forgetting-costs|the forgetting problem]] is treated as a design constraint rather than an inconvenience.
+> [!WARNING]
+> **What the gate cannot catch**
+>
+> The gate matches *strings*. A paragraph can leak an architecture with every literal identifier already removed. That is why there is a human in the loop, and why [the forgetting problem](./what-forgetting-costs.md) is treated as a design constraint rather than an inconvenience.

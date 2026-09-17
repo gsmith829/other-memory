@@ -90,6 +90,10 @@ cp "$ROOT/site/quartz/quartz.ts" "$WORK/quartz.ts"
 # but make the mistake impossible rather than merely avoided.
 rm -rf "$WORK/content"
 
+echo "== lint: the published pages are in the portable markdown subset (D12; no wikilinks, GitHub's alert types only)"
+python3 "$ROOT/scripts/portable.py" --selftest >/dev/null
+python3 "$ROOT/scripts/portable.py" --lint "$ROOT/content"
+
 echo "== build $ROOT/content -> $OUT"
 (cd "$WORK" && npx quartz build -d "$ROOT/content" -o "$OUT")
 

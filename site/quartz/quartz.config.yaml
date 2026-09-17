@@ -92,7 +92,10 @@ plugins:
   - source: "@quartz-community/crawl-links"
     enabled: true
     options:
-      markdownLinkResolution: shortest
+      # D12 (2026-09-17): the published pages are written in the portable subset -- relative .md links,
+      # not Obsidian's shortest-path form. `shortest` turns ../../colophon.md into ../.././../colophon
+      # (measured: five broken cross-folder links). scripts/portable.py --lint enforces the subset.
+      markdownLinkResolution: relative
     order: 60
   - source: "@quartz-community/description"
     enabled: true
@@ -260,6 +263,9 @@ plugins:
     options: {}
     order: 50
   - source: "@quartz-community/note-properties"
+    # This plugin is the FRONTMATTER PARSER (order 5) as well as the properties box. Disabled, every
+    # page builds as "Untitled" with an empty content index and nothing says why (measured
+    # 2026-09-17, journey-site#6). To lose the box, set hidePropertiesView: true -- never enabled: false.
     enabled: true
     options:
       includeAll: false

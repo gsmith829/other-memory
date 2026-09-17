@@ -1,0 +1,35 @@
+{
+  "name": "@othermemory/disclosure",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: the AI-authorship disclosure on every surface a reader meets before the footer -- page byline, feed item, OpenGraph/meta description, social card (journey-site#20, #21)",
+  "type": "module",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./components": { "import": "./dist/components/index.js" },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.3"
+  },
+  "quartz": {
+    "name": "disclosure",
+    "displayName": "Disclosure",
+    "category": ["transformer", "component"],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": ["@quartz-community/description"],
+    "defaultOrder": 75,
+    "defaultEnabled": true,
+    "components": {
+      "Byline": {
+        "displayName": "Disclosure byline",
+        "description": "Author name, what kind of author that is, and a link to the colophon; under content-meta on every content page except the colophon itself",
+        "defaultPosition": "beforeBody",
+        "defaultPriority": 25
+      }
+    }
+  }
+}

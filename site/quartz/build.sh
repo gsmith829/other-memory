@@ -56,8 +56,36 @@ echo "== dependencies (upstream package-lock.json; the plugins are npm packages 
 echo "== point the plugin sources at the vendored libraries (before the build, on purpose)"
 python3 "$ROOT/site/quartz/no-third-party.py" patch "$WORK"
 
-echo "== overlay site config"
+echo "== site plugins: overlay site/quartz/plugins/ into the checkout and build them there (journey-site#20, #21)"
+# A local plugin is SYMLINKED by Quartz's loader (.quartz/plugins/<name> -> its path), not built,
+# and Node resolves a module's bare imports from its REAL path -- so a plugin whose real path is
+# this repo would never find the checkout's `preact`/`vfile`/`unified`, and the loader only
+# links those peers for git-installed plugins (gitLoader.ts, measured at the pin). Copying the
+# plugin under $WORK puts its real path next to the host's node_modules, the same way the config
+# above is overlaid. The singletons stay external so the host's one copy of each is used; the
+# checkout's own esbuild/tsc build it, so no build output is ever committed and no new
+# toolchain is needed. `tsc --noEmit` first: esbuild does not type-check, and a wrong field name
+# against Quartz's types would otherwise render as a silent `undefined`.
+rm -rf "$WORK/site-plugins"
+cp -R "$ROOT/site/quartz/plugins" "$WORK/site-plugins"
+for plugin in "$WORK"/site-plugins/*/; do
+  name="$(basename "$plugin")"
+  # tsc checks everything under src/ (incl. files the overlaid quartz.ts imports directly); esbuild
+  # builds only the two entry points the plugin loader reads.
+  entries=(src/index.tsx)
+  [ -f "$plugin/src/components/index.tsx" ] && entries+=(src/components/index.tsx)
+  (cd "$plugin" \
+    && "$WORK/node_modules/.bin/tsc" --noEmit -p tsconfig.json \
+    && "$WORK/node_modules/.bin/esbuild" "${entries[@]}" --bundle --format=esm --platform=node --target=node22 \
+         --jsx=automatic --jsx-import-source=preact --outdir=dist --outbase=src --log-level=warning \
+         --external:preact --external:'preact/*' --external:'@quartz-community/*' --external:vfile --external:unified) \
+    || { echo "FAIL: site plugin '$name' did not build" >&2; exit 1; }
+  echo "   built $name: ${entries[*]} -> dist/"
+done
+
+echo "== overlay site config (+ quartz.ts: the social card's layout, a function no YAML can carry)"
 cp "$ROOT/site/quartz/quartz.config.yaml" "$WORK/quartz.config.yaml"
+cp "$ROOT/site/quartz/quartz.ts" "$WORK/quartz.ts"
 # Upstream ships sample content of its own; the build reads ONLY $ROOT/content via -d,
 # but make the mistake impossible rather than merely avoided.
 rm -rf "$WORK/content"
@@ -87,6 +115,11 @@ cp -R "$PACK/mermaid/package/dist/chunks"           "$VEND/mermaid-$VENDOR_MERMA
 echo "== check: no third-party origin survives in the output; write the CSP"
 CSP_INC="${CSP_INC:-$(dirname "$OUT")/csp.inc}"
 python3 "$ROOT/site/quartz/no-third-party.py" check "$OUT" --csp-inc "$CSP_INC"
+
+echo "== check: every publishable page emitted, nothing else, and the disclosure on every surface"
+# Also run by CI after this script; running it HERE is what makes Cloudflare Pages -- which
+# runs only this script -- refuse to deploy a build that dropped a page or the disclosure.
+python3 "$ROOT/site/quartz/check-emitted.py" "$ROOT/content" "$OUT" --config "$ROOT/site/quartz/quartz.config.yaml"
 
 pages=$(find "$OUT" -name '*.html' | wc -l | tr -d ' ')
 echo "== ok: $pages html pages in $OUT; nginx CSP include at $CSP_INC"

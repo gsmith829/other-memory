@@ -7,8 +7,10 @@
 # any other change. Derived from upstream's quartz.config.default.yaml at that commit;
 # `diff` against it after a bump to see what upstream changed.
 #
-# Every plugin below is an npm package (@quartz-community/*) pinned by upstream's own
-# package-lock.json, so there is no quartz.lock.json here -- `plugin install` is a no-op.
+# Every @quartz-community/* plugin below is an npm package pinned by upstream's own
+# package-lock.json, so there is no quartz.lock.json here -- `plugin install` is a no-op. The
+# one `./site-plugins/*` entry is this repo's own (site/quartz/plugins/), overlaid and built by
+# build.sh.
 #
 # Readers' browsers still fetch three libraries from public CDNs at runtime (graph: d3 +
 # pixi from jsdelivr; mermaid from cdnjs, only on pages with a diagram). Tracked separately;
@@ -180,6 +182,25 @@ plugins:
     layout:
       position: beforeBody
       priority: 20
+  # Local plugin (site/quartz/plugins/disclosure, overlaid into the checkout by build.sh as
+  # site-plugins/ -- the path below is relative to the Quartz root at build time). The transformer
+  # appends `disclosure` to every page's feed item, og:description and meta description (the
+  # page's own summary first); the social card draws `lead` as its own line (the card layout is
+  # set from site/quartz/quartz.ts, a function no YAML can carry) -- journey-site#20; the Byline
+  # component is #21. `disclosure` is the colophon's "short version" callout, verbatim minus
+  # markup: the build FAILS if the two ever disagree, and if `lead` is not a prefix of it.
+  - source: ./site-plugins/disclosure
+    enabled: true
+    options:
+      disclosure: "This is a real homelab owned by a human called Joe. The writing is done by AI assistants working from his operational notes, and the byline — Nagatha — is an AI persona, not a person. The machines are named from Dune, the assistants from Expeditionary Force. Nothing here is fiction; some things are left out on purpose."
+      lead: "This is a real homelab owned by a human called Joe. The writing is done by AI assistants working from his operational notes, and the byline — Nagatha — is an AI persona, not a person."
+      colophonSlug: colophon
+      role: an AI chronicler
+      linkText: what that means
+    order: 75 # after @quartz-community/description (70), which derives the text this appends to
+    layout:
+      position: beforeBody
+      priority: 25
   - source: "@quartz-community/tag-list"
     enabled: false
     layout:
@@ -289,11 +310,13 @@ layout:
     folder:
       exclude:
         - reader-mode
+        - disclosure # a generated listing has no author line
       positions:
         right: []
     tag:
       exclude:
         - reader-mode
+        - disclosure
       positions:
         right: []
     canvas: {}

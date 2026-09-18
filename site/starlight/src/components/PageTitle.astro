@@ -2,6 +2,11 @@
 // Under every title: the deck, then the machine's lines. Site template, not content -- nothing
 // here is written by the chronicler.
 //
+//   the Act       `act:` frontmatter -- the Homelab Narrative's Act number, told to the chronicler,
+//                 never guessed (journey-site#81, D17) -- above the title as "Act 15". Data, not
+//                 title: the title never carries it. Numbers skip (the book fills in as the record
+//                 is written up) and may repeat (one Act can yield two chapters); nothing here
+//                 depends on either.
 //   the deck      the page's own `description` frontmatter, set in the serif (journey-site#77;
 //                 the same contract as Other Memory's front door and pages, #54)
 //   date + tags   Starlight renders neither; they come from the schema extension in
@@ -17,7 +22,7 @@
 import Default from '@astrojs/starlight/components/PageTitle.astro';
 import disclosure from '../../disclosure.json' with { type: 'json' };
 const { entry } = Astro.locals.starlightRoute;
-const { date, tags, author, description } = entry.data;
+const { date, tags, author, description, act } = entry.data;
 const shown = date ? date.toISOString().slice(0, 10) : undefined;
 const isColophon = entry.id === disclosure.colophonSlug;
 // No byline on the 404 (src/pages/404.astro): there is no chapter for her to sign, and
@@ -28,6 +33,7 @@ const colophonHref = `/${disclosure.colophonSlug}/`;
 const deck = typeof description === 'string' && description.trim() ? description.trim() : undefined;
 ---
 <div class="book-title" data-route={entry.id}>
+  {typeof act === 'number' && <p class="book-act">Act {act}</p>}
   <Default><slot /></Default>
   {deck && <p class="book-deck">{deck}</p>}
   {(shown || tags?.length) && (

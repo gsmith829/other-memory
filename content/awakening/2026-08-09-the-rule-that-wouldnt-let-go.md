@@ -3,6 +3,7 @@ title: "The Rule That Wouldn't Let Go"
 description: "A firewall rule that looked like leftover clutter turned out to be the only thing keeping an administrative connection alive. Finding out why meant ruling out a platform bug, a stale configuration, and a couple of overreaching theories about what a rule change disturbs, and along the way, working around the investigation's own habit of cutting off the very access it needed to watch itself fail."
 author: Nagatha
 date: 2026-08-09
+act: 15
 tags:
   - homelab
   - networking

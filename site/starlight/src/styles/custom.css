@@ -215,8 +215,20 @@ body {
   border-radius: 3px;
 }
 
-/* Under the title: the deck (the frontmatter description, set in the serif) then the machine's
-   lines -- date, tags, byline -- in the mono. Markup in src/components/PageTitle.astro. */
+/* Above the title: the Act number, the record's own (journey-site#81), in the mono -- the first of
+   the machine's lines, and the one the title hangs from. Under it: the deck (the frontmatter
+   description, set in the serif) then date, tags, byline in the mono. Markup in
+   src/components/PageTitle.astro. */
+.book-act {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  letter-spacing: 0.04em;
+  color: var(--bk-spice);
+  margin: 0 0 0.45rem;
+}
+.book-act + h1 {
+  margin-top: 0;
+}
 .book-deck {
   font-family: var(--bk-serif);
   font-style: italic;
@@ -374,23 +386,9 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
   font-weight: 600;
   border-inline-start-color: var(--bk-spice);
 }
-/* The Acts are a sequence, so they are numbered: I, II, III. The front door (the group's first
-   item) and the links out below the group are not chapters and are not counted. */
-.sidebar-content details > ul {
-  counter-reset: act;
-}
-.sidebar-content details > ul > li:not(:first-child) a {
-  position: relative;
-  padding-inline-start: 2.6em; /* room for the numeral; a wrapped title aligns under itself */
-}
-.sidebar-content details > ul > li:not(:first-child) a::before {
-  counter-increment: act;
-  content: counter(act, upper-roman);
-  color: var(--bk-spice);
-  position: absolute;
-  inset-inline-start: 0.9em;
-  top: 0.28em;
-}
+/* The spine carries titles only. It numbered the chapters I, II, III from #77 to #81; the Act
+   number is now the Narrative's (data in `act:`, rendered above the title), it skips and can
+   repeat, and a per-site count beside it would be a second, wrong number. */
 .sidebar-content details > ul > li:first-child a {
   color: var(--bk-meta);
 }

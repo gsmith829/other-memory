@@ -14,6 +14,10 @@ export const collections = {
         date: z.coerce.date().optional(),
         tags: z.array(z.string()).optional(),
         author: z.string().optional(),
+        // The Narrative's Act number (journey-site#81, D17): data, never in the title. Rendered
+        // above the title by src/components/PageTitle.astro. Optional: the front door and the
+        // colophon have none, and a chapter written before the rule may not yet carry one.
+        act: z.number().int().positive().optional(),
       }),
     }),
   }),

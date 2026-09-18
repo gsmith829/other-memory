@@ -56,7 +56,7 @@ configuration:
       lightMode:
         light: "#ede5d3" # sand
         lightgray: "#d9cfb9" # rules, borders
-        gray: "#8a806e" # metadata, the mono margin
+        gray: "#6a6050" # metadata, the mono margin -- 4.9:1 on the sand (was #8a806e at 3.1, under AA; measured 2026-09-18)
         darkgray: "#3f3830" # body text
         dark: "#221d18" # headings, the author's name
         secondary: "#8a4b1a" # burnt spice: links, the site title, tips

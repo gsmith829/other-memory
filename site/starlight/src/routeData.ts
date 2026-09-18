@@ -19,9 +19,25 @@
  * callout. On the colophon page this middleware asserts exactly that against the entry's raw
  * markdown and THROWS otherwise, which fails `astro build` -- the config and the colophon cannot
  * drift apart silently. A build without the disclosure is not a site to publish.
+ *
+ * Two more things fixed here, for the same reason (computed before middleware, edited in place):
+ *
+ *   pagination   Starlight walks the WHOLE sidebar in order, and the last entries of ours are the
+ *                Other Memory link and the colophon -- so from the last chapter "Next" landed on
+ *                another website and from the colophon "Previous" did the same (journey-site#84,
+ *                a cold reader's "I expected chapter II and got a different website"). The book's
+ *                prev/next is chapter to chapter and nothing else: a link survives only when this
+ *                page AND its target are under the chronicle's own path. The sidebar keeps the link
+ *                out -- that is navigation, not pagination.
+ *   og:image     the 404 has no card (src/pages/og/[...route].ts draws content entries), so it gets
+ *                no og:image tag rather than one pointing at a file that does not exist.
  */
 import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 import disclosure from '../disclosure.json' with { type: 'json' };
+
+/** The chronicle: content/awakening/ -> /awakening/... (the `directory` the sidebar autogenerates from). */
+const CHRONICLE_ID = 'awakening';
+const CHRONICLE_PATH = '/awakening/';
 
 const norm = (s: string) => s.replace(/\s+/g, ' ').trim();
 const TEXT = norm(disclosure.disclosure);
@@ -71,9 +87,21 @@ export const onRequest = defineRouteMiddleware((context) => {
   }
 
   // The card: one PNG per page under /og/, keyed by the entry id (the same key the og route uses).
-  const card = new URL(`/og/${entry.id || 'index'}.png`, context.site ?? context.url).href;
-  head.push({ tag: 'meta', attrs: { property: 'og:image', content: card } });
-  head.push({ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } });
-  head.push({ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } });
-  head.push({ tag: 'meta', attrs: { name: 'twitter:image', content: card } });
+  // The 404 is not a content entry and has no card: no tag beats a tag pointing at nothing.
+  if (entry.id !== '404') {
+    const card = new URL(`/og/${entry.id || 'index'}.png`, context.site ?? context.url).href;
+    head.push({ tag: 'meta', attrs: { property: 'og:image', content: card } });
+    head.push({ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } });
+    head.push({ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } });
+    head.push({ tag: 'meta', attrs: { name: 'twitter:image', content: card } });
+  }
+
+  // Prev/next stay inside the book. `entry.id` is `awakening` (the front door) or `awakening/<stem>`
+  // for a chapter; sidebar hrefs are `/awakening/...` for both. Anything else -- the Other Memory
+  // link, the colophon, the 404 -- is neither a source nor a target of pagination.
+  const inBook = (href: string | undefined) => typeof href === 'string' && href.startsWith(CHRONICLE_PATH);
+  const thisPageInBook = entry.id === CHRONICLE_ID || entry.id.startsWith(`${CHRONICLE_ID}/`);
+  const { pagination } = route;
+  if (!thisPageInBook || !inBook(pagination.prev?.href)) pagination.prev = undefined;
+  if (!thisPageInBook || !inBook(pagination.next?.href)) pagination.next = undefined;
 });

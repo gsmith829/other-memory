@@ -86,7 +86,7 @@
   --bk-paper: #e6dcc5;
   --bk-panel: #ece3cf;
   --bk-rule: #d3c7ab;
-  --bk-meta: #857b68;
+  --bk-meta: #655b4b; /* 4.9:1 on the paper -- was #857b68 at 3.1, under AA (measured 2026-09-18) */
   --bk-text: #3d352c;
   --bk-ink: #241f19;
   --bk-spice: #7a3f14;
@@ -402,6 +402,13 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
 .sidebar-content > sl-sidebar-state-persist > ul.top-level > li > a.large:hover {
   color: var(--bk-spice);
 }
+/* A link out of the book is marked as one. A cold reader (audit, 2026-09-18) clicked "Other
+   Memory" in the spine expecting a chapter and landed on another site. */
+.sidebar-content a[rel='external']::after {
+  content: ' \2197';
+  color: var(--bk-meta);
+}
+
 
 /* ---------- "On this page" ---------- */
 .right-sidebar-panel h2,

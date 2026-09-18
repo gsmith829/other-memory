@@ -1,0 +1,6 @@
+src/content/docs/
+src/fonts/
+node_modules/
+dist/
+.astro/
+csp.inc

@@ -1,0 +1,10 @@
+{
+  "_comment": "The AI-authorship disclosure, verbatim from content/colophon.md's 'short version' callout and identical to site/quartz/quartz.config.yaml's `disclosure`/`lead`. The Starlight build (route middleware, feed, card, check-emitted.py) reads THIS file; the middleware fails the build if the colophon page no longer contains `disclosure` verbatim, so the two cannot drift apart silently. `lead` is a verbatim prefix of `disclosure` (the social card's own line).",
+  "disclosure": "This is a real homelab owned by a human called Joe. The writing is done by AI assistants working from his operational notes, and the byline — Nagatha — is an AI persona, not a person. The machines are named from Dune, the assistants from Expeditionary Force. Nothing here is fiction; some things are left out on purpose.",
+  "lead": "This is a real homelab owned by a human called Joe. The writing is done by AI assistants working from his operational notes, and the byline — Nagatha — is an AI persona, not a person.",
+  "colophonSlug": "colophon",
+  "author": "Nagatha",
+  "role": "an AI chronicler",
+  "linkText": "what that means",
+  "separator": " — "
+}

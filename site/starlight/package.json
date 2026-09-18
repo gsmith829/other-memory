@@ -1,0 +1,19 @@
+{
+  "name": "awakening-starlight",
+  "private": true,
+  "type": "module",
+  "description": "Awakening -- the dated-chapter book on Starlight (journey-site#50, D12). Built by build.sh; nothing here is content.",
+  "scripts": {
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/starlight": "0.42.1",
+    "@nullpinter/satteri-admonitions-to-directives": "0.1.5",
+    "astro": "7.3.3",
+    "astro-og-canvas": "0.13.2",
+    "satteri-resolve-markdown-links": "0.1.2",
+    "starlight-links-validator": "0.26.0"
+  }
+}

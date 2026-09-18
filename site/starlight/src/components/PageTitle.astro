@@ -1,0 +1,34 @@
+---
+// The byline under every title but the colophon's -- "Nagatha — an AI chronicler; what that means"
+// (journey-site#50 item 2; the words and the link target are site/starlight/disclosure.json's, the
+// same ones Other Memory's byline uses, #21). Starlight renders neither `date` nor `tags`, so the
+// date line comes from the schema extension in src/content.config.ts (bake-off F1(f)).
+// Site template, not content: nothing here is written by the chronicler.
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import disclosure from '../../disclosure.json' with { type: 'json' };
+const { entry } = Astro.locals.starlightRoute;
+const { date, tags, author } = entry.data;
+const shown = date ? date.toISOString().slice(0, 10) : undefined;
+const isColophon = entry.id === disclosure.colophonSlug;
+const name = typeof author === 'string' && author.trim() ? author.trim() : disclosure.author;
+const colophonHref = `/${disclosure.colophonSlug}/`;
+---
+<Default><slot /></Default>
+{(shown || tags?.length) && (
+  <p class="page-meta">
+    {shown && <time datetime={shown}>{shown}</time>}
+    {tags?.length && <span class="tags">{tags.map((t) => <span class="tag">#{t}</span>)}</span>}
+  </p>
+)}
+{!isColophon && (
+  <p class="disclosure-byline">
+    <span class="disclosure-byline-author">{name}</span> &mdash; {disclosure.role};{' '}
+    <a href={colophonHref}>{disclosure.linkText}</a>
+  </p>
+)}
+<style>
+  .page-meta, .disclosure-byline { color: var(--sl-color-gray-3); font-size: var(--sl-text-sm); display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .disclosure-byline { display: block; margin-top: 0.25rem; }
+  .disclosure-byline-author { color: var(--sl-color-white); font-weight: 600; }
+  .tag { margin-inline-end: 0.5rem; }
+</style>

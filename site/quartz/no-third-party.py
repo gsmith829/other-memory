@@ -117,6 +117,14 @@ FORBIDDEN_HOSTS = re.compile(
     re.IGNORECASE,
 )
 TEXT_EXT = {".js", ".mjs", ".cjs", ".html", ".htm", ".css", ".xml", ".json", ".svg", ".txt", ".map"}
+# journey-site#49: a stylesheet that url()s an absolute origin is a resource load from a third
+# party, whatever the host -- FORBIDDEN_HOSTS names CDNs, but a `url(https://github.com/...)`
+# in a CSS file the build copied wholesale (giscus's, shipped by upstream's static emitter with
+# the comments plugin disabled) is the same posture failure with a host nobody listed. An <a>
+# to github.com in a page is a link a reader may follow; a url() in CSS is a fetch the browser
+# makes. Only the second is forbidden here. Self-hosted absolute font URLs are relativised
+# earlier in check() and so never reach this rule.
+CSS_REMOTE_URL = re.compile(r"url\(\s*['\"]?(https?:)?//[^)'\"\s]+", re.IGNORECASE)
 FONT_CSS = os.path.join("static", "fonts", "quartz-fonts.css")
 ABS_FONT_URL = re.compile(r"url\(https?://[^/)]+(/static/fonts/[^)]+)\)")
 
@@ -162,6 +170,20 @@ def replace_all(root, table):
         if new != s:
             write(path, new)
     return counts
+
+
+def css_remote_loads(root):
+    """[(relpath, lineno, url)] for every absolute-origin url() in any stylesheet under root."""
+    found = []
+    for path in text_files(root):
+        if not path.lower().endswith(".css"):
+            continue
+        rel = os.path.relpath(path, root)
+        with open(path, "r", encoding="utf-8", errors="surrogateescape") as f:
+            for i, line in enumerate(f, 1):
+                for m in CSS_REMOTE_URL.finditer(line):
+                    found.append((rel, i, m.group(0)[:80]))
+    return found
 
 
 def survivors(root):
@@ -288,6 +310,10 @@ def check(root, csp_inc, p, quiet=False):
     for rel, ln, host in left:
         say(f"FAIL: third-party URL survives: {rel}:{ln}  {host}")
     fails += len(left)
+    loads = css_remote_loads(root)
+    for rel, ln, url in loads:
+        say(f"FAIL: stylesheet loads a remote resource: {rel}:{ln}  {url}")
+    fails += len(loads)
     if fails:
         say(f"check: {fails} failure(s)")
         return 1
@@ -363,6 +389,16 @@ def selftest():
         left = survivors(out)
         ok(len(left) == 1 and left[0][2] == "https://fonts.googleapis.com", "the survivor is named")
         os.remove(os.path.join(out, "q.html"))
+        # Negative 2 (journey-site#49): a stylesheet that url()s ANY absolute origin fails, host listed or not;
+        # a root-relative url() and an <a> to the same host in a page do not.
+        write(os.path.join(out, "static", "dead.css"), ".x{background:url(https://github.com/a.png)}\n.y{background:url(/static/b.png)}\n")
+        ok(check(out, inc, p, quiet=True) == 1, "stylesheet loading github.com fails")
+        loads = css_remote_loads(out)
+        ok(len(loads) == 1 and loads[0][0].endswith("dead.css") and loads[0][1] == 1, "the remote url() is named, the relative one is not")
+        write(os.path.join(out, "static", "dead.css"), ".y{background:url(/static/b.png)}\n")
+        write(os.path.join(out, "r.html"), '<a href="https://github.com/x/y">the mirror</a>')
+        ok(check(out, inc, p, quiet=True) == 0, "a relative url() and a page LINK to github.com both pass")
+        os.remove(os.path.join(out, "static", "dead.css")); os.remove(os.path.join(out, "r.html"))
         # Negative 2: a CDN URL still in the output (patch not run) must fail.
         write(os.path.join(out, "static", "scripts", "s.js"), " ".join(R))
         ok(check(out, inc, p, quiet=True) == 1, "unpatched CDN URL in output fails")

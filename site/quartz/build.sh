@@ -116,6 +116,13 @@ cp "$PACK/pixi/package/dist/packages/unsafe-eval.js" "$VEND/pixi-$VENDOR_PIXI/un
 cp "$PACK/mermaid/package/dist/mermaid.esm.min.mjs" "$VEND/mermaid-$VENDOR_MERMAID/mermaid.esm.min.mjs"
 cp -R "$PACK/mermaid/package/dist/chunks"           "$VEND/mermaid-$VENDOR_MERMAID/chunks"
 
+# journey-site#49: upstream's static emitter copies quartz/static/ wholesale, comments plugin or
+# not, so two giscus stylesheets that url() github.com ship in every build, linked by no page.
+# They are dead weight that contradicts the "zero third-party origins" posture, and the check
+# below now refuses any stylesheet that loads a remote resource -- so they are removed here,
+# unconditionally: enabling giscus would be a deliberate act with its own third-party review.
+rm -rf "$OUT/static/giscus"
+
 echo "== check: no third-party origin survives in the output; write the CSP"
 CSP_INC="${CSP_INC:-$(dirname "$OUT")/csp.inc}"
 python3 "$ROOT/site/quartz/no-third-party.py" check "$OUT" --csp-inc "$CSP_INC"

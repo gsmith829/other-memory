@@ -23,7 +23,7 @@ configuration:
   enablePopovers: true
   analytics: null
   locale: en-US
-  baseUrl: othermemory.sardaukar.work # PLACEHOLDER -- the public hostname is decided under journey-site#7; RSS/sitemap/OG need the real one
+  baseUrl: othermemory.sardaukar.work # the public hostname (journey-site#7, live since 2026-09-16 via Cloudflare Pages, infra-iac#168); RSS/sitemap/OG are built against it
   ignorePatterns:
     - private
     - templates

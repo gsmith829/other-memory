@@ -28,6 +28,10 @@ FAILS, this site does not publish without it:
      checked by eye on the PR, its presence here); every page but the colophon carries the
      byline, the colophon does not (it is the link's target) and it exists; every feed item's
      description contains the full `disclosure`.
+  4. (journey-site#55) when the identity plugin is enabled in the config, every published page
+     links a `static/resource-style-<hash>.css` that carries the identity's own marker
+     (`--om-measure`) and exists -- the stylesheet ships through the plugin resource path, and a
+     Quartz bump or a silently-skipped plugin would drop it while the build stayed green.
 """
 import html as html_mod
 import argparse
@@ -81,6 +85,14 @@ def html_for(rel):
 
 
 DISCLOSURE_SOURCE = "./site-plugins/disclosure"
+# journey-site#55: the identity plugin ships the site's stylesheet through the plugin resource path
+# (`externalResources()` -> `static/resource-style-<hash>.css`, unlayered, on every page). A Quartz
+# bump, a loader change or a plugin build that silently fails would drop it and the build would
+# still be green -- the pages render, just as stock Quartz. So: when the plugin is enabled, every
+# published page must link a resource stylesheet that carries the identity's own marker.
+IDENTITY_SOURCE = "./site-plugins/identity"
+IDENTITY_MARKER = "--om-measure"
+RESOURCE_STYLE = re.compile(r'<link[^>]+href="([^"]*static/resource-style-[0-9a-f]+\.css)"')
 OG_DESC = re.compile(r'<meta property="og:description" content="([^"]*)"')
 META_DESC = re.compile(r'<meta name="description" content="([^"]*)"')
 OG_IMAGE = re.compile(r'<meta property="og:image" content="([^"]*)"')
@@ -116,6 +128,60 @@ def disclosure_config(config_path):
     if not enabled or "disclosure" not in entry or "lead" not in entry:
         return None
     return entry
+
+
+def identity_enabled(config_path):
+    """True when the config carries `- source: ./site-plugins/identity` with `enabled: true` in its
+    entry. Same shape as disclosure_config(): read the entry, stop at the next `- source:`."""
+    try:
+        lines = open(config_path, encoding="utf-8").read().splitlines()
+    except OSError:
+        return False
+    inside = False
+    for l in lines:
+        s = l.strip()
+        if s.startswith("- source:"):
+            inside = s.split(":", 1)[1].strip().strip('"\'') == IDENTITY_SOURCE
+            continue
+        if inside and re.match(r"^\s+enabled:\s*true\s*(#.*)?$", l):
+            return True
+    return False
+
+
+def check_identity(out, expected, say):
+    """journey-site#55: every published page links a resource stylesheet containing the identity
+    marker, and that stylesheet exists non-empty. Returns the problem count."""
+    fails = 0
+    cache = {}
+    for rel in expected:
+        h = html_for(rel)
+        target = os.path.join(out, h)
+        if not os.path.isfile(target):
+            continue  # already reported as MISSING
+        page = open(target, encoding="utf-8", errors="replace").read()
+        carried = False
+        for href in RESOURCE_STYLE.findall(page):
+            # Quartz links the sheet relative to the page (`./static/...` at the root, `../static/...`
+            # one level down); resolve against the page's own directory, or against the output root
+            # for a root-relative or absolute href.
+            if "://" in href:
+                path = os.path.join(out, href.split("://", 1)[1].split("/", 1)[1])
+            elif href.startswith("/"):
+                path = os.path.join(out, href.lstrip("/"))
+            else:
+                path = os.path.normpath(os.path.join(os.path.dirname(target), href))
+            if path not in cache:
+                try:
+                    cache[path] = IDENTITY_MARKER in open(path, encoding="utf-8", errors="replace").read()
+                except OSError:
+                    cache[path] = False
+            if cache[path]:
+                carried = True
+                break
+        if not carried:
+            say(f"NO IDENTITY: {h} links no resource stylesheet carrying {IDENTITY_MARKER} -- stock Quartz would render this page")
+            fails += 1
+    return fails
 
 
 def check_disclosure(out, expected, dc, say):
@@ -205,6 +271,8 @@ def run(content, out, config, quiet=False):
         fails += 1
     else:
         fails += check_disclosure(out, expected, dc, say)
+    if identity_enabled(config):
+        fails += check_identity(out, expected, say)
     say(f"content pages: {len(expected)} expected, {len(excluded)} excluded on purpose, "
         f"{fails} problem(s)")
     return 1 if fails else 0
@@ -329,6 +397,44 @@ def selftest():
         with open(cfg, "w") as f:
             f.write("configuration:\n  ignorePatterns:\n    - private\nplugins:\n  - source: \"@quartz-community/footer\"\n    enabled: true\n")
         ok(disclosure_config(cfg) is None and run(content, out, cfg, quiet=True) == 1, "no plugin entry fails")
+        # journey-site#55: the identity stylesheet must be linked, with its marker, on every page.
+        IDENT = "  - source: ./site-plugins/identity\n    enabled: true\n    order: 95\n"
+        with open(cfg, "w") as f:
+            f.write("configuration:\n  ignorePatterns:\n    - private\nplugins:\n" + PLUGIN + IDENT)
+        ok(identity_enabled(cfg), "identity entry enabled is read from the config")
+        os.makedirs(os.path.join(out, "static"), exist_ok=True)
+        css = os.path.join(out, "static", "resource-style-0123abcd.css")
+        with open(css, "w") as f:
+            f.write(":root { --om-measure: 40rem; }\n")
+        ok(run(content, out, cfg, quiet=True) == 1, "identity enabled but no page links the stylesheet fails")
+
+        def html_id(rel, href=None, byline=True):
+            if href is None:  # the shapes Quartz emits: ./static at the root, ../static one level down
+                href = ("../" if "/" in rel else "./") + "static/resource-style-0123abcd.css"
+            html(rel, byline=byline)
+            with open(os.path.join(out, rel)) as f:
+                s = f.read()
+            with open(os.path.join(out, rel), "w") as f:
+                f.write(s.replace("</head>", f'<link href="{href}" rel="stylesheet" type="text/css" spa-preserve/></head>'))
+
+        html_id("index.html"); html_id("garden/a.html"); html_id("colophon.html", byline=False)
+        ok(run(content, out, cfg, quiet=True) == 0, "every page links the marked stylesheet (./ at the root, ../ nested) -> pass")
+        html_id("garden/a.html", href="https://x/static/resource-style-0123abcd.css")
+        ok(run(content, out, cfg, quiet=True) == 0, "an absolute href to the same stylesheet also counts")
+        html_id("garden/a.html", href="/static/resource-style-0123abcd.css")
+        ok(run(content, out, cfg, quiet=True) == 0, "a root-relative href also counts")
+        html("garden/a.html")
+        ok(run(content, out, cfg, quiet=True) == 1, "one page without the link fails")
+        html_id("garden/a.html")
+        with open(css, "w") as f:
+            f.write(":root { --other: 1; }\n")
+        ok(run(content, out, cfg, quiet=True) == 1, "the stylesheet linked but without the marker fails (a stock-Quartz build)")
+        os.remove(css)
+        ok(run(content, out, cfg, quiet=True) == 1, "the stylesheet linked but absent fails")
+        with open(cfg, "w") as f:
+            f.write("configuration:\n  ignorePatterns:\n    - private\nplugins:\n" + PLUGIN + IDENT.replace("enabled: true", "enabled: false"))
+        ok(not identity_enabled(cfg) and run(content, out, cfg, quiet=True) == 0, "identity disabled: the check does not run")
+        html("index.html"); html("garden/a.html"); html("colophon.html", byline=False)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print(f"selftest: {'ok' if fails == 0 else str(fails) + ' failed'}")

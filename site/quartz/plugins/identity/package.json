@@ -1,0 +1,41 @@
+{
+  "name": "@othermemory/identity",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: the garden's visual identity -- one stylesheet for rhythm, type scale, the front door and the colophon, delivered through the plugin resource path so no stylesheet overlay is needed in build.sh",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./components": {
+      "import": "./dist/components/index.js"
+    }
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.3"
+  },
+  "quartz": {
+    "name": "identity",
+    "displayName": "Identity",
+    "category": [
+      "transformer",
+      "component"
+    ],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "defaultOrder": 95,
+    "defaultEnabled": true,
+    "components": {
+      "NotFound": {
+        "displayName": "Not found (404)",
+        "description": "The 404 page, rendered from the footer slot of the minimal frame; returns nothing on every other page",
+        "defaultPosition": "footer",
+        "defaultPriority": 10
+      }
+    }
+  }
+}

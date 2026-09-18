@@ -31,31 +31,40 @@ configuration:
   theme:
     fontOrigin: local # no Google CDN preconnect; the fonts plugin below self-hosts at build time
     cdnCaching: false
+    # Identity (dutchman, 2026-09-17). One family, three voices: the serif for what is said, the
+    # sans for reading it, the mono for what the machine set around it (dates, byline, breadcrumbs,
+    # the tree). Plex was drawn around "the relationship between mankind and machine" -- apt here,
+    # and left unexplained on the page. Rhythm, scale and the front door are in
+    # site/quartz/plugins/identity; this block is only what Quartz turns into CSS variables.
     typography:
-      header: Schibsted Grotesk
-      body: Source Sans Pro
+      header: IBM Plex Serif
+      body: IBM Plex Sans
       code: IBM Plex Mono
+    # Subdued Dune, on purpose: the house is named from the books, the palette says so to anyone
+    # who knows them and reads as warm paper / ink to anyone who does not. Light is sand and ink
+    # with a burnt-spice accent; dark is the blue within blue -- an indigo ground, bone text, spice
+    # gold for links. No ornament anywhere. Body text and links clear 4.5:1 in both modes.
     colors:
       lightMode:
-        light: "#faf8f8"
-        lightgray: "#e5e5e5"
-        gray: "#b8b8b8"
-        darkgray: "#4e4e4e"
-        dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#fff23688"
+        light: "#ede5d3" # sand
+        lightgray: "#d9cfb9" # rules, borders
+        gray: "#8a806e" # metadata, the mono margin
+        darkgray: "#3f3830" # body text
+        dark: "#221d18" # headings, the author's name
+        secondary: "#8a4b1a" # burnt spice: links, the site title, tips
+        tertiary: "#3b5b7a" # Ibad blue: hover, notes, focus ring, the graph
+        highlight: rgba(138, 75, 26, 0.10)
+        textHighlight: "#e8c46a88"
       darkMode:
-        light: "#161618"
-        lightgray: "#393639"
-        gray: "#646464"
-        darkgray: "#d4d4d4"
-        dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#b3aa0288"
+        light: "#14181f" # blue within blue: the ground is indigo, not black
+        lightgray: "#262d38"
+        gray: "#7d8797"
+        darkgray: "#c9c2b4" # bone
+        dark: "#efe8d8"
+        secondary: "#d9a35a" # spice gold
+        tertiary: "#7f9fbf" # Ibad blue
+        highlight: rgba(217, 163, 90, 0.10)
+        textHighlight: "#d9a35a55"
 plugins:
   - source: "@quartz-community/created-modified-date"
     enabled: true
@@ -121,6 +130,21 @@ plugins:
     enabled: true
     options:
       fontOrigin: selfHosted
+      # This plugin fetches by ITS options, not theme.typography above (measured 2026-09-17: with
+      # only fontOrigin set it self-hosted Quartz's defaults while --headerFont pointed at Plex).
+      # Both places name the same three families on purpose; the weights are the ones the
+      # identity stylesheet actually uses.
+      header:
+        name: IBM Plex Serif
+        weights: [400, 500, 600]
+        includeItalic: true
+      body:
+        name: IBM Plex Sans
+        weights: [400, 600]
+        includeItalic: true
+      code:
+        name: IBM Plex Mono
+        weights: [400, 600]
   - source: "@quartz-themes/core"
     enabled: false
     options:
@@ -204,6 +228,19 @@ plugins:
     layout:
       position: beforeBody
       priority: 25
+  # Local plugin (site/quartz/plugins/identity): the garden's stylesheet, delivered as a plugin
+  # resource -- static/resource-style-<hash>.css, unlayered, on every page, the same path
+  # @quartz-themes/core uses. It transforms nothing; it is the one place real CSS can ship without a
+  # new overlay in build.sh. The palette and fonts above are what it builds on.
+  - source: ./site-plugins/identity
+    enabled: true
+    order: 95
+    layout:
+      # The NotFound component. The 404 renders in the "minimal" frame, which draws only the fixed
+      # body and the footer slot, so the designed 404 lives in the footer slot, ahead of the stock
+      # footer (50), and returns nothing on every other page (see the plugin).
+      position: footer
+      priority: 10
   - source: "@quartz-community/tag-list"
     enabled: false
     layout:

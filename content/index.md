@@ -11,6 +11,6 @@ Those assistants are genuinely powerful and genuinely forgetful. They can hold a
 
 The name is from the old stories, where ancestral memory didn't work like a normal record. Every life that came before stayed present, all at once, reachable by association instead of by date — ask a question and the right memory surfaced because it was *connected*, not because it was filed under the right heading. That is what this is, for a homelab. Pages link sideways; the graph and the backlinks are the table of contents.
 
-This isn't the story. The story is told elsewhere, in order; this is what it gets built out of.
+This isn't the story. The story is told in order, as it happened, in [Awakening](https://awakening.sardaukar.work/); this is what it gets built out of.
 
 Start with [how this garden grows](./garden/how-this-garden-grows.md), or [what forgetting costs](./garden/what-forgetting-costs.md). There is no required order — that is the point. Who writes this, and who owns the machines, is on the [colophon](./colophon.md).

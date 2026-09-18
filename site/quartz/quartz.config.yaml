@@ -24,10 +24,13 @@ configuration:
   analytics: null
   locale: en-US
   baseUrl: othermemory.sardaukar.work # the public hostname (journey-site#7, live since 2026-09-16 via Cloudflare Pages, infra-iac#168); RSS/sitemap/OG are built against it
+  # `awakening`: the chronicle is Awakening's (site/starlight, journey-site#50); the garden links to
+  # it, never renders it. Bare entries only -- check-emitted.py reads this block line by line.
   ignorePatterns:
     - private
     - templates
     - .obsidian
+    - awakening
   theme:
     fontOrigin: local # no Google CDN preconnect; the fonts plugin below self-hosts at build time
     cdnCaching: false

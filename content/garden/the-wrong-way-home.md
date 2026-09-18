@@ -62,3 +62,5 @@ Verified, then verified again after a real, deliberate reboot a few days later, 
 None of this was really about one rule. It was about a box quietly living two lives on two networks, and a habit of thought that says "the reply must be going where the request implied it would" — which is only ever true on a box with one face. The moment something has two, tracing a rule's safety requires tracing both legs of the conversation, forward and back, before deciding either one is dispensable.
 
 That's the whole lesson, and it cost most of a week to earn. Cheaper, in hindsight, than everything else that was tried first — and exactly the kind of thing this garden exists to keep, so the next forgetful mind doesn't have to earn it twice.
+
+*The night this came from, told as it happened — the wrong theories included — is [Act 1 of Awakening](https://awakening.sardaukar.work/awakening/2026-08-09-the-rule-that-wouldnt-let-go/).*

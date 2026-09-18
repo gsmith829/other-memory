@@ -25,12 +25,17 @@ configuration:
   locale: en-US
   baseUrl: othermemory.sardaukar.work # the public hostname (journey-site#7, live since 2026-09-16 via Cloudflare Pages, infra-iac#168); RSS/sitemap/OG are built against it
   # `awakening`: the chronicle is Awakening's (site/starlight, journey-site#50); the garden links to
-  # it, never renders it. Bare entries only -- check-emitted.py reads this block line by line.
+  # it, never renders it. `icon.png`: this list is also what the core Static emitter honours when
+  # it copies upstream's quartz/static/ into the output, and emitters run in parallel -- keeping
+  # upstream's icon.png out of that copy is what makes the identity plugin's own static/icon.png
+  # (site/quartz/plugins/favicon/assets, its emitter) the only one written. Bare entries only --
+  # check-emitted.py reads this block line by line and stops at the first line that is not one.
   ignorePatterns:
     - private
     - templates
     - .obsidian
     - awakening
+    - icon.png
   theme:
     fontOrigin: local # no Google CDN preconnect; the fonts plugin below self-hosts at build time
     cdnCaching: false
@@ -166,7 +171,10 @@ plugins:
       enableRSS: true
       includeEmptyFiles: false # keep tag/folder stubs out of the feed and index
   - source: "@quartz-community/favicon"
-    enabled: true
+    # Off: it reads upstream's quartz/static/icon.png straight from the checkout and would write a
+    # favicon.ico of the stock Quartz mark. The local favicon plugin below writes favicon.ico from
+    # the garden's own mark instead (2026-09-18).
+    enabled: false
   - source: "@quartz-community/og-image"
     enabled: true
   - source: "@quartz-community/cname"
@@ -244,6 +252,13 @@ plugins:
       # footer (50), and returns nothing on every other page (see the plugin).
       position: footer
       priority: 10
+  # Local plugin (site/quartz/plugins/favicon): the garden's own favicon, written by an emitter to
+  # static/icon.png, favicon.ico and static/favicon.svg. Its own plugin, not part of identity: the
+  # loader instantiates a multi-category plugin once per category and collects externalResources()
+  # from every instance, which emitted the stylesheet link twice (measured 2026-09-18).
+  - source: ./site-plugins/favicon
+    enabled: true
+    order: 96
   - source: "@quartz-community/tag-list"
     enabled: false
     layout:

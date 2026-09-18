@@ -76,12 +76,17 @@ export default defineConfig({
       //               colophon still carries the text verbatim (src/routeData.ts)
       //   rss.xml     every item's description carries it (src/pages/rss.xml.js)
       //   og/*.png    the card, with the disclosure's lead as its own line (src/pages/og/[...route].ts)
+      // The book's favicon (journey-site#77 follow-up, 2026-09-18): chapter I, in the garden mark's
+      // hand. public/favicon.svg for browsers that take an SVG icon; the 48px PNG in `head` for the
+      // ones that don't (Safari). Both same-origin, both under site/starlight/public/.
+      favicon: '/favicon.svg',
       components: { PageTitle: './src/components/PageTitle.astro' },
       routeMiddleware: './src/routeData.ts',
       head: [
         // The feed, discoverable: readers' clients look for this link, and check-emitted.py
         // asserts the file it names exists.
         { tag: 'link', attrs: { rel: 'alternate', type: 'application/rss+xml', title: 'Awakening', href: '/rss.xml' } },
+        { tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon-48.png' } },
       ],
       plugins: [starlightLinksValidator()],
       pagination: true,

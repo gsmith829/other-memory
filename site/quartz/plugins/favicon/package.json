@@ -1,0 +1,29 @@
+{
+  "name": "@othermemory/favicon",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: the garden's own favicon -- three points, joined -- written to static/icon.png, favicon.ico and static/favicon.svg by an emitter, because upstream's favicon plugin reads its icon from the checkout, not from this repo (2026-09-18)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.3"
+  },
+  "quartz": {
+    "name": "favicon-identity",
+    "displayName": "Favicon (Other Memory)",
+    "category": [
+      "emitter"
+    ],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "defaultOrder": 96,
+    "defaultEnabled": true
+  }
+}

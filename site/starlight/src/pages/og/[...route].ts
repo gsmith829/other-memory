@@ -9,8 +9,8 @@
 //
 // Fonts are the two IBM Plex TTFs build.sh fetches at a pinned tag and verifies by sha256 into
 // src/fonts/ (gitignored): the default would fetch Noto Sans from fontsource at build time, which
-// is a third-party fetch nobody pinned. Colours are Other Memory's dark palette in spirit -- an
-// indigo ground, bone text, a spice edge -- until the design pass (#48) gives both sites their own.
+// is a third-party fetch nobody pinned. Colours are the book's dark palette (journey-site#77; src/styles/custom.css): the indigo ground,
+// bone text, the spice edge turned up the way the book's spine is -- one step from the garden's.
 import { OGImageRoute } from 'astro-og-canvas';
 import { getCollection } from 'astro:content';
 import disclosure from '../../../disclosure.json' with { type: 'json' };
@@ -36,15 +36,15 @@ export const { getStaticPaths, GET } = await OGImageRoute({
     title: page.title,
     description: [summary(page.description), LEAD].filter(Boolean).join('\n\n'),
     bgGradient: [
-      [27, 31, 58],
-      [17, 20, 40],
+      [20, 25, 36],
+      [16, 20, 28],
     ],
-    border: { color: [196, 122, 58], width: 14, side: 'inline-start' },
+    border: { color: [224, 168, 92], width: 14, side: 'inline-start' },
     padding: 64,
     fonts: ['./src/fonts/IBMPlexSerif-Medium.ttf', './src/fonts/IBMPlexSans-Regular.ttf'],
     font: {
-      title: { families: ['IBM Plex Serif'], weight: 'Medium', size: 60, color: [236, 231, 220], lineHeight: 1.15 },
-      description: { families: ['IBM Plex Sans'], size: 28, color: [196, 190, 176], lineHeight: 1.35 },
+      title: { families: ['IBM Plex Serif'], weight: 'Medium', size: 60, color: [239, 232, 216], lineHeight: 1.15 },
+      description: { families: ['IBM Plex Sans'], size: 28, color: [201, 194, 180], lineHeight: 1.35 },
     },
     cacheDir: false,
   }),

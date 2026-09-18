@@ -85,6 +85,10 @@ export default defineConfig({
       ],
       plugins: [starlightLinksValidator()],
       pagination: true,
+      // The designed 404 is src/pages/404.astro (journey-site#77). Starlight injects its own
+      // route at the same path; Astro lets the project page win today but warns that the
+      // collision becomes a hard error in a later version, so the injected one is switched off.
+      disable404Route: true,
       // The spine (D10): one group -- the front door (the directory's index, labelled by its
       // title) and then the Acts in the order they were written: autogenerate sorts by filename
       // and every Act's file starts with its date -- then one link out to the sibling site and the

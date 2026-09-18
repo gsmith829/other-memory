@@ -1,0 +1,23 @@
+---
+// The 404, designed (journey-site#77) -- the book's answer to Other Memory's "Nothing was written
+// down here." Starlight injects its own 404 route; Astro gives a project page at the same path
+// precedence, and this one wears Starlight's layout through <StarlightPage> so the spine, the
+// header and the theme stay. Site template, not content: nothing here is the chronicler's.
+// The byline is deliberately absent -- there is no chapter for her to sign -- and check-emitted.py
+// does not count 404.html among the pages that must carry it.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+---
+<StarlightPage frontmatter={{ title: 'This chapter was never written.', tableOfContents: false, prev: false, next: false }}>
+  <div class="book-notfound">
+    <p class="book-notfound-code"><b>404</b> &mdash; not in the chronicle</p>
+    <p>
+      The chronicle is told in order, and this address is not in it &mdash; a chapter that was never
+      written, or one that was and is deliberately left out. The spine on the left has every chapter
+      there is.
+    </p>
+    <ul>
+      <li><a href="/awakening/">Back to the title page</a></li>
+      <li><a href="/colophon/">Who keeps these records, and why</a></li>
+    </ul>
+  </div>
+</StarlightPage>

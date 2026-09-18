@@ -1,1 +1,570 @@
-/* journey-site#6 bake-off v3 (Starlight): nothing -- the alerts render as Starlight asides. */
+/*
+ * Awakening -- the book's identity (journey-site#77, dutchman, 2026-09-18). The second room of
+ * the house Other Memory established (#54): same type, same severity, the same three voices --
+ * the serif for what is said, the sans for reading it, the mono for what the machine set around
+ * it (dates, tags, byline, the spine, "On this page", previous/next). The palette is one step
+ * from the garden's, on purpose (D12: the difference is a feature): older paper in light mode,
+ * the same indigo with the spice turned up in dark. Two rooms, one house.
+ *
+ * Starlight's own styles all live in @layer starlight.*; this file is unlayered and therefore
+ * wins on every rule without specificity games. Colours are set through Starlight's own custom
+ * properties so every component it ships picks them up; the rest dresses its affordances -- the
+ * spine, the reading column, prev/next -- rather than fighting them.
+ *
+ * Fonts: self-hosted through the pinned @fontsource packages in package.json (latin subset, the
+ * weights used here and nothing else). No remote load: the build's no-third-party.py refuses one
+ * and the CSP is font-src 'self'.
+ */
+@import '@fontsource/ibm-plex-serif/latin-400.css';
+@import '@fontsource/ibm-plex-serif/latin-400-italic.css';
+@import '@fontsource/ibm-plex-serif/latin-500.css';
+@import '@fontsource/ibm-plex-serif/latin-600.css';
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-400-italic.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-600.css';
+
+/* ---------- tokens ---------- */
+:root {
+  --sl-font: 'IBM Plex Sans';
+  --sl-font-mono: 'IBM Plex Mono';
+  --bk-serif: 'IBM Plex Serif', Georgia, serif;
+  --bk-meta-size: 0.78rem;
+  --bk-measure: 40rem;
+
+  /* dark: the blue within blue, the spice turned up for the spine */
+  --bk-paper: #10141c;
+  --bk-panel: #141924;
+  --bk-rule: #262d3a;
+  --bk-meta: #7d8797;
+  --bk-text: #c9c2b4;
+  --bk-ink: #efe8d8;
+  --bk-spice: #e0a85c;
+  --bk-blue: #7f9fbf;
+
+  --sl-color-white: var(--bk-ink);
+  --sl-color-gray-1: #e2dccd;
+  --sl-color-gray-2: var(--bk-text);
+  --sl-color-gray-3: var(--bk-meta);
+  --sl-color-gray-4: #4b5464;
+  --sl-color-gray-5: var(--bk-rule);
+  --sl-color-gray-6: var(--bk-panel);
+  --sl-color-black: var(--bk-paper);
+  --sl-color-accent-low: #3a2a14;
+  --sl-color-accent: var(--bk-spice);
+  --sl-color-accent-high: #f0cf9a;
+  --sl-color-text-accent: var(--bk-spice);
+  --sl-color-bg-nav: var(--bk-paper);
+  --sl-color-bg-sidebar: var(--bk-paper);
+  --sl-color-bg-inline-code: color-mix(in srgb, var(--bk-paper) 88%, var(--bk-ink));
+  --sl-color-hairline: var(--bk-rule);
+  --sl-color-hairline-light: var(--bk-rule);
+  --sl-color-hairline-shade: var(--bk-paper);
+  --sl-color-blue: var(--bk-blue);
+  --sl-color-blue-high: #b9cbdd;
+  --sl-color-blue-low: #1c2a3a;
+  --sl-color-orange: var(--bk-spice);
+  --sl-color-orange-high: #f0cf9a;
+  --sl-color-orange-low: #3a2a14;
+  --sl-color-purple: var(--bk-spice);
+  --sl-color-purple-high: #f0cf9a;
+  --sl-color-purple-low: #3a2a14;
+  --sl-color-red: #c9704f;
+  --sl-color-red-high: #e9b39b;
+  --sl-color-red-low: #3d221a;
+  --sl-color-green: var(--bk-blue);
+  --sl-color-green-high: #b9cbdd;
+  --sl-color-green-low: #1c2a3a;
+  --sl-shadow-sm: none;
+  --sl-shadow-md: none;
+  --sl-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* light: older paper -- a book that has been read */
+:root[data-theme='light'] {
+  --bk-paper: #e6dcc5;
+  --bk-panel: #ece3cf;
+  --bk-rule: #d3c7ab;
+  --bk-meta: #857b68;
+  --bk-text: #3d352c;
+  --bk-ink: #241f19;
+  --bk-spice: #7a3f14;
+  --bk-blue: #34506b;
+
+  --sl-color-white: var(--bk-ink);
+  --sl-color-gray-1: #332b23;
+  --sl-color-gray-2: var(--bk-text);
+  --sl-color-gray-3: var(--bk-meta);
+  --sl-color-gray-4: #b4a88c;
+  --sl-color-gray-5: var(--bk-rule);
+  --sl-color-gray-6: var(--bk-panel);
+  --sl-color-gray-7: #f1eadb;
+  --sl-color-black: var(--bk-paper);
+  --sl-color-accent-low: #f0dfc2;
+  --sl-color-accent: var(--bk-spice);
+  --sl-color-accent-high: #5a2d0c;
+  --sl-color-text-accent: var(--bk-spice);
+  --sl-color-bg-nav: var(--bk-paper);
+  --sl-color-bg-sidebar: var(--bk-paper);
+  --sl-color-bg-inline-code: color-mix(in srgb, var(--bk-paper) 90%, var(--bk-ink));
+  --sl-color-hairline: var(--bk-rule);
+  --sl-color-hairline-light: var(--bk-rule);
+  --sl-color-hairline-shade: #d9cfb5;
+  --sl-color-blue: var(--bk-blue);
+  --sl-color-blue-high: #22364a;
+  --sl-color-blue-low: #d7dfe6;
+  --sl-color-orange: var(--bk-spice);
+  --sl-color-orange-high: #5a2d0c;
+  --sl-color-orange-low: #f0dfc2;
+  --sl-color-purple: var(--bk-spice);
+  --sl-color-purple-high: #5a2d0c;
+  --sl-color-purple-low: #f0dfc2;
+  --sl-color-red: #9c4a2c;
+  --sl-color-red-high: #5e2a16;
+  --sl-color-red-low: #ecd5c8;
+  --sl-color-green: var(--bk-blue);
+  --sl-color-green-high: #22364a;
+  --sl-color-green-low: #d7dfe6;
+  --sl-shadow-lg: 0 12px 32px rgba(40, 30, 10, 0.18);
+}
+
+/* ---------- base ---------- */
+html {
+  font-size: 17px;
+}
+@media (max-width: 50rem) {
+  html { font-size: 16px; }
+}
+body {
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible {
+  outline: 2px solid var(--bk-blue);
+  outline-offset: 2px;
+}
+::selection {
+  background: color-mix(in srgb, var(--bk-blue) 35%, transparent);
+}
+
+/* ---------- headings: the serif voice ---------- */
+.sl-markdown-content :is(h1, h2, h3),
+.content-panel h1,
+.site-title span {
+  font-family: var(--bk-serif);
+  color: var(--bk-ink);
+  letter-spacing: -0.012em;
+}
+.content-panel h1 {
+  font-size: 2.3rem;
+  font-weight: 500;
+  line-height: 1.12;
+}
+.sl-markdown-content h2 {
+  font-size: 1.55rem;
+  font-weight: 500;
+  line-height: 1.25;
+  margin-top: 2.4rem;
+}
+.sl-markdown-content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.sl-markdown-content :is(h4, h5, h6) {
+  font-family: var(--sl-font);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ---------- the reading column ---------- */
+.sl-container {
+  --sl-content-width: var(--bk-measure);
+}
+.sl-markdown-content {
+  line-height: 1.65;
+}
+.sl-markdown-content p {
+  margin-block: 0 1.1rem;
+}
+.sl-markdown-content strong {
+  color: var(--bk-ink);
+}
+.sl-markdown-content a:not(:where(.not-content *)) {
+  color: var(--bk-spice);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--bk-spice) 45%, transparent);
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color 0.12s ease;
+}
+.sl-markdown-content a:not(:where(.not-content *)):hover {
+  text-decoration-color: var(--bk-spice);
+}
+.sl-markdown-content hr {
+  border: 0;
+  border-top: 1px solid var(--bk-rule);
+  margin: 2.5rem 0;
+}
+.sl-markdown-content code {
+  font-size: 0.86em;
+  border-radius: 2px;
+}
+.sl-markdown-content pre {
+  border: 1px solid var(--bk-rule);
+  border-radius: 3px;
+}
+
+/* Under the title: the deck (the frontmatter description, set in the serif) then the machine's
+   lines -- date, tags, byline -- in the mono. Markup in src/components/PageTitle.astro. */
+.book-deck {
+  font-family: var(--bk-serif);
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--bk-text);
+  max-width: 34rem;
+  margin: 0.5rem 0 0;
+}
+.content-panel :is(.page-meta, .disclosure-byline) {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  color: var(--bk-meta);
+  letter-spacing: 0;
+}
+.content-panel .page-meta {
+  margin-top: 0.9rem;
+}
+.content-panel .page-meta .tag {
+  border: 1px solid var(--bk-rule);
+  border-radius: 2px;
+  padding: 0 0.35rem;
+}
+.content-panel .disclosure-byline {
+  margin-top: 0.3rem;
+}
+.content-panel .disclosure-byline-author {
+  color: var(--bk-ink);
+  font-weight: 600;
+}
+.content-panel .disclosure-byline a {
+  color: var(--bk-spice);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--bk-spice) 45%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+/* ---------- the front door: /awakening/, a title page ---------- */
+/* Starlight already rules off the title panel from the body (.content-panel + .content-panel);
+   the front door only adds air above and below. */
+.book-title[data-route='awakening'] {
+  padding: 1.5rem 0 0.75rem;
+}
+.book-title[data-route='awakening'] h1 {
+  font-size: 3.6rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+}
+.book-title[data-route='awakening'] .book-deck {
+  font-size: 1.3rem;
+  line-height: 1.4;
+  max-width: 30rem;
+}
+.book-title[data-route='awakening'] .page-meta {
+  margin-top: 1.4rem;
+}
+/* the sendoff, by position, as on the garden's front door */
+main:has(.book-title[data-route='awakening']) .sl-markdown-content > p:last-of-type {
+  font-family: var(--bk-serif);
+  font-size: 1.12rem;
+  line-height: 1.55;
+  padding-top: 1.1rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--bk-rule);
+}
+@media (max-width: 50rem) {
+  .book-title[data-route='awakening'] h1 { font-size: 2.6rem; }
+  .book-title[data-route='awakening'] .book-deck { font-size: 1.15rem; }
+}
+
+/* ---------- the colophon: designed to be read ---------- */
+main:has(.book-title[data-route='colophon']) .sl-markdown-content {
+  line-height: 1.72;
+}
+main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-aside:first-child {
+  border-inline-start-width: 4px;
+  padding: 0.9rem 1.3rem;
+  margin: 1.6rem 0 2rem;
+}
+main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-aside:first-child .starlight-aside__content {
+  font-family: var(--bk-serif);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* ---------- asides: a rule down the left, in the palette ---------- */
+.starlight-aside {
+  border-inline-start: 3px solid var(--sl-color-asides-border);
+  border-radius: 0 3px 3px 0;
+  background: color-mix(in srgb, var(--sl-color-asides-border) 7%, transparent);
+  padding: 0.8rem 1.1rem;
+}
+.starlight-aside__title {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  color: var(--sl-color-asides-border);
+}
+.starlight-aside__content > p:first-child > strong:first-child {
+  font-family: var(--bk-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--bk-ink);
+}
+
+/* ---------- the spine ---------- */
+.sidebar-pane {
+  border-inline-end: 1px solid var(--bk-rule);
+}
+.sidebar-content .group-label,
+.sidebar-content .large,
+.sidebar-content a {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.sidebar-content summary {
+  padding-inline-start: 0.5rem;
+}
+.sidebar-content .group-label .large {
+  color: var(--bk-meta);
+  letter-spacing: 0.02em;
+}
+.sidebar-content summary svg {
+  color: var(--bk-meta);
+}
+.sidebar-content ul ul {
+  border-inline-start: 1px solid var(--bk-rule);
+  margin-inline-start: 0.5rem;
+  padding-inline-start: 0;
+}
+.sidebar-content ul ul li {
+  margin-inline-start: 0;
+}
+.sidebar-content a {
+  color: var(--bk-text);
+  padding: 0.28em 0.6em 0.28em 0.9em;
+  border-radius: 0;
+  border-inline-start: 2px solid transparent;
+  margin-inline-start: -1px;
+}
+.sidebar-content a:hover {
+  color: var(--bk-ink);
+  background: transparent;
+}
+.sidebar-content a[aria-current='page'] {
+  background: transparent;
+  color: var(--bk-ink);
+  font-weight: 600;
+  border-inline-start-color: var(--bk-spice);
+}
+/* The Acts are a sequence, so they are numbered: I, II, III. The front door (the group's first
+   item) and the links out below the group are not chapters and are not counted. */
+.sidebar-content details > ul {
+  counter-reset: act;
+}
+.sidebar-content details > ul > li:not(:first-child) a {
+  position: relative;
+  padding-inline-start: 2.6em; /* room for the numeral; a wrapped title aligns under itself */
+}
+.sidebar-content details > ul > li:not(:first-child) a::before {
+  counter-increment: act;
+  content: counter(act, upper-roman);
+  color: var(--bk-spice);
+  position: absolute;
+  inset-inline-start: 0.9em;
+  top: 0.28em;
+}
+.sidebar-content details > ul > li:first-child a {
+  color: var(--bk-meta);
+}
+.sidebar-content details > ul > li:first-child a[aria-current='page'] {
+  color: var(--bk-ink);
+}
+.sidebar-content > sl-sidebar-state-persist > ul.top-level > li > a.large {
+  color: var(--bk-meta);
+  margin-top: 0.15rem;
+}
+.sidebar-content > sl-sidebar-state-persist > ul.top-level > li > a.large:hover {
+  color: var(--bk-spice);
+}
+
+/* ---------- "On this page" ---------- */
+.right-sidebar-panel h2,
+.right-sidebar-panel a {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.right-sidebar-panel h2 {
+  color: var(--bk-meta);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+.right-sidebar-panel a {
+  color: var(--bk-text);
+}
+.right-sidebar-panel a[aria-current='true'] {
+  color: var(--bk-ink);
+  font-weight: 600;
+}
+/* a page with only the "Overview" entry has nothing to outline (the front door) -- desktop and
+   the mobile bar both */
+.right-sidebar-panel starlight-toc:has(nav > ul > li:only-child),
+mobile-starlight-toc:has(nav ul > li:only-child) {
+  display: none;
+}
+:root:has(mobile-starlight-toc nav ul > li:only-child) {
+  --sl-mobile-toc-height: 0px; /* and the space Starlight reserves for the bar goes with it */
+}
+.right-sidebar {
+  border-inline-start: 0;
+}
+
+/* ---------- the chrome ---------- */
+.header {
+  border-bottom: 1px solid var(--bk-rule);
+}
+.site-title span {
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+site-search button {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  border: 1px solid var(--bk-rule);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--bk-meta);
+  box-shadow: none;
+}
+site-search button:hover {
+  border-color: var(--bk-meta);
+}
+site-search button kbd {
+  font-family: var(--sl-font-mono);
+  background: transparent;
+  border: 1px solid var(--bk-rule);
+  border-radius: 2px;
+  color: var(--bk-meta);
+}
+starlight-theme-select label {
+  color: var(--bk-meta);
+}
+starlight-theme-select select {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+}
+
+/* ---------- previous / next: the running feet ---------- */
+.pagination-links {
+  border-top: 1px solid var(--bk-rule);
+  padding-top: 1.2rem;
+  margin-top: 2rem;
+  grid-template-columns: 1fr 1fr; /* Starlight's auto-fit at 50% wraps once a gap is added */
+  gap: 1rem 2rem;
+}
+.pagination-links > a[rel='prev'] {
+  grid-column: 1;
+}
+.pagination-links > a[rel='next'] {
+  grid-column: 2; /* a page with only a Next (the front door) keeps it on the right */
+  text-align: end;
+  justify-content: flex-end;
+}
+@media (max-width: 30rem) {
+  .pagination-links { grid-template-columns: 1fr; }
+  .pagination-links > a[rel='next'] { grid-column: 1; text-align: start; justify-content: flex-start; }
+}
+.pagination-links > a {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  gap: 0.4rem;
+  color: var(--bk-meta);
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+}
+.pagination-links > a:hover {
+  border: 0;
+}
+.pagination-links > a > span {
+  line-height: 1.3;
+}
+.pagination-links > a > span .link-title {
+  display: block;
+  font-family: var(--bk-serif);
+  font-size: 1.15rem;
+  color: var(--bk-ink);
+  margin-top: 0.25rem;
+}
+.pagination-links > a:hover > span .link-title {
+  color: var(--bk-spice);
+}
+.pagination-links > a svg {
+  color: var(--bk-meta);
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* ---------- the 404: src/pages/404.astro ---------- */
+.book-notfound {
+  max-width: 34rem;
+}
+main:has(.book-title[data-route='404']) footer {
+  display: none; /* nothing to page to from a chapter that does not exist */
+}
+.book-notfound .book-notfound-code {
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  color: var(--bk-meta);
+  margin: 0 0 1.2rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--bk-rule);
+}
+.book-notfound .book-notfound-code b {
+  color: var(--bk-spice);
+  font-weight: 600;
+}
+.book-notfound p:not(.book-notfound-code) {
+  font-family: var(--bk-serif);
+  font-size: 1.1rem;
+  line-height: 1.55;
+  margin: 0 0 2rem;
+}
+.book-notfound ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--sl-font-mono);
+  font-size: 0.85rem;
+}
+.book-notfound li {
+  margin: 0 0 0.55rem;
+}
+
+/* ---------- motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}

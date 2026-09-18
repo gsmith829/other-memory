@@ -1,34 +1,49 @@
 ---
-// The byline under every title but the colophon's -- "Nagatha — an AI chronicler; what that means"
-// (journey-site#50 item 2; the words and the link target are site/starlight/disclosure.json's, the
-// same ones Other Memory's byline uses, #21). Starlight renders neither `date` nor `tags`, so the
-// date line comes from the schema extension in src/content.config.ts (bake-off F1(f)).
-// Site template, not content: nothing here is written by the chronicler.
+// Under every title: the deck, then the machine's lines. Site template, not content -- nothing
+// here is written by the chronicler.
+//
+//   the deck      the page's own `description` frontmatter, set in the serif (journey-site#77;
+//                 the same contract as Other Memory's front door and pages, #54)
+//   date + tags   Starlight renders neither; they come from the schema extension in
+//                 src/content.config.ts (bake-off F1(f))
+//   the byline    "Nagatha — an AI chronicler; what that means" on every page but the colophon's
+//                 (journey-site#50 item 2; the words and the link target are
+//                 site/starlight/disclosure.json's, the same ones Other Memory's byline uses, #21).
+//                 check-emitted.py looks for class="disclosure-byline" and
+//                 disclosure-byline-author on every page but the colophon: keep them exactly.
+//
+// The wrapper carries data-route so the stylesheet (src/styles/custom.css) can set the front
+// door and the colophon apart from a chapter without a route-specific component.
 import Default from '@astrojs/starlight/components/PageTitle.astro';
 import disclosure from '../../disclosure.json' with { type: 'json' };
 const { entry } = Astro.locals.starlightRoute;
-const { date, tags, author } = entry.data;
+const { date, tags, author, description } = entry.data;
 const shown = date ? date.toISOString().slice(0, 10) : undefined;
 const isColophon = entry.id === disclosure.colophonSlug;
+// No byline on the 404 (src/pages/404.astro): there is no chapter for her to sign, and
+// check-emitted.py does not count 404.html among the pages that must carry one.
+const isNotFound = entry.id === '404';
 const name = typeof author === 'string' && author.trim() ? author.trim() : disclosure.author;
 const colophonHref = `/${disclosure.colophonSlug}/`;
+const deck = typeof description === 'string' && description.trim() ? description.trim() : undefined;
 ---
-<Default><slot /></Default>
-{(shown || tags?.length) && (
-  <p class="page-meta">
-    {shown && <time datetime={shown}>{shown}</time>}
-    {tags?.length && <span class="tags">{tags.map((t) => <span class="tag">#{t}</span>)}</span>}
-  </p>
-)}
-{!isColophon && (
-  <p class="disclosure-byline">
-    <span class="disclosure-byline-author">{name}</span> &mdash; {disclosure.role};{' '}
-    <a href={colophonHref}>{disclosure.linkText}</a>
-  </p>
-)}
+<div class="book-title" data-route={entry.id}>
+  <Default><slot /></Default>
+  {deck && <p class="book-deck">{deck}</p>}
+  {(shown || tags?.length) && (
+    <p class="page-meta">
+      {shown && <time datetime={shown}>{shown}</time>}
+      {tags?.length && <span class="tags">{tags.map((t) => <span class="tag">#{t}</span>)}</span>}
+    </p>
+  )}
+  {!isColophon && !isNotFound && (
+    <p class="disclosure-byline">
+      <span class="disclosure-byline-author">{name}</span> &mdash; {disclosure.role};{' '}
+      <a href={colophonHref}>{disclosure.linkText}</a>
+    </p>
+  )}
+</div>
 <style>
-  .page-meta, .disclosure-byline { color: var(--sl-color-gray-3); font-size: var(--sl-text-sm); display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
-  .disclosure-byline { display: block; margin-top: 0.25rem; }
-  .disclosure-byline-author { color: var(--sl-color-white); font-weight: 600; }
-  .tag { margin-inline-end: 0.5rem; }
+  .page-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: baseline; }
+  .tags { display: inline-flex; gap: 0.35rem; flex-wrap: wrap; }
 </style>

@@ -15,8 +15,8 @@ Pages too). Stdlib only (no pip on bijaz).
   2. the inverse, which matters more: the garden (content/garden/, content/index.md) and any draft
      must NOT be in the output -- "it was excluded" is a claim about the build, this is the
      measurement -- and the site root is exactly the redirect to /awakening/, not a page;
-  3. the feed, the sitemap index, the Pages `_headers`, Pagefind's index and Astro's hashed
-     asset dir exist and are non-empty;
+  3. the feed, the sitemap index, the Pages `_headers` and `_redirects` (whose root rule is the
+     exact 301 to /awakening/), Pagefind's index and Astro's hashed asset dir exist and are non-empty;
   4. the disclosure (D6a; site/starlight/disclosure.json, verbatim the colophon's short version):
      every page's og:description and <meta name="description"> END with the full text (the page's
      own summary leads); every page's og:image names a card under /og/ that exists non-empty (the
@@ -37,7 +37,10 @@ import tempfile
 
 FRONTMATTER = re.compile(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)", re.S)
 DRAFT = re.compile(r"^draft:\s*(true|yes)\s*$", re.M | re.I)
-REQUIRED = ("rss.xml", "sitemap-index.xml", "_headers", "pagefind/pagefind.js")
+REQUIRED = ("rss.xml", "sitemap-index.xml", "_headers", "_redirects", "pagefind/pagefind.js")
+# The root redirect Pages applies before any asset (site/starlight/public/_redirects): the exact
+# rule, so a stub-only root (a "Redirecting to" flash for a cold reader) cannot come back quietly.
+ROOT_REDIRECT_RULE = "/ /awakening/ 301"
 ASSEMBLED = ("awakening/", "colophon.md")  # what build.sh copies into the docs dir, and nothing else
 OG_DESC = re.compile(r'<meta property="og:description" content="([^"]*)"')
 META_DESC = re.compile(r'<meta name="description" content="([^"]*)"')
@@ -180,6 +183,12 @@ def run(content, out, disclosure_path, quiet=False):
         if not os.path.isfile(p) or os.path.getsize(p) == 0:
             say(f"MISSING: {name}")
             fails += 1
+    rp = os.path.join(out, "_redirects")
+    if os.path.isfile(rp):
+        rules = [l.strip() for l in open(rp, encoding="utf-8") if l.strip() and not l.lstrip().startswith("#")]
+        if not rules or rules[0] != ROOT_REDIRECT_RULE:
+            say(f"ROOT NOT REDIRECTED: _redirects' first rule is {rules[0] if rules else 'absent'!r}, want {ROOT_REDIRECT_RULE!r}")
+            fails += 1
     astro = os.path.join(out, "_astro")
     if not os.path.isdir(astro) or not os.listdir(astro):
         say("MISSING: _astro/ (Astro's hashed assets) is absent or empty")
@@ -262,11 +271,15 @@ def selftest():
         redirect()
         for name in REQUIRED[1:]:
             plain(name)
+        plain("_redirects", "# comment\n" + ROOT_REDIRECT_RULE + "\n")
         plain("_astro/x.css")
         ok(run(content, out, dpath, quiet=True) == 0, "assembled pages present, garden + draft absent, root is the redirect, disclosure everywhere -> pass")
         ok(html_for("awakening/act-1.md") == "awakening/act-1/index.html" and html_for("colophon.md") == "colophon/index.html"
            and html_for("awakening/index.md") == "awakening/index.html", "Astro directory-index paths")
         # Negatives, each the exact silent failure it guards.
+        plain("_redirects", "/ /awakening/ 302\n")
+        ok(run(content, out, dpath, quiet=True) == 1, "a _redirects whose root rule is not the exact 301 fails")
+        plain("_redirects", "# comment\n" + ROOT_REDIRECT_RULE + "\n")
         os.remove(os.path.join(out, "awakening", "act-1", "index.html"))
         ok(run(content, out, dpath, quiet=True) == 1, "missing assembled page fails")
         html("awakening/act-1/index.html")

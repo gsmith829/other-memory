@@ -461,6 +461,67 @@ body[data-slug="404"] #quartz-body > footer {
   border-radius: 3px;
 }
 
+/* The tree is always fully shown. The explorer's folderDefaultState option is emitted as
+   data-collapsed and never read by its script at the pin (a folder opens only when the current
+   page is inside it -- measured 2026-09-18), so on the front door and the colophon the one folder
+   sat closed and the whole garden hid behind a chevron. One folder, a handful of notes: nothing
+   to fold, so the chevron goes and "garden" is a group label with the notes under it -- the same
+   shape as the book's spine. */
+.explorer-content .folder-outer {
+  visibility: visible;
+  grid-template-rows: 1fr;
+}
+.explorer-content .folder-icon {
+  display: none;
+}
+.explorer-content .folder-outer > ul {
+  margin-left: 0;
+  padding-left: 0.6rem;
+}
+
+/* ---------- the explorer on a phone ---------- */
+/* Quartz's mobile explorer is a full-screen sheet over the page with the same hamburger as its
+   only control. A cold reader (2026-09-18) found it: no title, nothing that reads as "close", a
+   lone chevron, links 17px tall. The plugin toggles .collapsed and aria-expanded on .explorer;
+   that is enough to dress it. */
+@media (max-width: 800px) {
+  /* the site's name stays above the sheet, so the sheet has one */
+  .sidebar.left:has(.explorer:not(.collapsed)) .page-title {
+    position: relative;
+    z-index: 101;
+  }
+  /* the hamburger reads as "close" while the sheet is up */
+  .explorer:not(.collapsed) .mobile-explorer svg {
+    display: none;
+  }
+  .explorer:not(.collapsed) .mobile-explorer::before {
+    content: "✕"; /* the character itself: a CSS escape would be read by the template literal first */
+    font-family: var(--codeFont);
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--darkgray);
+    padding: 0 0.2rem;
+  }
+  .explorer .explorer-content {
+    padding: 5rem 1.25rem 2rem;
+  }
+  .explorer .explorer-content > .explorer-ul {
+    border-top: 1px solid var(--om-rule);
+    padding-top: 1rem;
+  }
+  /* tap targets: a line box a thumb can hit */
+  .explorer .explorer-content .folder-container,
+  .explorer .explorer-content .nav-file-title {
+    min-height: 2.6rem;
+    display: flex;
+    align-items: center;
+  }
+  .explorer .explorer-content .folder-title,
+  .explorer .explorer-content .nav-file-title a {
+    font-size: 0.95rem;
+  }
+}
+
 /* ---------- print ---------- */
 @media print {
   .sidebar, .breadcrumb-container, #quartz-body > footer { display: none !important; }

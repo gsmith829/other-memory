@@ -189,6 +189,13 @@ plugins:
     enabled: true
   - source: "@quartz-community/explorer"
     enabled: true
+    options:
+      # One folder, three notes: collapsed by default, the whole garden hides behind a chevron --
+      # on a phone the menu was a full screen of paper with two lines on it (cold read, 2026-09-18).
+      # NOTE: at the pin this option is NOT read by the plugin's script (data-collapsed is emitted,
+      # never consulted; a folder opens only when the current page is inside it -- measured). It
+      # states the intent; the identity stylesheet is what keeps the tree open.
+      folderDefaultState: open
     layout:
       position: left
       priority: 50

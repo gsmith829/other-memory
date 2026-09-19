@@ -1,0 +1,5 @@
+# The book lives under /awakening/; the bare root is not a page. Astro writes a meta-refresh
+# stub at / (astro.config.mjs `redirects`), which flashes "Redirecting to" before landing
+# (journey-site#84 audit, round 2). Pages applies this file before serving any asset, so the
+# root is a real 301 here; korba nginx returns the same (site/starlight-origin/nginx.conf).
+/ /awakening/ 301

@@ -78,6 +78,16 @@ const byTitle = (a: Page, b: Page) =>
 
 const css = `
 .contents { display: flex; flex-direction: column; }
+/* The pane this sits in is upstream's .sidebar: 100vh, sticky, flex column, NO overflow -- upstream
+   never needed one because its explorer scrolled inside itself. This component replaced the explorer
+   and inherited that duty without carrying it: once the garden outgrew one viewport (seven pages,
+   #124) the last 223px were unreachable at 1440x900 (journey-site#125, found by Joe on the live
+   site). So the component scrolls, as upstream's did, and the site's name and search stay pinned
+   above it. A scroll container's automatic minimum is already zero, so no min-height is needed for
+   the flex child to shrink (measured). Scoped wide: the phone sheet below has its own scroll. */
+@media all and (min-width: 801px) {
+  .contents { overflow-y: auto; }
+}
 .contents h2 {
   font-family: var(--codeFont); font-size: 0.78rem; font-weight: 400; letter-spacing: 0.02em;
   color: var(--gray); margin: 0 0 0.5rem;

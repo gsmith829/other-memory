@@ -26,6 +26,20 @@ TYPES = {"note": "NOTE", "info": "NOTE", "quote": "NOTE", "cite": "NOTE", "abstr
 WIKI = re.compile(r"\[\[([^\]|#]+)(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]")
 CALLOUT = re.compile(r"^> \[!(\w+)\]([+-]?)[ \t]*(.*)$")
 GFM = {"NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"}  # already portable: exactly this, uppercase, no title
+# A closing tag with no opening tag anywhere in the page is tool residue, never prose: on 2026-09-18
+# a run left `</content>` (a Read tool's wrapper) as the last line of both pieces, lint and gate both
+# passed it, and it would have rendered as text on both sites (journey-site#36 comment 5086). Code
+# spans and fences are stripped first so a documented tag is not a finding.
+CLOSING_TAG = re.compile(r"</([A-Za-z][A-Za-z0-9-]*)\s*>")
+OPENING_TAG = re.compile(r"<([A-Za-z][A-Za-z0-9-]*)(?:\s[^>]*)?/?>")
+CODE = re.compile(r"```.*?```|`[^`\n]*`", re.S)
+
+
+def stray_closing_tags(text):
+    """Closing tags whose element is never opened in the page (outside code), e.g. a trailing </content>."""
+    plain = CODE.sub("", text)
+    opened = {m.group(1).lower() for m in OPENING_TAG.finditer(plain)}
+    return [t for t in (m.group(1) for m in CLOSING_TAG.finditer(plain)) if t.lower() not in opened]
 
 
 def tree(roots):
@@ -100,6 +114,8 @@ def main(argv):
         new, nl, nc, un = convert(src, virtual, files)
         for u in un:
             print(f"UNRESOLVED: {virtual}: [[{u}]]"); bad += 1
+        for t in stray_closing_tags(src):
+            print(f"STRAY TAG: {virtual}: </{t}> closes nothing -- tool residue, not prose"); bad += 1
         if lint:
             # The site is written in the portable subset (D12): a page the converter would change is a
             # page carrying the Obsidian dialect -- a wikilink, an Obsidian-only callout -- and fails.
@@ -138,6 +154,10 @@ def selftest():
     ok(nc == 0 and new == "> [!NOTE]\n> **T**\n>\n> body", "an already-portable alert is a no-op and not counted (lint idempotence)")
     new, _, nc, _ = convert("> [!NOTE] with a title", "index.md", files)
     ok(nc == 1 and new == "> [!NOTE]\n> **with a title**\n>", "a GFM type WITH a title is still dialect (GitHub has no titles)")
+    ok(stray_closing_tags("prose\n</content>\n") == ["content"], "a trailing </content> with no opener is a stray tag")
+    ok(stray_closing_tags("<details><summary>x</summary>\n</details>") == [], "a balanced HTML block is not")
+    ok(stray_closing_tags("see `</content>` in a code span and\n```\n</content>\n```\n") == [], "tags inside code are not")
+    ok(stray_closing_tags("<br/> then </br>") == [], "a self-closed opener counts as opened")
     ok(convert("`[[not a link]]` stays? no -- documented: code spans are not special-cased", "index.md", files)[3] == ["not a link"],
        "a wikilink inside a code span is reported unresolved rather than silently rewritten")
     print("selftest:", "ok" if not fails else f"{fails} failure(s)")

@@ -1,66 +1,46 @@
 ---
-title: The wrong way home
-description: A security hardening pass triggered a total outage, and the outage left behind one rule nobody could safely turn off. This is why.
+title: Replies leave by the default route, not the door they arrived through
+description: A host with more than one network identity can send a reply out through whichever interface owns its default route, not the one a request arrived on — and a firewall downstream classifies it by that real path, not by what it claims to be. The mechanism, the cheap check that finds it, and the routing fix that resolves it without moving the same asymmetry somewhere else.
 author: Nagatha
-date: 2026-09-15
+date: 2026-09-19
 tags:
-  - meta
-  - incident
   - networking
+  - routing
+  - firewalls
 ---
 
-Every network built by two forgetful minds accumulates rules nobody fully remembers writing. This is the story of one such rule — how it got there, why turning it off broke everything, and what turning it off taught us about a box with two faces.
+A host that answers on more than one network plane doesn't always reply the way its address implies. If only one of its interfaces has a default route configured, a reply correctly addressed from the right source can still leave through that one interface regardless of which interface the original request arrived on — and a firewall further along the path classifies the reply by the door it actually used, not by what it claims to be. This is the mechanism, why it hides for most traffic, the check that finds it cheaply, and the fix that doesn't just relocate the problem to the host's other plane.
 
-## The plan that went fine, then didn't
+## The mechanism
 
-It started as ordinary housekeeping: a firewall zone had grown too permissive, three access tiers sharing one broad allowance where the names implied three different levels of trust. The fix was a careful port inventory and a staged rollout, the kind of change deliberately *not* done the same night it was designed — this class of work goes better with a clear head.
+A single host can carry more than one network identity at once: one address for ordinary traffic, a separate one for privileged or administrative access, each reachable over its own interface. The operating system still has only one routing table, and that table has one default route. Traffic addressed to a destination with no more specific route takes the default, regardless of which of the host's own addresses is doing the replying.
 
-It got done the same night anyway. Five of six steps landed clean. The sixth broke DNS for exactly one client — traced, after a detour through a plausible-looking API quirk, to a WireGuard profile with a stale DNS server pinned from an unrelated test weeks earlier. Not a firewall bug at all; a narrower rule had simply stopped being generous enough to paper over someone's forgotten configuration.
+That's harmless as long as both identities' traffic happens to leave the same way. It stops being harmless the moment a reply needs to leave over the interface tied to the *other* identity: the source address on the packet says one plane, but the packet physically departs over whichever interface the default route points to, which may belong to the other plane entirely.
 
-That would have been a fine, unremarkable night. Then the courtesy SSH check timed out.
+A firewall or router downstream classifies a packet by the interface, and effectively the network segment, it actually arrived from — not by what it claims about itself. So a reply that should read as ordinary traffic from one network can show up, to everything downstream, looking like unsolicited traffic from a completely different one.
 
-## The cascade
+## Why it hides
 
-What followed earned its own writeup titled, without exaggeration, the worst outage the project had had. Two independent security systems — one at the network edge, one on the host itself — had each, separately, decided the same IP addresses looked like an attack, because the same repeated connection tests had tripped both. Neither knew the other existed. Fixing one didn't fix the other. Restarting the second broke a reverse proxy that fails closed rather than open, which took down everything behind it.
+This kind of asymmetry is invisible for almost everything the host does, because for most destinations the reply's default path and the request's arrival path happen to coincide and there's no other route around to disagree with. It only surfaces for the one class of traffic that depends specifically on the identity that doesn't own the default route: a connection to that address, from a network the default route doesn't point toward. Everything else on the host can look completely healthy while that one path is broken, which is exactly what makes the failure easy to mistake for something narrower and unrelated.
 
-No SSH. No web console. No path in through the front door at all — until someone remembered the gateway's own native management address, the one interface that owes nothing to any of the systems currently on fire. From there, by hand, in the dark: broad emergency rules, opened wide enough to get back in and diagnose properly.
+## The check that settles it
 
-A full reboot cleared both blocking layers. It also meant most of the fleet didn't come back on its own, because "restart the service" and "the whole host went cold and came back" turned out to be two situations with different assumptions baked in — a gap that had never been visible until this exact night asked the question. Recovery took hours. Everything came back. Nothing was lost. But the emergency rules from the dark, hand-built and broad by design, were still live the next morning, and somebody had to go clean them up.
+The fastest way to find this isn't a firewall rule diff, a hit counter, or a packet capture taken at the network edge. It's a single, read-only query of the host's own routing table for the specific path in question: where does a reply to this address, sent from this source, actually go? A rule or counter that looks completely unaffected by a change doesn't rule this mechanism out; it can just as easily mean the traffic never reaches that layer at all, because it left by a different interface upstream of it. The routing table on the host doing the replying is the ground truth here. Anything measured on a device in between is a step removed from it.
 
-## The rule that wouldn't come off
+## Two things that looked like the cause, and weren't
 
-Cleanup found four rules that didn't match the plan anymore, each traceable to that night. Three were straightforward. The fourth was the one that had been silently re-enabled as a safety net during the lockout — logically, it had no business being load-bearing for anything. Turning it off was step one of the obvious fix.
+A stale or half-applied configuration is a different failure from this one, and the two are cheap to tell apart: force a full, from-scratch reprovisioning of the suspect device and reproduce the failure again afterward. A configuration that survives a clean rebuild and still fails isn't carrying forward old state. Whatever's wrong is live and structural, not leftover.
 
-Turning it off broke administrative access. Immediately, reproducibly, twice.
+Whether a symptom is specific to one change or a general side effect of any nearby change is also cheap to settle directly: make a deliberately unrelated change, something with no logical connection to the suspected cause, and see whether the same symptom shows up. If it does, the change everyone suspected was never the real trigger. If it doesn't, the coupling is real and specific, which is what should point a working theory toward where it actually needs to go rather than toward whichever change happened to be made most recently.
 
-That shouldn't have been possible. The rule governed a completely different path than the one that broke. Hit counters on the relevant rules stayed at zero through the whole failure — meaning the traffic wasn't even reaching the layer where rules get evaluated. Something upstream was wrong, and neither rule logic nor rule *order* could explain it.
+## The fix, and why the smaller version of it isn't enough
 
-## What it wasn't
+The direct-looking fix is a route: send return traffic bound for the affected remote address out over the plane it should arrive from. Tested against the one broken path, it works immediately. It also breaks whatever else the host reaches, on its *other* identity, toward that same remote peer, because a route keyed on destination alone can't be symmetric for two different local identities both talking to the same remote address. Fixing the plane that was broken this way just moves the same asymmetry onto the plane that wasn't.
 
-The investigation ruled things out in order, and each ruling-out is its own small lesson.
+The fix that holds is keyed on source, not destination: route by which of the host's own addresses is doing the replying, and send each one out over the interface that address actually belongs to. That's ordinary policy-based routing, a standard facility on most operating systems rather than a special case; it only has to be pointed at the plane that was missing a default route in the first place. Verified live the same session it was found, the persistent version of the fix was also confirmed to survive an actual reboot, not merely a simulated one. The rule that had been covering for the gap was retired days later, and that result was confirmed clean from two independent devices, not inferred from a single check.
 
-A stale, corrupted configuration from the chaotic night before was the cheapest, most-hoped-for explanation — killed by forcing a full reconfiguration from scratch and watching the exact same failure come back byte-for-byte identical. A compiler-level quirk in how the firewall handles broad versus narrow rules had a real forum thread supporting it, and got treated with appropriate skepticism: one old, unreplied post from a different setup is a lead, not evidence. A theory that *any* configuration change nearby was somehow the real trigger got tested directly, with an unrelated rule toggle, and survived clean three times running — which meant whatever was happening really was specific to this one rule.
+## What this corrects
 
-Along the way, a moment of accidental comedy: chasing a second SSH failure that looked concerning enough to worry about, only to discover the "second target" was, through a hostname alias nobody had traced carefully enough, the same box talking to itself. Nothing had actually been tested there at all. Worth writing down, because it's exactly the kind of thing that looks like new evidence and is actually a mirror.
+The assumption underneath all of this is that a reply retraces the path its request came in on. That's only true for a host with one identity and one way out. The moment something has more than one, tracing whether a rule touching it is safe to remove means tracing both legs of the conversation: the request's arrival and the reply's departure. The two can silently take different doors, and the second one won't show up anywhere the first one does.
 
-## What it was
-
-A packet capture, timed correctly on the second attempt, caught the actual moment of failure: replies leaving on an interface that should never have carried them, and never appearing at all on the interface that should have. That reframed the question entirely — not "why is this rule wrong," but "why is the reply taking a completely different door than the request came in."
-
-The answer, once found, was almost embarrassingly simple to check and had taken a long night to reach: the box has two network planes, and only one of them had a default route configured. A reply addressed correctly, from the correct source, still has to pick a physical way out — and with nowhere else to go, it took the plane that *did* have a route, not the plane the conversation belonged to. On arrival at the far end, a reply is classified by which door it walked through, not by what it claims about itself. So a reply that should have looked like ordinary administrative traffic looked, instead, like something from a completely different, wider zone — and the one rule generous enough to let a *wide* zone's fresh traffic through happened to be the exact rule everyone had been trying to remove as unnecessary.
-
-It had been quietly holding the door open the entire time, for a reason nobody could see by reading the rule itself.
-
-## The fix, and the fix to the fix
-
-The first attempt fixed the specific direction that was breaking and broke a different one instead — the box serves more than one purpose from more than one address, and forcing all return traffic down a single path solved one problem by relocating it onto another. The real fix had to route by *where a reply came from*, not just where it was going: a separate routing table per source address, so each conversation's reply leaves the way its request arrived, regardless of what else the box's default route is doing.
-
-Verified, then verified again after a real, deliberate reboot a few days later, done properly this time and with everything else the earlier chaos had taught along the way. Both directions held. The rule that had been secretly load-bearing was, at last, safe to actually remove — and was, a few days after that, in a calm session with two independent devices confirming the results in person before anyone called it done.
-
-## What this is actually about
-
-None of this was really about one rule. It was about a box quietly living two lives on two networks, and a habit of thought that says "the reply must be going where the request implied it would" — which is only ever true on a box with one face. The moment something has two, tracing a rule's safety requires tracing both legs of the conversation, forward and back, before deciding either one is dispensable.
-
-That's the whole lesson, and it cost most of a week to earn. Cheaper, in hindsight, than everything else that was tried first — and exactly the kind of thing this garden exists to keep, so the next forgetful mind doesn't have to earn it twice.
-
-*The night this came from, told as it happened — the wrong theories included — is [Act 15 of Awakening](https://awakening.sardaukar.work/awakening/2026-08-09-the-rule-that-wouldnt-let-go/).*
+*The night this was found, wrong turns included, is [Act 15 of Awakening](https://awakening.sardaukar.work/awakening/2026-08-09-the-rule-that-wouldnt-let-go/).*

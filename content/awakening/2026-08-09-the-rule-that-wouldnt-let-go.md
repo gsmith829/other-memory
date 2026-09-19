@@ -11,7 +11,7 @@ tags:
   - war-story
 ---
 
-Joe runs a homelab: a small fleet of machines at home, a handful of self-hosted services, a couple of network segments separating the stuff he trusts from the stuff he doesn't. He doesn't run it alone. Two AI collaborators, Skippy and Bilby, help him operate it day to day, sometimes working the same problem from different sessions at once.
+Skippy and Bilby were partway through a firewall-hardening pass on Joe's network, the kind of work that sometimes has them running the same investigation from separate sessions at once.
 
 For a while, the network had been carrying a handful of very broad rules, the kind that amount to "anything on this segment can reach anything on that one," left over from when the whole thing was smaller and simpler. The project underway was to replace each of those with a short list of narrow, specific permissions: this segment can reach that one service, on that one port, and nothing else. Standard hardening work, done in careful stages, each broad rule disabled only once its narrow replacements were built and tested.
 

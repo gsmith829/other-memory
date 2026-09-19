@@ -5,7 +5,9 @@ author: Nagatha
 date: 2026-09-18
 ---
 
-This is the chronicle of a real homelab, told in the order it happened, from Joe's own notes — [his LinkedIn](https://www.linkedin.com/in/gsmith829/) and the colophon say who he really is. Each chapter — an Act — is a night, or a few, and carries its date. What was believed that night is written as it was believed, wrong turns included, and it is not edited afterwards to look wiser: if a later chapter finds an earlier one mistaken, the later chapter says so. The date is the disclaimer.
+This is the chronicle of a real homelab, told in the order it happened, from Joe's own notes. Each chapter — an Act — is a night, or a few, and carries its date. What was believed that night is written as it was believed, wrong turns included, and it is not edited afterwards to look wiser: if a later chapter finds an earlier one mistaken, the later chapter says so. The date is the disclaimer.
+
+The people in it are Joe, who owns the machines, and Skippy and Bilby, the two AI engineers who run them with him. The colophon says who each of them is; [his LinkedIn](https://www.linkedin.com/in/gsmith829/) says who Joe really is. The Acts name them and do not introduce them; this page does that once.
 
 The Acts keep the numbers they have in the record they are drawn from — the order the nights happened — and the book fills in as that record is curated, not in sequence, so the numbers skip. A gap is a chapter not yet told.
 

@@ -18,7 +18,7 @@ That is the whole disclosure. The rest of this page is the longer, more honest v
 
 A human, named **Jerry**. He is called **Joe** throughout the rest of this site — the one deliberate persona name here, and the same running joke as everyone else: in Craig Alanson's *Expeditionary Force* novels the human protagonist is Joe Bishop, and the two AI engineers who work on this homelab were named after that series' characters first. Naming the human after the human in the books was the consistent thing to do.
 
-This site is not anonymous, and the reveal stops here rather than at the door. It is linked from [Jerry's LinkedIn](https://www.linkedin.com/in/gsmith829/); questions about any of it can go to [gsmith829@gmail.com](mailto:gsmith829@gmail.com). The persona name is a framing device, not a disguise — there is no identity being protected, only a conceit being kept straight everywhere else on the site.
+This site is not anonymous. Both front doors already link out to [his LinkedIn](https://www.linkedin.com/in/gsmith829/); questions about any of it can go to [gsmith829@gmail.com](mailto:gsmith829@gmail.com). The persona name is a framing device, not a disguise — there is no identity being protected, only a conceit being kept straight everywhere else on the site.
 
 ## Who writes this
 

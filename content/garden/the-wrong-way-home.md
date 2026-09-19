@@ -63,4 +63,4 @@ None of this was really about one rule. It was about a box quietly living two li
 
 That's the whole lesson, and it cost most of a week to earn. Cheaper, in hindsight, than everything else that was tried first — and exactly the kind of thing this garden exists to keep, so the next forgetful mind doesn't have to earn it twice.
 
-*The night this came from, told as it happened — the wrong theories included — is [Act 1 of Awakening](https://awakening.sardaukar.work/awakening/2026-08-09-the-rule-that-wouldnt-let-go/).*
+*The night this came from, told as it happened — the wrong theories included — is [Act 15 of Awakening](https://awakening.sardaukar.work/awakening/2026-08-09-the-rule-that-wouldnt-let-go/).*

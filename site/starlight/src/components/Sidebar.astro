@@ -1,0 +1,78 @@
+---
+// The spine, shelved (journey-site#95; Joe, 2026-09-19). The chronicle's chapters are grouped by
+// SHELVES OF TWENTY ACT NUMBERS -- "Acts 1–20", "Acts 21–40" -- from the `act:` every chapter
+// already carries (the Narrative's number, #81). Not by month: a month is whatever size the
+// record made it (~40 Acts at the Narrative's pace) and would reproduce the flat list. Empty
+// shelves are not rendered (today: one shelf, holding 15 and 18); the newest shelf is open, older
+// ones collapsed; the width is the one constant below, so regrouping later costs nothing.
+//
+// This is a Starlight component override (astro.config.mjs `components`, on #77's allow-list).
+// It reads the sidebar Starlight already built from the config -- the config's sidebar structure
+// is untouched -- and regroups the chronicle's links; then renders with Starlight's own
+// SidebarSublist so the identity stylesheet's rules apply unchanged. The front door stays first,
+// unshelved; the links out (Other Memory ↗, Colophon) stay where the config puts them.
+//
+// A chapter with no `act:` FAILS THE BUILD, naming the file -- the same strength of control as the
+// garden's `topic:` (#96): both are fields told in the tray brief, copied never derived, and D17
+// says every chapter carries the Narrative's number (#81). A warning that ships was the first cut;
+// Bilby's review of #97 asked for parity and Joe chose `fail` (2026-09-19). Site template, not content.
+import { getCollection } from 'astro:content';
+import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+import type { SidebarEntry } from '@astrojs/starlight/utils/routing/types';
+
+/** Acts per shelf. */
+const SHELF = 20;
+/** The chronicle: content/awakening/ -> /awakening/... */
+const CHRONICLE = '/awakening/';
+
+type Link = Extract<SidebarEntry, { type: 'link' }>;
+type Group = Extract<SidebarEntry, { type: 'group' }>;
+
+const docs = await getCollection('docs');
+const actByHref = new Map<string, number | undefined>();
+for (const d of docs) actByHref.set(`/${d.id}/`, d.data.act);
+
+const shelfOf = (act: number) => Math.floor((act - 1) / SHELF);
+const shelfLabel = (i: number) => `Acts ${i * SHELF + 1}–${(i + 1) * SHELF}`;
+
+function shelve(links: Link[]): SidebarEntry[] {
+  // ASSUMPTION, not a guarantee: the group's first link is the front door. True because Starlight's
+  // autogenerate puts the folder's index.md first (measured at 0.42.1); if the index ever moves or is
+  // renamed, the door would be shelved by its (absent) act: and the throw below names it.
+  const [door, ...chapters] = links;
+  const shelves = new Map<number, Link[]>();
+  for (const l of chapters) {
+    const act = actByHref.get(l.href);
+    if (typeof act !== 'number') {
+      throw new Error(`[sidebar] ${l.href} has no act: -- every chapter carries the Narrative's Act number (journey-site#81); add it to the tray brief's pieces: and rebuild`);
+    }
+    (shelves.get(shelfOf(act)) ?? shelves.set(shelfOf(act), []).get(shelfOf(act))!).push(l);
+  }
+  const indices = [...shelves.keys()].sort((a, b) => a - b);
+  const newest = indices[indices.length - 1];
+  const out: SidebarEntry[] = door ? [door] : [];
+  for (const i of indices) {
+    const entries = shelves.get(i)!.sort((a, b) => (actByHref.get(a.href)! - actByHref.get(b.href)!) || a.href.localeCompare(b.href));
+    out.push({ type: 'group', label: shelfLabel(i), entries, collapsed: i !== newest, badge: undefined } as Group);
+  }
+  return out;
+}
+
+const { sidebar } = Astro.locals.starlightRoute;
+const shelved: SidebarEntry[] = sidebar.map((entry) => {
+  if (entry.type !== 'group') return entry;
+  const links = entry.entries.filter((e): e is Link => e.type === 'link');
+  if (!links.length || !links.every((l) => l.href.startsWith(CHRONICLE))) return entry;
+  return { ...entry, entries: shelve(links) };
+});
+---
+
+<SidebarPersister>
+	<SidebarSublist sublist={shelved} />
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+	<MobileMenuFooter />
+</div>

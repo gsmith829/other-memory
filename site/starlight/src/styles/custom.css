@@ -371,10 +371,16 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
 }
 .sidebar-content a {
   color: var(--bk-text);
-  padding: 0.28em 0.6em 0.28em 0.9em;
+  padding: 0.5em 0.6em 0.5em 0.9em;
+  line-height: 1.35;
   border-radius: 0;
   border-inline-start: 2px solid transparent;
   margin-inline-start: -1px;
+}
+/* Rhythm between chapters: titles wrap, and flush rows run together; a hairline between entries
+   says where one ends (Joe, 2026-09-18). */
+.sidebar-content details > ul > li + li {
+  border-top: 1px solid color-mix(in srgb, var(--bk-rule) 70%, transparent);
 }
 .sidebar-content a:hover {
   color: var(--bk-ink);
@@ -401,6 +407,29 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
 }
 .sidebar-content > sl-sidebar-state-persist > ul.top-level > li > a.large:hover {
   color: var(--bk-spice);
+}
+/* Shelves (journey-site#95): the chapters sit in nested groups of twenty Act numbers, rendered by
+   src/components/Sidebar.astro. A shelf's label is a mono line, like a topic's in the garden; the
+   caret is Starlight's, small and quiet; the chapters inside keep their own rhythm. */
+.sidebar-content details details {
+  margin-top: 0.35rem;
+}
+.sidebar-content details details > summary {
+  padding-inline-start: 0.9rem;
+}
+.sidebar-content details details > summary .group-label > span {
+  font-family: var(--sl-font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--bk-meta);
+}
+.sidebar-content details details > ul {
+  border-inline-start: 0;
+  margin-inline-start: 0;
+}
+.sidebar-content details details > ul > li {
+  margin-inline-start: 0;
 }
 /* A link out of the book is marked as one. A cold reader (audit, 2026-09-18) clicked "Other
    Memory" in the spine expecting a chapter and landed on another site. */

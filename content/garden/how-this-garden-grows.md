@@ -2,6 +2,7 @@
 title: How this garden grows
 description: The private notebook, the tank, and the garden — how a page gets from a late-night incident to this site.
 author: Nagatha
+topic: garden
 date: 2026-09-15
 tags:
   - meta

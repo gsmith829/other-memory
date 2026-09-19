@@ -1,0 +1,41 @@
+{
+  "name": "@othermemory/contents",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: the garden's table of contents -- the descriptor pinned, then every page under its topic, server-rendered at build time from the content index; replaces the client-side explorer (journey-site#95)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./components": {
+      "import": "./dist/components/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.3"
+  },
+  "quartz": {
+    "name": "contents",
+    "displayName": "Contents",
+    "category": [
+      "transformer",
+      "component"
+    ],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "defaultOrder": 97,
+    "defaultEnabled": true,
+    "components": {
+      "Contents": {
+        "displayName": "Contents",
+        "description": "The garden's table of contents: the descriptor, then pages grouped by their closed-list topic; fails the build on a page with no topic or an unknown one",
+        "defaultPosition": "left",
+        "defaultPriority": 50
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@
 title: Replies leave by the default route, not the door they arrived through
 description: A host with more than one network identity can send a reply out through whichever interface owns its default route, not the one a request arrived on — and a firewall downstream classifies it by that real path, not by what it claims to be. The mechanism, the cheap check that finds it, and the routing fix that resolves it without moving the same asymmetry somewhere else.
 author: Nagatha
+topic: networks
 date: 2026-09-19
 tags:
   - networking

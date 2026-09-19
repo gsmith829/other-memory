@@ -188,14 +188,20 @@ plugins:
   - source: "@quartz-community/tag-page"
     enabled: true
   - source: "@quartz-community/explorer"
+    # Off (journey-site#95). Its tree is built in the browser -- one voice, one level, no axis to
+    # group by, and its reshaping options go through new Function(), which the CSP forbids. The
+    # local contents plugin below renders the garden's table of contents at build time instead.
+    enabled: false
+    layout:
+      position: left
+      priority: 50
+  # Local plugin (site/quartz/plugins/contents): the garden's table of contents -- the descriptor
+  # pinned, then every page under its `topic:` from the closed list the plugin and
+  # docs/tray-brief.md both carry; a page with no topic or an unknown one FAILS the build, naming
+  # the file (journey-site#95).
+  - source: ./site-plugins/contents
     enabled: true
-    options:
-      # One folder, three notes: collapsed by default, the whole garden hides behind a chevron --
-      # on a phone the menu was a full screen of paper with two lines on it (cold read, 2026-09-18).
-      # NOTE: at the pin this option is NOT read by the plugin's script (data-collapsed is emitted,
-      # never consulted; a folder opens only when the current page is inside it -- measured). It
-      # states the intent; the identity stylesheet is what keeps the tree open.
-      folderDefaultState: open
+    order: 97
     layout:
       position: left
       priority: 50

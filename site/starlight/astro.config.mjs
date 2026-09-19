@@ -80,7 +80,9 @@ export default defineConfig({
       // hand. public/favicon.svg for browsers that take an SVG icon; the 48px PNG in `head` for the
       // ones that don't (Safari). Both same-origin, both under site/starlight/public/.
       favicon: '/favicon.svg',
-      components: { PageTitle: './src/components/PageTitle.astro' },
+      // Sidebar: the spine shelved by twenty Act numbers from `act:` (journey-site#95); the sidebar
+      // STRUCTURE below is untouched -- the override regroups what Starlight builds from it.
+      components: { PageTitle: './src/components/PageTitle.astro', Sidebar: './src/components/Sidebar.astro' },
       routeMiddleware: './src/routeData.ts',
       head: [
         // The feed, discoverable: readers' clients look for this link, and check-emitted.py

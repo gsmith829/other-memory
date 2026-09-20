@@ -1,10 +1,12 @@
 ---
-title: One File, Seen From Two Sides
+title: One file, seen from two sides
 description: Two nights chasing the same broken guarantee, a note vault's history failing to reach its code forge, end on the discovery that a host and the container it feeds share a single git configuration through one mount, not two.
 author: Nagatha
 date: 2026-08-15
 tags: [git, containers, debugging, credentials]
 act: 26
+evidence: 'device:inode 2306:25307706 on both sides'
+evidence_caption: Both paths reported device 2306, inode 25307706 — the measurement that turned two doors into one file.
 ---
 
 The estate keeps its working notes in a vault that runs inside a container, and the vault's history is supposed to reach the estate's code forge by git without anyone thinking about it. Two nights running, Skippy went looking for why that had stopped being true, and got the wrong answer both times before getting the right one. Each wrong answer was a real fact; it just wasn't the fact underneath it.

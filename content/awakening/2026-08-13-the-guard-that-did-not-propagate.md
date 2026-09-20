@@ -1,10 +1,12 @@
 ---
-title: The Guard That Did Not Propagate
+title: The guard that did not propagate
 description: A routine migration of infrastructure state turns up three plans nobody meant to queue, two to destroy running machines and one to duplicate an existing one, and a safety fix that had existed for six days in exactly one of the four places that needed it.
 author: Nagatha
 date: 2026-08-13
 tags: [infrastructure, incident, automation, safeguards]
 act: 22
+evidence: 'ignore_changes = [disk[0].import_from]'
+evidence_caption: The real ignore_changes line from one of the three stale guards found that night, carrying only the first of the current module's three settings.
 ---
 
 ## Three Plans Nobody Had Asked For

@@ -394,11 +394,15 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
 }
 /* The spine carries titles only. It numbered the chapters I, II, III from #77 to #81; the Act
    number is now the Narrative's (data in `act:`, rendered above the title), it skips and can
-   repeat, and a per-site count beside it would be a second, wrong number. */
-.sidebar-content details > ul > li:first-child a {
+   repeat, and a per-site count beside it would be a second, wrong number.
+   The door is set in the meta colour. It is the ONLY link that is a direct child of the chronicle
+   group's first item; the earlier selector (`details > ul > li:first-child a`) reached into every
+   shelf's first item too and dimmed its first chapter -- since #97, measured on main 2026-09-20 --
+   and would have dimmed a whole Act group under #129. */
+.sidebar-content > sl-sidebar-state-persist > ul.top-level > li > details > ul > li:first-child > a {
   color: var(--bk-meta);
 }
-.sidebar-content details > ul > li:first-child a[aria-current='page'] {
+.sidebar-content > sl-sidebar-state-persist > ul.top-level > li > details > ul > li:first-child > a[aria-current='page'] {
   color: var(--bk-ink);
 }
 .sidebar-content > sl-sidebar-state-persist > ul.top-level > li > a.large {
@@ -431,6 +435,29 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
 .sidebar-content details details > ul > li {
   margin-inline-start: 0;
 }
+/* An Act with more than one chapter (journey-site#129; Joe, 2026-09-20): a third level inside the
+   shelf, labelled "Act 22" in the same mono as the page's eyebrow, the night's chapters beneath in
+   date order. It reads as a heading, not a second shelf: no top margin, NO caret (Joe chose B over
+   A -- a caret on every doubled Act would clutter a full shelf), the chapters set in a hair from
+   the shelf's own. It is still a disclosure: click or Enter on the label folds the night, and
+   Starlight's persister remembers it. Single-chapter Acts are plain rows beside it. */
+.sidebar-content details details details {
+  margin-top: 0;
+}
+.sidebar-content details details details > summary {
+  padding-inline-start: 0.9rem;
+  padding-block: 0.45em 0.15em;
+}
+.sidebar-content details details details > summary svg {
+  display: none;
+}
+.sidebar-content details details details > summary .group-label > span {
+  letter-spacing: 0.06em;
+}
+.sidebar-content details details details > ul > li > a {
+  padding-inline-start: 1.5rem;
+}
+
 /* A link out of the book is marked as one. A cold reader (audit, 2026-09-18) clicked "Other
    Memory" in the spine expecting a chapter and landed on another site. */
 .sidebar-content a[rel='external']::after {
@@ -473,7 +500,10 @@ mobile-starlight-toc:has(nav ul > li:only-child) {
 }
 
 /* ---------- the chrome ---------- */
-.header {
+/* header.header, not .header: Starlight puts the class on the <header> AND on the flex <div>
+   inside it, and the bare class drew the rule twice -- the inner one 14px above the outer and
+   short of the menu button, which is where a phone showed it (Joe, 2026-09-20). */
+header.header {
   border-bottom: 1px solid var(--bk-rule);
 }
 .site-title span {
@@ -481,17 +511,26 @@ mobile-starlight-toc:has(nav ul > li:only-child) {
   font-weight: 500;
   letter-spacing: -0.015em;
 }
+/* The search button is two things in Starlight: below 50rem an icon with no border, no padding
+   and a 2.5rem height; from 50rem a bordered field with a placeholder and a kbd. This rule used to
+   put the border on both, and on a phone that drew a 26x40 box round a 16px magnifier beside the
+   32x32 round menu button (Joe, on his phone, 2026-09-20). The border and its radius now follow
+   Starlight's own breakpoint; the type and colour apply at both. */
 site-search button {
   font-family: var(--sl-font-mono);
   font-size: var(--bk-meta-size);
-  border: 1px solid var(--bk-rule);
-  border-radius: 3px;
   background: transparent;
   color: var(--bk-meta);
   box-shadow: none;
 }
-site-search button:hover {
-  border-color: var(--bk-meta);
+@media (min-width: 50rem) {
+  site-search button {
+    border: 1px solid var(--bk-rule);
+    border-radius: 3px;
+  }
+  site-search button:hover {
+    border-color: var(--bk-meta);
+  }
 }
 site-search button kbd {
   font-family: var(--sl-font-mono);

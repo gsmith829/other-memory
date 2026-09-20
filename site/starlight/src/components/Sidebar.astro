@@ -32,7 +32,11 @@ type Group = Extract<SidebarEntry, { type: 'group' }>;
 
 const docs = await getCollection('docs');
 const actByHref = new Map<string, number | undefined>();
-for (const d of docs) actByHref.set(`/${d.id}/`, d.data.act);
+const dateByHref = new Map<string, number>();
+for (const d of docs) {
+  actByHref.set(`/${d.id}/`, d.data.act);
+  dateByHref.set(`/${d.id}/`, d.data.date ? new Date(d.data.date).getTime() : 0);
+}
 
 const shelfOf = (act: number) => Math.floor((act - 1) / SHELF);
 const shelfLabel = (i: number) => `Acts ${i * SHELF + 1}–${(i + 1) * SHELF}`;
@@ -54,8 +58,28 @@ function shelve(links: Link[]): SidebarEntry[] {
   const newest = indices[indices.length - 1];
   const out: SidebarEntry[] = door ? [door] : [];
   for (const i of indices) {
-    const entries = shelves.get(i)!.sort((a, b) => (actByHref.get(a.href)! - actByHref.get(b.href)!) || a.href.localeCompare(b.href));
-    out.push({ type: 'group', label: shelfLabel(i), entries, collapsed: i !== newest, badge: undefined } as Group);
+    const sorted = shelves.get(i)!.sort((a, b) => (actByHref.get(a.href)! - actByHref.get(b.href)!) || (dateByHref.get(a.href)! - dateByHref.get(b.href)!) || a.href.localeCompare(b.href));
+    out.push({ type: 'group', label: shelfLabel(i), entries: nightly(sorted), collapsed: i !== newest, badge: undefined } as Group);
+  }
+  return out;
+}
+
+// An Act with more than one chapter (journey-site#129; Joe, 2026-09-20): the chapters sit under one
+// label, "Act 22", in date order -- the spine shows that a night has more than one chapter without
+// numbering the parts. No "Part I / II": position inside an Act is what house-acts forbids, and two
+// of the three cases as published are parallel threads of one night with no order between them.
+// An Act with one chapter is unchanged: the label appears only where there is something to say.
+function nightly(sorted: Link[]): SidebarEntry[] {
+  const out: SidebarEntry[] = [];
+  let i = 0;
+  while (i < sorted.length) {
+    const act = actByHref.get(sorted[i].href)!;
+    let j = i;
+    while (j < sorted.length && actByHref.get(sorted[j].href) === act) j++;
+    const run = sorted.slice(i, j);
+    if (run.length === 1) out.push(run[0]);
+    else out.push({ type: 'group', label: `Act ${act}`, entries: run, collapsed: false, badge: undefined } as Group);
+    i = j;
   }
   return out;
 }

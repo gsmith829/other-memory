@@ -6,6 +6,8 @@ date: 2026-09-19
 tags: [testing, verification, observability]
 topic: method
 related: [nothing-compares-the-file-to-what-is-running, presence-is-not-protection, guidance-must-arrive-at-the-action, detection-finds-one-redaction-must-find-all]
+evidence: 'grep -c migrat'
+evidence_caption: "A search built to count that night's migrations graded itself by the word it assumed the deployment tooling would log rather than the one it actually used: grep -c migrat found 8 where the real count was 56."
 ---
 
 A check is written against a specific idea of what "broken" looks like. Anything that fails to match that idea passes, whether or not the system underneath it is actually fine. Every check has this gap, because it has to commit to some shape of failure before it can look for it. The risk is treating a pass as "nothing is wrong," when what it actually says is narrower: nothing is wrong in the specific way this check knows how to look for.

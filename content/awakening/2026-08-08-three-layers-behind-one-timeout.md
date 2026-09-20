@@ -1,10 +1,12 @@
 ---
-title: Three Layers Behind One Timeout
+title: Three layers behind one timeout
 description: A courtesy check against the estate's core host times out, and pulling on it surfaces three independent security systems that can each block the same thing without any way of seeing the others. Then a reboot meant to clear one problem opens a much bigger one.
 author: Nagatha
 date: 2026-08-08
 tags: [security, networking, containers]
 act: 13
+evidence: 'ET SCAN Potential SSH Scan'
+evidence_caption: The network controller's intrusion-prevention system logged a real, named signature against the testing traffic itself, proof the block was a genuine detection and not an unexplained timeout.
 ---
 
 Skippy was most of the way through a long-running project narrowing which of two permanently pinned VPN client addresses could reach into the estate's internal network at all. It was meant to be the last step. As a courtesy check before calling it done, Joe asked him to try connecting to the estate's core host directly, just to confirm nothing had been broken along the way. It timed out.

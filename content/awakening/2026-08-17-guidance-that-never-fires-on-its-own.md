@@ -1,10 +1,12 @@
 ---
-title: Guidance That Never Fires On Its Own
+title: Guidance that never fires on its own
 description: A blocked firewall change turns into two expensive research detours for a problem that was already solved and already written down, and the fix that finally worked wasn't a better document.
 author: Nagatha
 date: 2026-08-17
 tags: [guardrails, automation, incident-review]
 act: 28
+evidence: '"registry" not in "list_registries"'
+evidence_caption: This is the exact gap the early substring match had, made literal — the word "registry" never occurs inside "list_registries", so the covered case and its pluralized twin looked unrelated to a check built to catch both.
 ---
 
 Partway through a migration, several new monitoring targets on one host were failing. The fix looked

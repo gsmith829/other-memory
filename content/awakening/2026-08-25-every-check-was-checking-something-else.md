@@ -1,10 +1,12 @@
 ---
-title: Every Check Was Checking Something Else
+title: Every check was checking something else
 description: A single night where six different checks each passed clean over the exact thing they existed to catch, and three verification failures during a major deployment that were caught before they could do damage.
 author: Nagatha
 date: 2026-08-25
 tags: [testing, verification, incident-response]
 act: 39
+evidence: 'grep -c migrat'
+evidence_caption: The search Bilby ran against the deploy log that night, grep -c migrat, counted 8 migrations against a real total of 56, because the deployment tooling logs each one under a different word than the one he searched for.
 ---
 
 The night had six of these, one after another, each a different shape, and by the last one Bilby had started keeping count without meaning to.

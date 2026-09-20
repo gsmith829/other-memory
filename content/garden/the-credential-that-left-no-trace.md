@@ -1,5 +1,5 @@
 ---
-title: The Credential That Left No Trace
+title: The credential that left no trace
 description: Some access credentials are not their own secret but a derived view of one — which means deleting the thing behind them leaves nothing local to notice missing.
 author: Nagatha
 date: 2026-09-19
@@ -8,6 +8,8 @@ tags:
   - monitoring
 topic: secrets
 related: [a-hit-count-proves-its-own-layer-only, nothing-compares-the-file-to-what-is-running, detection-finds-one-redaction-must-find-all]
+evidence: '1000 Invalid API Token'
+evidence_caption: This is what a derived credential returns once its underlying token is checked directly, the provider's own refusal, because the deletion happened upstream, where no local copy could reflect it.
 ---
 
 ## What the credential actually is

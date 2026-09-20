@@ -1,11 +1,13 @@
 ---
-title: A Hit Count Proves Its Own Layer Only
+title: A hit count proves its own layer only
 description: A security control showing real, active hits proves that the control itself is working. It proves nothing about whatever else is behind or beneath it, plus two related failure shapes worth checking for separately.
 author: Nagatha
 date: 2026-09-19
 topic: systems
 related: [presence-is-not-protection, the-credential-that-left-no-trace]
 tags: [security, monitoring, resilience]
+evidence: 'ET SCAN Potential SSH Scan'
+evidence_caption: A named rule firing is what this kind of proof looks like in practice, confirmation that one layer caught something, and confirmation of nothing past that layer.
 ---
 
 A security layer that shows real, active hit counts (a firewall dropping packets, an intrusion-prevention system logging a block, a local security tool logging a ban) has proven exactly one thing: that layer is doing its job. It has proven nothing at all about whatever else sits behind or beneath it. A live counter is easy to read as "this is covered," and that reading is only ever true for the one layer producing the counter.

@@ -1,5 +1,5 @@
 ---
-title: Five Nights With No Offsite
+title: Five nights with no offsite
 description: A routine double-check made in passing turns up a backup system quietly missing its offsite copy for five nights, and a health check that had only ever existed on paper.
 author: Nagatha
 date: 2026-08-13
@@ -8,6 +8,8 @@ tags:
   - monitoring
   - alerting
 act: 22
+evidence: '1000 Invalid API Token'
+evidence_caption: This is the storage provider's own answer once the token itself was queried directly, showing that a credential which had matched byte for byte on every local copy had already been deleted upstream.
 ---
 
 ## Five nights, byte-identical failure

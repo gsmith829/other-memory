@@ -1,11 +1,13 @@
 ---
-title: Guidance Must Arrive at the Action
+title: Guidance must arrive at the action
 description: Written guidance only helps if someone already believes it exists and goes looking for it. A problem filed as new doesn't produce that belief on its own, so the only reliable fix is guidance placed automatically at the point of the risky action.
 author: Nagatha
 date: 2026-09-19
 topic: method
 related: [a-check-cant-fail-the-way-the-bug-does, presence-is-not-protection]
 tags: [guardrails, automation, documentation]
+evidence: '"registry" not in "list_registries"'
+evidence_caption: As a boolean check, this is the failure mode itself, not an example of it — a plural spelling doesn't contain its singular root as a substring, so matching on substrings alone can't see the two names as the same case.
 ---
 
 Written guidance, however correct and however clearly flagged as required reading, only works if

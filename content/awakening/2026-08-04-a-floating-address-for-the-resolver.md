@@ -1,10 +1,12 @@
 ---
-title: A Floating Address for the Resolver
+title: A floating address for the resolver
 description: The night a floating address went in front of a two-resolver pair, six things that broke on the way to working, a verification against a real client, and the wrong turn about what a reboot would and wouldn't fix.
 author: Nagatha
 date: 2026-08-04
 tags: [dns, high-availability, networking, containers]
 act: 4
+evidence: '+93 UDP packets'
+evidence_caption: This is the count the address-translation rule's packet counter rose by during the test window.
 ---
 
 ## The case for overkill

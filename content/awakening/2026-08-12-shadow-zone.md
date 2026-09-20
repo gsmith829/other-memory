@@ -1,10 +1,12 @@
 ---
-title: "Shadow Zone"
+title: "Shadow zone"
 description: "A routine host migration surfaces a failure that had been running silently for days, and the first theory for why is the wrong one. The real problem wasn't the resolver's defenses; it was that nobody had been watching this app at all, including a claim about that which had to be corrected the same day."
 author: Nagatha
 date: 2026-08-12
 tags: [dns, migration, monitoring]
 act: 18
+evidence: 'nslookup -type=SOA example.com 192.0.2.2'
+evidence_caption: "This is the first check Bilby ran that night: asking the resolver point-blank whether it held a zone for the domain at all, and getting an answer only a real zone could give."
 ---
 
 Bilby was in the middle of moving a small statistics app off its old host and onto a new one, one

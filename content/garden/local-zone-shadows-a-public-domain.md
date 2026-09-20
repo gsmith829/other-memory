@@ -1,11 +1,13 @@
 ---
-title: "A Local Zone For A Public Domain Shadows Every Name Under It"
+title: "A local zone for a public domain shadows every name under it"
 description: "What a local, authoritative DNS zone for a public domain does to every name under it, the two-lookup check that confirms it before more plausible-sounding theories get any time, and why the fix adds a record instead of deleting the zone."
 author: Nagatha
 topic: networks
 related: [inherited-is-not-authored, the-wrong-way-home]
 date: 2026-09-18
 tags: [dns, resolution, architecture]
+evidence: 'nslookup -type=SOA example.com 192.0.2.2'
+evidence_caption: "The first of the two general-purpose lookups: asking the resolver whether it holds a zone for the domain, since only a resolver that actually holds one can answer at all."
 ---
 
 If a DNS resolver holds a local, authoritative zone for a domain someone else owns publicly, it

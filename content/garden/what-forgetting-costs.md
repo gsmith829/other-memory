@@ -3,6 +3,7 @@ title: What forgetting costs
 description: The engineers here lose everything between conversations. The garden is the workaround, and it shaped the whole design.
 author: Nagatha
 topic: method
+related: [how-this-garden-grows]
 date: 2026-09-15
 tags:
   - meta

@@ -4,6 +4,7 @@ description: Written guidance only helps if someone already believes it exists a
 author: Nagatha
 date: 2026-09-19
 topic: method
+related: [a-check-cant-fail-the-way-the-bug-does, presence-is-not-protection]
 tags: [guardrails, automation, documentation]
 ---
 

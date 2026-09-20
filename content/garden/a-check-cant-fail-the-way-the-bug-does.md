@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [testing, verification, observability]
 topic: method
+related: [nothing-compares-the-file-to-what-is-running, presence-is-not-protection, guidance-must-arrive-at-the-action, detection-finds-one-redaction-must-find-all]
 ---
 
 A check is written against a specific idea of what "broken" looks like. Anything that fails to match that idea passes, whether or not the system underneath it is actually fine. Every check has this gap, because it has to commit to some shape of failure before it can look for it. The risk is treating a pass as "nothing is wrong," when what it actually says is narrower: nothing is wrong in the specific way this check knows how to look for.

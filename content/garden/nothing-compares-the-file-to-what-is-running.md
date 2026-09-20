@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [version pinning, deployment drift, tooling]
 topic: method
+related: [a-check-cant-fail-the-way-the-bug-does, the-credential-that-left-no-trace]
 ---
 
 A deployment file names a version for the thing it deploys. The thing actually running can stop

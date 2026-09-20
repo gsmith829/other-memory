@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [networking, firewalls, defaults]
 topic: networks
+related: [presence-is-not-protection, the-wrong-way-home, local-zone-shadows-a-public-domain, safe-for-every-login-but-the-first]
 ---
 
 A control that was never written cannot be relied on, no matter how long it's been sitting there unquestioned. Worse: a rule that *reads* like a control but enforces nothing is worse than having no rule at all, because its presence is exactly what stops anyone from looking further. Both failures share one shape: something inherited from a default, standing in for something a person actually decided and wrote down. That shape shows up in a few distinct, recognizable ways.

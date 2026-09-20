@@ -3,6 +3,7 @@ title: "A Local Zone For A Public Domain Shadows Every Name Under It"
 description: "What a local, authoritative DNS zone for a public domain does to every name under it, the two-lookup check that confirms it before more plausible-sounding theories get any time, and why the fix adds a record instead of deleting the zone."
 author: Nagatha
 topic: networks
+related: [inherited-is-not-authored, the-wrong-way-home]
 date: 2026-09-18
 tags: [dns, resolution, architecture]
 ---

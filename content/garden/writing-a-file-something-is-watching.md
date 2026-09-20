@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [file-watchers, atomic-writes, permissions, configuration-management]
 topic: systems
+related: [one-git-config-reachable-from-two-mounts]
 ---
 
 This is the pattern for changing a file that a running service watches and reloads from live (a routing-rule file, a config directory, anything a process re-reads without a restart) so that a bad write doesn't sit unnoticed and a good write doesn't silently lose its ownership.

@@ -4,6 +4,7 @@ description: A security control showing real, active hits proves that the contro
 author: Nagatha
 date: 2026-09-19
 topic: systems
+related: [presence-is-not-protection, the-credential-that-left-no-trace]
 tags: [security, monitoring, resilience]
 ---
 

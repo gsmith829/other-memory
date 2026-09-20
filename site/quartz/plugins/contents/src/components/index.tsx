@@ -12,6 +12,19 @@
  *                     never derived (docs/tray-brief.md carries the same five words and the
  *                     placement rule). A garden page with no topic, or one not in the list,
  *                     FAILS THE BUILD, naming the file: a page cannot reach main mislabelled.
+ *   the relations     `related:` on every garden page (journey-site#133/#134, D-Joe 2026-09-20):
+ *                     the slugs of the other garden pages whose claims stand or fall with this
+ *                     one -- told in the brief beside `topic:`, copied never derived, a list that
+ *                     may be empty. Data about the page, not words in it. This component does
+ *                     not render it (the foot-of-page "See also" and the graph's edges are
+ *                     #133's); it GATES it, because it is the one place that already reads every
+ *                     garden page's frontmatter: a slug with no page, a page relating to itself,
+ *                     a duplicate, a value that is not a list, or a relation told one way only
+ *                     FAILS THE BUILD naming the file and the slug -- the same strength as
+ *                     `topic:`. One way only is a failure on purpose: "stands or falls with" is
+ *                     symmetric, and the back-edge onto an already-published page is exactly what
+ *                     a move PR forgets (docs/tray-brief.md says the move PR adds the links the
+ *                     other direction needs; this is what makes that a check, not a memory).
  *   in each row       the title in the serif (what is said), the tags in the mono beneath it
  *                     (what the machine set around it) -- the house's two voices doing the
  *                     work the capital letter could not
@@ -54,7 +67,7 @@ const defaults: ContentsOptions = {
   title: "Contents",
 }
 
-type Page = { slug: FullSlug; title: string; tags: string[]; topic: Topic }
+type Page = { slug: FullSlug; title: string; tags: string[]; topic: Topic; related: string[] }
 
 function topicOf(file: QuartzComponentProps["allFiles"][number]): Topic {
   const raw = file.frontmatter?.topic
@@ -71,6 +84,80 @@ function topicOf(file: QuartzComponentProps["allFiles"][number]): Topic {
     )
   }
   return t as Topic
+}
+
+/**
+ * A garden slug as `related:` carries it: the part after `garden/`, the same string that ends the
+ * page's URL. The same contract the stager and the courier hold a story slug to ([a-z0-9-], 1-64,
+ * no leading or trailing hyphen) -- one shape on both ends of the tray, so a slug the stager let
+ * through is a slug this reads.
+ */
+const SLUG_RE = /^[a-z0-9]([a-z0-9-]{0,62}[a-z0-9])?$/
+
+/** `related:` read off one page: absent is the empty list; anything but a list of well-formed,
+ *  distinct slugs fails the build naming the file. Existence and symmetry need every page, so they
+ *  are checked in `checkRelated` below, not here. Exported for the rendering (#133) to reuse. */
+export function relatedOf(file: QuartzComponentProps["allFiles"][number]): string[] {
+  const raw = file.frontmatter?.related
+  const where = file.filePath ?? file.slug
+  if (raw === undefined || raw === null) return []
+  if (!Array.isArray(raw)) {
+    throw new Error(
+      `contents: ${where} has related: ${JSON.stringify(raw)}, which is not a list -- related: is a list of garden slugs, possibly empty (told in the tray brief's pieces:, see docs/tray-brief.md)`,
+    )
+  }
+  const out: string[] = []
+  for (const r of raw) {
+    if (typeof r !== "string" || !SLUG_RE.test(r)) {
+      throw new Error(
+        `contents: ${where} has related: entry ${JSON.stringify(r)}, which is not a garden slug (the part after /garden/: [a-z0-9-], 1-64 chars, no leading/trailing hyphen; docs/tray-brief.md)`,
+      )
+    }
+    if (out.includes(r)) {
+      throw new Error(`contents: ${where} lists ${JSON.stringify(r)} twice in related:`)
+    }
+    out.push(r)
+  }
+  return out
+}
+
+/**
+ * The gate over the whole garden: every `related:` slug names a garden page that exists, is not
+ * the page itself, and names this page back. Throws on the first defect, naming the file and the
+ * slug, so a page cannot reach main pointing at nothing or pointing one way. Two passes on
+ * purpose: existence and self over every page FIRST, symmetry only once those hold -- a bad slug
+ * on page A also leaves A's partners unreciprocated, and a one-pass check reported the shadow
+ * (B "does not list A back") before the defect (A names a page that is not there), sending the
+ * reader to the wrong file (measured while building this). Runs on every render of this component
+ * (it has no other hook into the whole set); at the garden's size that is nothing, and the first
+ * render is the one that fails the build.
+ */
+export function checkRelated(garden: Page[], prefix: string): void {
+  const bySlug = new Map(garden.map((p) => [p.slug as string, p]))
+  for (const p of garden) {
+    for (const r of p.related) {
+      const target = `${prefix}${r}`
+      if (target === p.slug) {
+        throw new Error(`contents: ${p.slug} lists itself in related:`)
+      }
+      if (!bySlug.has(target)) {
+        throw new Error(
+          `contents: ${p.slug} has related: ${JSON.stringify(r)}, and no garden page has that slug (the slugs are the filenames under content/${prefix} without .md; docs/tray-brief.md)`,
+        )
+      }
+    }
+  }
+  for (const p of garden) {
+    const own = (p.slug as string).slice(prefix.length)
+    for (const r of p.related) {
+      const q = bySlug.get(`${prefix}${r}`)!
+      if (!q.related.includes(own)) {
+        throw new Error(
+          `contents: ${p.slug} lists ${JSON.stringify(r)} in related:, but ${q.slug} does not list ${JSON.stringify(own)} back -- a relation is told on both pages or neither (the move PR adds the back-edge to the page already published; docs/tray-brief.md)`,
+        )
+      }
+    }
+  }
 }
 
 const byTitle = (a: Page, b: Page) =>
@@ -172,7 +259,9 @@ export const Contents: QuartzComponentConstructor<Partial<ContentsOptions>> = (u
         title: f.frontmatter?.title ?? (f.slug as string),
         tags: Array.isArray(f.frontmatter?.tags) ? (f.frontmatter!.tags as string[]) : [],
         topic: topicOf(f), // every garden page, the descriptor included -- it is pinned by slug below, not exempted here
+        related: relatedOf(f),
       }))
+    checkRelated(garden, prefix)
     const descriptor = garden.find((p) => p.slug === opts.descriptorSlug)
     const rest = garden.filter((p) => p.slug !== opts.descriptorSlug).sort(byTitle)
     const link = (slug: string) => resolveRelative(here, simplifySlug(slug as FullSlug) as SimpleSlug)

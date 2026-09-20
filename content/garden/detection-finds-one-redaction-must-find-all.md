@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [credentials, redaction, security]
 topic: secrets
+related: [a-check-cant-fail-the-way-the-bug-does, the-credential-that-left-no-trace]
 ---
 
 A pattern that reliably notices a secret is not automatically a tool that can safely remove every copy of one. These are three separate ways that gap shows up, each one dangerous precisely because the safeguard involved looks like it's working right up until it doesn't.

@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [safeguards, verification, automation, systems]
 topic: systems
+related: [a-check-cant-fail-the-way-the-bug-does, a-hit-count-proves-its-own-layer-only, guidance-must-arrive-at-the-action, inherited-is-not-authored]
 ---
 
 ## A Guard That Exists Is Not a Guard That Works

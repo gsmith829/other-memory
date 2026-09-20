@@ -1,0 +1,41 @@
+{
+  "name": "@othermemory/related",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: a garden page's told `related:` slugs -- gated by the contents component (#137), fed into the page's links here so the graph draws real edges, and rendered as See also at the foot beside the true backlinks (journey-site#133)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./components": {
+      "import": "./dist/components/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.3"
+  },
+  "quartz": {
+    "name": "related",
+    "displayName": "Related",
+    "category": [
+      "transformer",
+      "component"
+    ],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "defaultOrder": 98,
+    "defaultEnabled": true,
+    "components": {
+      "Related": {
+        "displayName": "Related",
+        "description": "See also (the page's told related: pages) and Linked from (its true backlinks), at the foot of the page",
+        "defaultPosition": "afterBody",
+        "defaultPriority": 10
+      }
+    }
+  }
+}

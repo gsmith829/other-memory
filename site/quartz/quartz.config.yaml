@@ -218,11 +218,25 @@ plugins:
       group: toolbar
       groupOptions:
         grow: true
+  # Off (journey-site#133): the local `related` plugin feeds a page's told `related:` slugs into
+  # the same `links` list this panel reads, so it would label every relation a backlink. The
+  # plugin renders the true backlinks itself, as "Linked from" at the foot beside "See also".
   - source: "@quartz-community/backlinks"
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 50
+  # Local plugin (site/quartz/plugins/related): a garden page's `related:` -- told in the tray
+  # brief's pieces: like topic:, copied never derived -- appended to the page's links so the graph
+  # draws real edges, and rendered at the foot as See also + Linked from (journey-site#133). The
+  # gate (unknown slug, self, duplicate, one way only) is the contents component's (#137). Order
+  # 98: after crawl-links (60), which assigns `links` from the body; this appends.
+  - source: ./site-plugins/related
+    enabled: true
+    order: 98
+    layout:
+      position: afterBody
+      priority: 10
   - source: "@quartz-community/article-title"
     enabled: true
     layout:

@@ -7,6 +7,7 @@ tags:
   - credentials
   - monitoring
 topic: secrets
+related: [a-hit-count-proves-its-own-layer-only, nothing-compares-the-file-to-what-is-running, detection-finds-one-redaction-must-find-all]
 ---
 
 ## What the credential actually is

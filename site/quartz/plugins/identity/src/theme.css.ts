@@ -8,7 +8,7 @@
  * are --headerFont / --bodyFont / --codeFont, from the same file.
  *
  * The idea, in one line: the prose is set in a warm serif/sans pair; everything the machine
- * wrote about the page -- date, read time, byline, breadcrumbs, the file tree, the backlinks --
+ * wrote about the page -- date, read time, byline, breadcrumbs, the file tree, See also --
  * is set in the mono. The margins are visibly machine-set; the words are not.
  */
 export const css = `
@@ -128,7 +128,7 @@ article a:not(.internal) {
 .disclosure-byline,
 .breadcrumb-container,
 .note-properties,
-.backlinks,
+.related h2,
 .toc,
 .search .search-button {
   font-family: var(--codeFont);
@@ -368,15 +368,28 @@ article pre > code {
 @media (max-width: 800px) {
   .page-title { font-size: 1.15rem; white-space: nowrap; }
 }
-.backlinks a.internal {
+/* The foot of a garden page (site/quartz/plugins/related, journey-site#133): "See also" and
+   "Linked from" headings in the mono. Here and not in the component's own css because Quartz
+   emits component css in @layer quartz-base, and the fonts plugin's unlayered h1..h6 rule wins
+   over any layered rule; this sheet is unlayered too, and .related h2 outranks h2 within it. */
+.related h2 {
+  font-family: var(--codeFont);
+  font-size: var(--om-meta-size);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--gray);
+}
+.related a {
+  font-family: var(--headerFont);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.3;
   color: var(--darkgray);
   text-decoration: none;
+  display: block;
 }
-.backlinks a.internal:hover {
+.related a:hover {
   color: var(--secondary);
-}
-.backlinks li {
-  margin-bottom: 0.3rem;
 }
 .search .search-button {
   border: 1px solid var(--om-rule);

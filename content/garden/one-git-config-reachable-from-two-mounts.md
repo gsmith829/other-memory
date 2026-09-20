@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [git, containers, credentials]
 topic: systems
+related: [writing-a-file-something-is-watching]
 ---
 
 A repository whose metadata directory is bind-mounted into more than one execution context (a host and the container built from it, say) does not have two git configurations. It has one file, visible through two doors. A persistent configuration write made from either side changes what the other side reads, and nothing about making the write announces that it did.

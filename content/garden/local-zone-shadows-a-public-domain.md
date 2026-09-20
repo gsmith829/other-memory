@@ -7,7 +7,7 @@ related: [inherited-is-not-authored, the-wrong-way-home]
 date: 2026-09-18
 tags: [dns, resolution, architecture]
 evidence: 'nslookup -type=SOA example.com 192.0.2.2 → serial = 5'
-evidence_caption: "The first of the two general-purpose lookups: asking the resolver whether it holds a zone for the domain, since only a resolver that actually holds one can answer at all."
+evidence_caption: "The first of the two general-purpose lookups: asking the resolver for the domain's SOA record, whose answer is authoritative and carries a locally-assigned serial, `5`, not the public zone's real one."
 ---
 
 If a DNS resolver holds a local, authoritative zone for a domain someone else owns publicly, it
@@ -27,9 +27,10 @@ the same domain could ever produce, because the resolver never gets far enough t
 Two lookups answer the question completely, and they should run before any theory about the failure
 gets more than a minute of attention:
 
-1. Ask the resolver directly whether it holds a zone for the domain in question. An answer means a
-   local zone exists. Resolvers that are merely filtering or blocking a suspicious-looking answer
-   don't hold a zone for it; there's nothing to ask for.
+1. Ask the resolver for the domain's SOA record. Any resolver, including one that's just relaying
+   the public zone, will answer this query, so getting an answer proves nothing by itself. What
+   settles it is what the answer contains: a local zone's answer is authoritative, and it carries
+   its own, locally-assigned serial, rather than reflecting the public zone's real one.
 2. Make up a name under that domain that can't possibly be real, and ask the resolver for it.
    Compare that to asking a public resolver the same made-up name. If the local answer says the name
    doesn't exist and the public one doesn't refuse it the same way, that split is the signature of a

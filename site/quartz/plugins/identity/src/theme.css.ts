@@ -400,6 +400,12 @@ article pre > code {
   font-size: var(--om-meta-size);
   color: var(--gray);
 }
+.evidence .evidence-note {
+  /* the documentation-range note (plugins/evidence): the caption's voice, one step smaller */
+  font-family: var(--codeFont);
+  font-size: calc(var(--om-meta-size) * 0.92);
+  color: var(--gray);
+}
 /* The foot of a garden page (site/quartz/plugins/related, journey-site#133): "See also" and
    "Linked from" headings in the mono. Here and not in the component's own css because Quartz
    emits component css in @layer quartz-base, and the fonts plugin's unlayered h1..h6 rule wins

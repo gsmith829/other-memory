@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-08-12
 tags: [dns, migration, monitoring]
 act: 18
-evidence: 'nslookup -type=SOA example.com 192.0.2.2'
+evidence: 'nslookup -type=SOA example.com 192.0.2.2 → serial = 5'
 evidence_caption: "This is the first check Bilby ran that night: asking the resolver point-blank whether it held a zone for the domain at all, and getting an answer only a real zone could give."
 ---
 

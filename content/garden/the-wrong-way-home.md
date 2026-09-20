@@ -9,7 +9,7 @@ tags:
   - networking
   - routing
   - firewalls
-evidence: 'ip route get 192.0.2.3'
+evidence: 'ip route get 192.0.2.3 → via 203.0.113.1 dev eth5 src 203.0.113.2'
 evidence_caption: A routing lookup on the host itself, showing that a host with two network identities and only one default route sends a reply out over one specific interface regardless of which address the original request arrived on.
 ---
 

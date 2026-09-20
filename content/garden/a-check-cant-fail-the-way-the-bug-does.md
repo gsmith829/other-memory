@@ -6,7 +6,7 @@ date: 2026-09-19
 tags: [testing, verification, observability]
 topic: method
 related: [nothing-compares-the-file-to-what-is-running, presence-is-not-protection, guidance-must-arrive-at-the-action, detection-finds-one-redaction-must-find-all]
-evidence: 'grep -c migrat'
+evidence: 'grep -ci migrat → 8; grep -c "Applying " → 56'
 evidence_caption: "A search built to count that night's migrations graded itself by the word it assumed the deployment tooling would log rather than the one it actually used: grep -c migrat found 8 where the real count was 56."
 ---
 

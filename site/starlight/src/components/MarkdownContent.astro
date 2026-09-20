@@ -23,5 +23,6 @@ const receipt = evidenceOf(entry.id, entry.data as { evidence?: unknown; evidenc
 	<figure class="book-evidence">
 		<pre><code>{receipt.line}</code></pre>
 		<figcaption>{receipt.caption}</figcaption>
+		{receipt.note && <p class="book-evidence-note">{receipt.note}</p>}
 	</figure>
 )}

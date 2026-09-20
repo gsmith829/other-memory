@@ -9,7 +9,7 @@ tags:
   - networking
   - debugging
   - war-story
-evidence: 'ip route get 192.0.2.3'
+evidence: 'ip route get 192.0.2.3 → via 203.0.113.1 dev eth5 src 203.0.113.2'
 evidence_caption: "The one read-only check that finally settled it: run directly on the server, it showed which interface a reply to that address would actually leave over."
 ---
 

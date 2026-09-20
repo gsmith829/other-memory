@@ -6,7 +6,7 @@ topic: networks
 related: [inherited-is-not-authored, the-wrong-way-home]
 date: 2026-09-18
 tags: [dns, resolution, architecture]
-evidence: 'nslookup -type=SOA example.com 192.0.2.2'
+evidence: 'nslookup -type=SOA example.com 192.0.2.2 → serial = 5'
 evidence_caption: "The first of the two general-purpose lookups: asking the resolver whether it holds a zone for the domain, since only a resolver that actually holds one can answer at all."
 ---
 

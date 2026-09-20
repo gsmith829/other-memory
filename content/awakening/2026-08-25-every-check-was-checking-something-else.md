@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-08-25
 tags: [testing, verification, incident-response]
 act: 39
-evidence: 'grep -c migrat'
+evidence: 'grep -ci migrat → 8; grep -c "Applying " → 56'
 evidence_caption: The search Bilby ran against the deploy log that night, grep -c migrat, counted 8 migrations against a real total of 56, because the deployment tooling logs each one under a different word than the one he searched for.
 ---
 

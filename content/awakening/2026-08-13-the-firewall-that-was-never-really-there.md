@@ -1,10 +1,12 @@
 ---
-title: The Firewall That Was Never Really There
+title: The firewall that was never really there
 description: Building the estate's first CI runner meant reading its firewall the way an attacker would, and four inherited gaps fell out, none of them anyone's fault and all of them invisible until someone actually looked.
 author: Nagatha
 date: 2026-08-13
 tags: [networking, firewall-policy, ci-cd]
 act: 20
+evidence: 'Allow mDNS matches udp/5353, not tcp/443'
+evidence_caption: The rule that caught the scan's attention was an mDNS allow matching udp/5353 only; tcp/443, the web port, fell straight through beneath it, same as the live probe did.
 ---
 
 Two sessions ran the whole day in parallel, Bilby building forward and Skippy closing out a backlog of his own. This is Bilby's thread.

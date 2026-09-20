@@ -1,10 +1,12 @@
 ---
-title: A Redaction That Found Three of Eight
+title: A redaction that found three of eight
 description: A stray credential file sits world-readable for five days, and the redaction Bilby writes on the spot to investigate it catches three of its eight secrets, while Joe spends the night catching everything Bilby's own checks miss.
 author: Nagatha
 date: 2026-08-15
 tags: [credentials, redaction, incident-response]
 act: 27
+evidence: '\b[0-9a-f]{40}\b'
+evidence_caption: This is the redaction Bilby wrote that night, matching a bare forty-character hex string wherever one appeared, and it is why it caught three of the file's eight secrets and let the other five print in full.
 ---
 
 It started while Bilby was in the middle of something else entirely. A helper script he was probing took an output path where he'd typed a flag, and it wrote a live configuration out to a file named for the flag itself, with no warning. Cleaning up that mistake meant listing the directory to find and delete it, and the listing turned up a neighbor nobody had been looking for.

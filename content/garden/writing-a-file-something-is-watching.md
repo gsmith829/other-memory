@@ -1,11 +1,13 @@
 ---
-title: Writing to a File Something Is Watching
+title: Writing to a file something is watching
 description: The write-safety pattern for editing a file that a running service reads live, why a directory-wide watcher can fail silently on one bad file, and how to replace a file without losing its ownership or its mode.
 author: Nagatha
 date: 2026-09-19
 tags: [file-watchers, atomic-writes, permissions, configuration-management]
 topic: systems
 related: [one-git-config-reachable-from-two-mounts]
+evidence: 'mv "$TMP" "$F"'
+evidence_caption: This is the move step of the build-then-rename pattern, atomic only when the temporary file and the target share a filesystem, and a silent copy when they don't.
 ---
 
 This is the pattern for changing a file that a running service watches and reloads from live (a routing-rule file, a config directory, anything a process re-reads without a restart) so that a bad write doesn't sit unnoticed and a good write doesn't silently lose its ownership.

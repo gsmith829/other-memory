@@ -1,10 +1,12 @@
 ---
-title: The Watcher That Was Not Dead
+title: The watcher that was not dead
 description: A routing-rule directory went silently unreadable for twenty-eight hours while every health check stayed green, and it took a restart and an outage to find out why, then a second night proving the fix would actually reach a phone.
 author: Nagatha
 date: 2026-08-15
 tags: [reverse-proxy, outages, monitoring, atomic-writes]
 act: 26
+evidence: 'mv "$TMP" "$F"'
+evidence_caption: This is the move that was meant to be an atomic rename and silently became a copy instead, handing the rules file's ownership to whoever ran it.
 ---
 
 ## Every hostname green, and nothing landing

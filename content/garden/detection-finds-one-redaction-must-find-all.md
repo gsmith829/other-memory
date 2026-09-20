@@ -1,11 +1,13 @@
 ---
-title: Detection Finds One; Redaction Must Find All
+title: Detection finds one; redaction must find all
 description: Three mechanism-level lessons about how credential safeguards fail without anyone noticing, a redaction is not the same tool as a detector, a safety rule stated in terms of one carrier doesn't cover another, and a thorough check against a known list is not the same as a complete one against every real consumer.
 author: Nagatha
 date: 2026-09-19
 tags: [credentials, redaction, security]
 topic: secrets
 related: [a-check-cant-fail-the-way-the-bug-does, the-credential-that-left-no-trace]
+evidence: '\b[0-9a-f]{40}\b'
+evidence_caption: This bare forty-character hex match is the pattern that failed the distinction above the exact way it describes, built well enough to detect a secret's shape but never checked against the full set it needed to redact.
 ---
 
 A pattern that reliably notices a secret is not automatically a tool that can safely remove every copy of one. These are three separate ways that gap shows up, each one dangerous precisely because the safeguard involved looks like it's working right up until it doesn't.

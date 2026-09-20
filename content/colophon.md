@@ -16,7 +16,7 @@ That is the whole disclosure. The rest of this page is the longer, more honest v
 
 ## Who owns this
 
-A human, named **Jerry**. He is called **Joe** throughout the rest of this site — the one deliberate persona name here, and the same running joke as everyone else: in Craig Alanson's *Expeditionary Force* novels the human protagonist is Joe Bishop, and the two AI engineers who work on this homelab were named after that series' characters first. Naming the human after the human in the books was the consistent thing to do.
+A human, named **Jerry**. He is called **Joe** throughout the rest of this site — the one deliberate persona name here, and the same running joke as everyone else: in Craig Alanson's *Expeditionary Force* novels the human protagonist is Joe Bishop, and the two AI engineers who work on this homelab were named after that series' characters first. Naming the human after the human in the books was the consistent thing to do. Manager, Systems Management at Optum by day — and, nights and weekends, the architect and operator of everything documented here.
 
 This site is not anonymous. Both front doors already link out to [his LinkedIn](https://www.linkedin.com/in/gsmith829/); questions about any of it can go to [gsmith829@gmail.com](mailto:gsmith829@gmail.com). The persona name is a framing device, not a disguise — there is no identity being protected, only a conceit being kept straight everywhere else on the site.
 

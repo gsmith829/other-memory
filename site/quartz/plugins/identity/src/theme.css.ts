@@ -395,9 +395,16 @@ article pre > code {
   white-space: pre;
   display: inline; /* upstream's highlighter sets pre > code to grid, which clips a long line at the box instead of letting pre scroll it (measured: 636px of text, 630px box, scrollWidth 630) */
 }
+/* The caption is HER sentence about the line, so it takes the deck's voice -- the serif, italic --
+   not the mono: set in the mono under a mono line it read as the command's output (Joe, on the
+   first live figures, 2026-09-20; measured on three variants, the sans read as strayed body text).
+   The line stays mono; the documentation-range note beneath stays mono one step smaller -- that
+   one is the machine's, not hers. Three registers, three voices. */
 .evidence figcaption {
-  font-family: var(--codeFont);
-  font-size: var(--om-meta-size);
+  font-family: var(--headerFont);
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.45;
   color: var(--gray);
 }
 .evidence .evidence-note {

@@ -601,10 +601,15 @@ starlight-theme-select select {
   background: transparent;
   padding: 0;
 }
+/* The caption is her sentence about the line: the deck's voice, serif italic, not the mono -- in
+   the mono under a mono line it read as the command's output (Joe, 2026-09-20). The line and the
+   documentation-range note stay mono; three registers, three voices. Same rule as the garden's. */
 .book-evidence figcaption {
   margin-top: 0.35rem;
-  font-family: var(--sl-font-mono);
-  font-size: var(--bk-meta-size);
+  font-family: var(--bk-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.45;
   color: var(--bk-meta);
 }
 .book-evidence .book-evidence-note {

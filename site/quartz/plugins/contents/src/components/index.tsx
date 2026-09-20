@@ -25,6 +25,14 @@
  *                     symmetric, and the back-edge onto an already-published page is exactly what
  *                     a move PR forgets (docs/tray-brief.md says the move PR adds the links the
  *                     other direction needs; this is what makes that a check, not a memory).
+ *   the evidence      `evidence:` (journey-site#142, Joe 2026-09-20): the one sanitised line -- the
+ *                     query, the rule, the number -- that settled the page's claim, told in the
+ *                     brief and copied character for character; and `evidence_caption:`, her one
+ *                     sentence saying what it shows. Rendered as a figure at the head of the page
+ *                     by the rendering PR; GATED here beside related:, same strength: evidence
+ *                     that is not a single non-empty line, or longer than the measure
+ *                     (EVIDENCE_MAX -- a wrap is the wrong artifact), or without a caption, or a
+ *                     caption without evidence, FAILS THE BUILD naming the file.
  *   in each row       the title in the serif (what is said), the tags in the mono beneath it
  *                     (what the machine set around it) -- the house's two voices doing the
  *                     work the capital letter could not
@@ -68,6 +76,50 @@ const defaults: ContentsOptions = {
 }
 
 type Page = { slug: FullSlug; title: string; tags: string[]; topic: Topic; related: string[] }
+
+/**
+ * The measure: the longest `evidence:` line the figure sets without wrapping. 684px of article at
+ * 1440 over Plex Mono at ~0.9rem is ~79 characters; on a phone the block scrolls, never wraps.
+ * A wrap is the wrong artifact -- pick a shorter line -- and the build says so. Owned by the
+ * rendering (#142, dutchman): tune it there when the figure's type is fixed.
+ */
+import measure from "../../evidence.json" with { type: "json" }
+/** The measure: ONE number, read by both gates -- here and the book's src/evidence.ts -- from
+ *  ../../evidence.json, inside this plugin so build.sh's copy carries it. 72: measured by the
+ *  rendering (site-plugins/evidence): 13.26px Plex Mono, 7.96px a character, 573px, inside both
+ *  sites' measure at 1280 with no scroll. */
+export const EVIDENCE_MAX: number = measure.max
+
+/** `evidence:` + `evidence_caption:` read off one page: absent is absent; anything else must be
+ *  a matched pair of single non-empty lines, evidence within the measure. Exported for the
+ *  rendering (#142). */
+export function evidenceOf(
+  file: QuartzComponentProps["allFiles"][number],
+): { line: string; caption: string } | undefined {
+  const line = file.frontmatter?.evidence
+  const caption = file.frontmatter?.evidence_caption
+  const where = file.filePath ?? file.slug
+  if (line === undefined && caption === undefined) return undefined
+  if (line === undefined) {
+    throw new Error(`contents: ${where} has evidence_caption: but no evidence: -- a caption of nothing (docs/tray-brief.md)`)
+  }
+  if (typeof line !== "string" || !line.trim() || /[\r\n]/.test(line)) {
+    throw new Error(
+      `contents: ${where} has evidence: that is not a single non-empty line -- it is the one sanitised line told in the brief, copied character for character (docs/tray-brief.md)`,
+    )
+  }
+  if (line.length > EVIDENCE_MAX) {
+    throw new Error(
+      `contents: ${where} has evidence: of ${line.length} characters; the measure is ${EVIDENCE_MAX} -- a line that wraps is the wrong artifact, pick a shorter one (docs/tray-brief.md)`,
+    )
+  }
+  if (typeof caption !== "string" || !caption.trim() || /[\r\n]/.test(caption)) {
+    throw new Error(
+      `contents: ${where} has evidence: but no evidence_caption: -- the one sentence in her voice saying what the line shows is required with it (docs/tray-brief.md)`,
+    )
+  }
+  return { line, caption }
+}
 
 function topicOf(file: QuartzComponentProps["allFiles"][number]): Topic {
   const raw = file.frontmatter?.topic
@@ -270,6 +322,9 @@ export const Contents: QuartzComponentConstructor<Partial<ContentsOptions>> = (u
         related: relatedOf(f),
       }))
     checkRelated(garden, prefix)
+    for (const f of allFiles) {
+      if (typeof f.slug === "string" && f.slug.startsWith(prefix)) evidenceOf(f) // the gate; the rendering reads it again
+    }
     const descriptor = garden.find((p) => p.slug === opts.descriptorSlug)
     const rest = garden.filter((p) => p.slug !== opts.descriptorSlug).sort(byTitle)
     const link = (slug: string) => resolveRelative(here, simplifySlug(slug as FullSlug) as SimpleSlug)

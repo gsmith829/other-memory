@@ -18,6 +18,12 @@ export const collections = {
         // above the title by src/components/PageTitle.astro. Optional: the front door and the
         // colophon have none, and a chapter written before the rule may not yet carry one.
         act: z.number().int().positive().optional(),
+        // The chapter's receipt (journey-site#142): the one sanitised line that proved the night,
+        // told and copied; and her caption. Declared here or zod strips them; the pair's rules
+        // (both or neither, single lines, within the measure) are src/evidence.ts, run per page
+        // from routeData.ts -- a refine here could not name the file the way that throw does.
+        evidence: z.string().optional(),
+        evidence_caption: z.string().optional(),
       }),
     }),
   }),

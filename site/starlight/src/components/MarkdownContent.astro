@@ -1,0 +1,27 @@
+---
+// The chapter's receipt (journey-site#142; Joe, 2026-09-20; the slot settled by the crew: the FOOT).
+// `evidence:` is the one sanitised line that proved the night -- the query, the rule, the number --
+// told in the tray brief and copied by the chronicler character for character; `evidence_caption:`
+// is her one sentence saying what it shows. A chapter is a story: house-acts opens on the night,
+// and the reader who scored the book 7 in round 3 got there by reading to the end, so the receipt
+// is the epilogue's shape -- the night told, then the one line that proved it, above and apart
+// from Starlight's prev/next, which is chrome. (A garden page is a claim and leads with its
+// receipt; the same figure, the other end.) The pair is read here without re-validating: the
+// gate is src/evidence.ts, run from routeData.ts on every page (#145, Bilby).
+//
+// This is a Starlight component override wrapping the default: the body renders exactly as it did,
+// and the figure follows it inside the same article.
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+import { evidenceOf } from '../evidence';
+
+const { entry } = Astro.locals.starlightRoute;
+const receipt = evidenceOf(entry.id, entry.data as { evidence?: unknown; evidence_caption?: unknown });
+---
+
+<Default {...Astro.props}><slot /></Default>
+{receipt && (
+	<figure class="book-evidence">
+		<pre><code>{receipt.line}</code></pre>
+		<figcaption>{receipt.caption}</figcaption>
+	</figure>
+)}

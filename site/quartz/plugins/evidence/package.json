@@ -1,0 +1,30 @@
+{
+  "name": "@othermemory/evidence",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: the page's receipt -- the one told, sanitised line that settled the claim and Nagatha's caption for it -- rendered as a figure after the byline, before the body (journey-site#142)",
+  "type": "module",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./components": { "import": "./dist/components/index.js" },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": { "preact": "^10.0.0", "unified": "^11.0.5", "vfile": "^6.0.3" },
+  "quartz": {
+    "name": "evidence",
+    "displayName": "Evidence",
+    "category": ["transformer", "component"],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "defaultOrder": 99,
+    "defaultEnabled": true,
+    "components": {
+      "Evidence": {
+        "displayName": "Evidence",
+        "description": "The page's receipt: evidence: as a mono line with evidence_caption: beneath, after the byline",
+        "defaultPosition": "beforeBody",
+        "defaultPriority": 40
+      }
+    }
+  }
+}

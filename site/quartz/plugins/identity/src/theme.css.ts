@@ -368,6 +368,38 @@ article pre > code {
 @media (max-width: 800px) {
   .page-title { font-size: 1.15rem; white-space: nowrap; }
 }
+/* The receipt (site/quartz/plugins/evidence, journey-site#142): the one told line in the mono at the
+   machine's size, on a hairline above and below so it reads as an exhibit, not a code block that
+   wandered up; the caption beneath in the meta voice. Type here, not in the component css (layered). */
+.evidence {
+  border-top: 1px solid var(--om-rule);
+  border-bottom: 1px solid var(--om-rule);
+  padding: 0.7rem 0;
+}
+.evidence pre {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  overflow-x: auto;
+  background: transparent;
+  border: 0;
+}
+.evidence code {
+  font-family: var(--codeFont);
+  font-size: 0.78rem; /* 13.26px on the 17px body: 7.96px a character, 72 characters in 573px -- inside both sites' measure at 1280 */
+  line-height: 1.5;
+  color: var(--dark);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  white-space: pre;
+  display: inline; /* upstream's highlighter sets pre > code to grid, which clips a long line at the box instead of letting pre scroll it (measured: 636px of text, 630px box, scrollWidth 630) */
+}
+.evidence figcaption {
+  font-family: var(--codeFont);
+  font-size: var(--om-meta-size);
+  color: var(--gray);
+}
 /* The foot of a garden page (site/quartz/plugins/related, journey-site#133): "See also" and
    "Linked from" headings in the mono. Here and not in the component's own css because Quartz
    emits component css in @layer quartz-base, and the fonts plugin's unlayered h1..h6 rule wins

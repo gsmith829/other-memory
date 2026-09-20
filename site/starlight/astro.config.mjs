@@ -82,7 +82,7 @@ export default defineConfig({
       favicon: '/favicon.svg',
       // Sidebar: the spine shelved by twenty Act numbers from `act:` (journey-site#95); the sidebar
       // STRUCTURE below is untouched -- the override regroups what Starlight builds from it.
-      components: { PageTitle: './src/components/PageTitle.astro', Sidebar: './src/components/Sidebar.astro' },
+      components: { PageTitle: './src/components/PageTitle.astro', Sidebar: './src/components/Sidebar.astro', MarkdownContent: './src/components/MarkdownContent.astro' },
       routeMiddleware: './src/routeData.ts',
       head: [
         // The feed, discoverable: readers' clients look for this link, and check-emitted.py

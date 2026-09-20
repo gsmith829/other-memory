@@ -574,6 +574,40 @@ starlight-theme-select select {
 }
 
 /* ---------- previous / next: the running feet ---------- */
+/* The chapter's receipt (src/components/MarkdownContent.astro, journey-site#142): the one told line
+   in the mono, a hairline above and below so it reads as an exhibit, the caption beneath in the
+   meta voice; after the body, before prev/next. The same figure the garden sets at the head. */
+.book-evidence {
+  margin: 2.4rem 0 0;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--bk-rule);
+  border-bottom: 1px solid var(--bk-rule);
+}
+.book-evidence pre {
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+.book-evidence code {
+  font-family: var(--sl-font-mono);
+  font-size: 0.78rem; /* 13.26px on the 17px body: 7.96px a character, 72 characters in 573px -- inside the 592px content column at 1280 */
+  line-height: 1.5;
+  color: var(--bk-ink);
+  white-space: pre;
+  display: inline;
+  background: transparent;
+  padding: 0;
+}
+.book-evidence figcaption {
+  margin-top: 0.35rem;
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  color: var(--bk-meta);
+}
+
 .pagination-links {
   border-top: 1px solid var(--bk-rule);
   padding-top: 1.2rem;

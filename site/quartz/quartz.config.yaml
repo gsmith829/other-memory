@@ -271,6 +271,16 @@ plugins:
     layout:
       position: beforeBody
       priority: 25
+  # Local plugin (site/quartz/plugins/evidence): the page's receipt -- `evidence:` (the one told,
+  # sanitised line that settled the claim) with `evidence_caption:` (her sentence) beneath, as a
+  # figure after the byline and before the body (journey-site#142). Reads leniently; the gate is
+  # the contents component's evidenceOf (#145).
+  - source: ./site-plugins/evidence
+    enabled: true
+    order: 99
+    layout:
+      position: beforeBody
+      priority: 40
   # Local plugin (site/quartz/plugins/identity): the garden's stylesheet, delivered as a plugin
   # resource -- static/resource-style-<hash>.css, unlayered, on every page, the same path
   # @quartz-themes/core uses. It transforms nothing; it is the one place real CSS can ship without a

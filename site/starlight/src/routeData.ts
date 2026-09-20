@@ -34,6 +34,7 @@
  */
 import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 import disclosure from '../disclosure.json' with { type: 'json' };
+import { evidenceOf } from './evidence';
 
 /** The chronicle: content/awakening/ -> /awakening/... (the `directory` the sidebar autogenerates from). */
 const CHRONICLE_ID = 'awakening';
@@ -67,6 +68,10 @@ export const onRequest = defineRouteMiddleware((context) => {
       );
     }
   }
+
+  // The receipt's gate (journey-site#142, src/evidence.ts): a chapter with half a pair, a wrapped
+  // line, or a caption of nothing fails the build here, naming the entry.
+  evidenceOf(entry.id, entry.data as { evidence?: unknown; evidence_caption?: unknown });
 
   const own = entry.data.description;
   const text = withDisclosure(own);

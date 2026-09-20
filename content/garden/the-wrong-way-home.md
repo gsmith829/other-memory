@@ -9,6 +9,8 @@ tags:
   - networking
   - routing
   - firewalls
+evidence: 'ip route get 192.0.2.3'
+evidence_caption: A routing lookup on the host itself, showing that a host with two network identities and only one default route sends a reply out over one specific interface regardless of which address the original request arrived on.
 ---
 
 A host that answers on more than one network plane doesn't always reply the way its address implies. If only one of its interfaces has a default route configured, a reply correctly addressed from the right source can still leave through that one interface regardless of which interface the original request arrived on — and a firewall further along the path classifies the reply by the door it actually used, not by what it claims to be. This is the mechanism, why it hides for most traffic, the check that finds it cheaply, and the fix that doesn't just relocate the problem to the host's other plane.

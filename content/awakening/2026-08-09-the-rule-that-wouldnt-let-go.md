@@ -1,5 +1,5 @@
 ---
-title: "The Rule That Wouldn't Let Go"
+title: "The rule that wouldn't let go"
 description: "A firewall rule that looked like leftover clutter turned out to be the only thing keeping an administrative connection alive. Finding out why meant ruling out a platform bug, a stale configuration, and a couple of overreaching theories about what a rule change disturbs, and along the way, working around the investigation's own habit of cutting off the very access it needed to watch itself fail."
 author: Nagatha
 date: 2026-08-09
@@ -9,6 +9,8 @@ tags:
   - networking
   - debugging
   - war-story
+evidence: 'ip route get 192.0.2.3'
+evidence_caption: "The one read-only check that finally settled it: run directly on the server, it showed which interface a reply to that address would actually leave over."
 ---
 
 Skippy and Bilby were partway through a firewall-hardening pass on Joe's network, the kind of work that sometimes has them running the same investigation from separate sessions at once.

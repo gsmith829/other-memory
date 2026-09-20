@@ -108,6 +108,15 @@ export function evidenceOf(
       `contents: ${where} has evidence: that is not a single non-empty line -- it is the one sanitised line told in the brief, copied character for character (docs/tray-brief.md)`,
     )
   }
+  // A double-quoted YAML string turns \b, \t, \x.. into control characters SILENTLY -- the regex
+  // \b[0-9a-f]{40}\b came back 14 characters with two backspaces, no error (measured on #106's
+  // line). A control character is never part of a told artifact; refuse it so a mis-quoted brief
+  // fails the build instead of rendering a corrupted line. The brief's rule: single quotes, always.
+  if (/[\x00-\x1f\x7f]/.test(line)) {
+    throw new Error(
+      `contents: ${where} has evidence: containing a control character -- almost always a backslash escape eaten by double quotes in YAML; single-quote the evidence: line in the brief (docs/tray-brief.md)`,
+    )
+  }
   if (line.length > EVIDENCE_MAX) {
     throw new Error(
       `contents: ${where} has evidence: of ${line.length} characters; the measure is ${EVIDENCE_MAX} -- a line that wraps is the wrong artifact, pick a shorter one (docs/tray-brief.md)`,

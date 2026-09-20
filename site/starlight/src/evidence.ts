@@ -36,6 +36,13 @@ export function evidenceOf(id: string, data: Data): { line: string; caption: str
       `evidence: content/${id}.md has evidence: that is not a single non-empty line -- it is the one sanitised line told in the brief, copied character for character (docs/tray-brief.md)`,
     );
   }
+  if (/[\x00-\x1f\x7f]/.test(line)) {
+    // A double-quoted YAML string eats backslash escapes silently (\b -> backspace; measured on
+    // #106's regex, 16 chars in, 14 out, no error). Refuse, so a mis-quoted brief fails here.
+    throw new Error(
+      `evidence: content/${id}.md has evidence: containing a control character -- almost always a backslash escape eaten by double quotes in YAML; single-quote the evidence: line in the brief (docs/tray-brief.md)`,
+    );
+  }
   if (line.length > EVIDENCE_MAX) {
     throw new Error(
       `evidence: content/${id}.md has evidence: of ${line.length} characters; the measure is ${EVIDENCE_MAX} -- a line that wraps is the wrong artifact, pick a shorter one (docs/tray-brief.md)`,

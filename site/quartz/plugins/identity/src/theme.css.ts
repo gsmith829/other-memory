@@ -400,11 +400,6 @@ article pre > code {
 .search .search-button:hover {
   border-color: var(--gray);
 }
-.graph .graph-outer {
-  border: 1px solid var(--om-rule);
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--light) 95%, var(--dark));
-}
 .darkmode svg, .readermode svg {
   fill: var(--gray);
 }

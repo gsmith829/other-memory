@@ -212,8 +212,16 @@ const css = `
 .contents .contents-out a.active { color: var(--dark); }
 .contents-toggle-label { display: none; }
 /* visually hidden, NOT display:none: it stays in the tab order, so Tab reaches the toggle and
-   Space flips it (a label alone does not activate on Enter/Space -- review, bilby) */
-.contents-toggle { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+   Space flips it (a label alone does not activate on Enter/Space -- review, bilby).
+   The selector is ".contents input.contents-toggle", not ".contents-toggle": upstream styles
+   every input[type=checkbox] at 16x16, position relative, margin-inline -1.4rem, in the same
+   @layer as this css, and that attribute selector (0,1,1) outranked the bare class (0,1,0) -- so
+   the box sat 6px off the left edge of every garden page from #96 until a cold reader saw it on
+   a phone (round 3, 2026-09-20). Measured: 16x16 with a border at 375, a 16x2 sliver at 1440. */
+.contents input.contents-toggle {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; appearance: none; transform: none;
+}
 .contents-toggle:focus-visible ~ .contents-toggle-label { outline: 2px solid var(--tertiary); outline-offset: 2px; }
 
 @media all and (max-width: 800px) {

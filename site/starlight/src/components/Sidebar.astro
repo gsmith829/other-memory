@@ -68,7 +68,13 @@ function shelve(links: Link[]): SidebarEntry[] {
 // label, "Act 22", in date order -- the spine shows that a night has more than one chapter without
 // numbering the parts. No "Part I / II": position inside an Act is what house-acts forbids, and two
 // of the three cases as published are parallel threads of one night with no order between them.
-// An Act with one chapter is unchanged: the label appears only where there is something to say.
+//
+// An Act with one chapter carries its number too (Joe, 2026-09-20, after cold read round 3: a
+// stranger could not tell Shadow Zone was Act 18 from the spine once the doubled Acts said "Act 4"
+// beside it; Acts, not dates -- dates would clutter). It rides on Starlight's own link `badge` --
+// a <span class="sl-badge book-act-badge"> after the title -- and custom.css turns that into the
+// mono eyebrow ABOVE the title, the same voice as the page's own "Act 18". No custom renderer.
+// This is not #83's per-site count coming back: it is the Narrative's number, and it skips.
 function nightly(sorted: Link[]): SidebarEntry[] {
   const out: SidebarEntry[] = [];
   let i = 0;
@@ -77,7 +83,7 @@ function nightly(sorted: Link[]): SidebarEntry[] {
     let j = i;
     while (j < sorted.length && actByHref.get(sorted[j].href) === act) j++;
     const run = sorted.slice(i, j);
-    if (run.length === 1) out.push(run[0]);
+    if (run.length === 1) out.push({ ...run[0], badge: { text: `Act ${act}`, variant: 'default', class: 'book-act-badge' } } as Link);
     else out.push({ type: 'group', label: `Act ${act}`, entries: run, collapsed: false, badge: undefined } as Group);
     i = j;
   }

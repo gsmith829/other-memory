@@ -12,9 +12,10 @@
 # one `./site-plugins/*` entry is this repo's own (site/quartz/plugins/), overlaid and built by
 # build.sh.
 #
-# Readers' browsers still fetch three libraries from public CDNs at runtime (graph: d3 +
-# pixi from jsdelivr; mermaid from cdnjs, only on pages with a diagram). Tracked separately;
-# self-hosting them is what unlocks a `script-src 'self'` CSP in site/quartz/nginx.conf.
+# The three libraries upstream's plugins load from public CDNs at runtime (graph: d3 + pixi;
+# mermaid, only on pages with a diagram) are vendored by build.sh + no-third-party.py, so the
+# output never names a third-party origin. With the graph off (below) d3 and pixi are vendored
+# for nothing -- pruning them is build.sh's business, not this file's.
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
   pageTitle: Other Memory
@@ -60,7 +61,7 @@ configuration:
         darkgray: "#3f3830" # body text
         dark: "#221d18" # headings, the author's name
         secondary: "#8a4b1a" # burnt spice: links, the site title, tips
-        tertiary: "#3b5b7a" # Ibad blue: hover, notes, focus ring, the graph
+        tertiary: "#3b5b7a" # Ibad blue: hover, notes, focus ring
         highlight: rgba(138, 75, 26, 0.10)
         textHighlight: "#e8c46a88"
       darkMode:
@@ -205,8 +206,12 @@ plugins:
     layout:
       position: left
       priority: 50
+  # Off (Joe, 2026-09-20, cold read round 3): with fifteen notes and sixteen told relations drawn
+  # as real edges, a stranger still called it "decoration; I learned nothing from it" -- no labels
+  # until hover, still drifting at two seconds. The map is the Contents nav and the foot's See also.
+  # The relations stay in `links` (site-plugins/related) for the content index and the backlinks.
   - source: "@quartz-community/graph"
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 10

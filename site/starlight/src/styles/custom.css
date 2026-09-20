@@ -458,6 +458,32 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
   padding-inline-start: 1.5rem;
 }
 
+/* Every single-chapter row carries its Act number (Joe, 2026-09-20; Sidebar.astro says why). It
+   arrives as Starlight's link badge -- a bordered pill after the title, in @layer starlight -- and
+   this unlayered sheet remakes it: no box, the mono eyebrow, set above the title by flex order.
+   Doubled Acts keep their group label instead and their rows carry no badge. */
+.sidebar-content a:has(> .book-act-badge) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+.sidebar-content .book-act-badge {
+  order: -1;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  line-height: 1.2;
+  font-family: var(--sl-font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--bk-meta);
+}
+.sidebar-content a[aria-current='page'] .book-act-badge {
+  color: var(--bk-spice);
+}
+
 /* A link out of the book is marked as one. A cold reader (audit, 2026-09-18) clicked "Other
    Memory" in the spine expecting a chapter and landed on another site. */
 .sidebar-content a[rel='external']::after {

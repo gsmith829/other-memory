@@ -408,9 +408,11 @@ article pre > code {
   color: var(--gray);
 }
 .evidence .evidence-note {
-  /* the documentation-range note (plugins/evidence): the caption's voice, one step smaller */
+  /* the documentation-range note (plugins/evidence): the machine's voice at the meta size. It was
+     one step smaller (12.2px) -- the smallest text on either site -- and a cold reader called it
+     "hard to read against near-black" (round 4). Subordinate to the caption by voice, not by size. */
   font-family: var(--codeFont);
-  font-size: calc(var(--om-meta-size) * 0.92);
+  font-size: var(--om-meta-size);
   color: var(--gray);
 }
 /* The foot of a garden page (site/quartz/plugins/related, journey-site#133): "See also" and

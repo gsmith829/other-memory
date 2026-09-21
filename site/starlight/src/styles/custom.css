@@ -423,10 +423,35 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
 }
 .sidebar-content details details > summary .group-label > span {
   font-family: var(--sl-font-mono);
-  font-size: 0.72rem;
+  font-size: var(--bk-meta-size); /* was 0.72rem, the spine's smallest text -- "small mono, I squinted" (cold read 4) */
   font-weight: 400;
   letter-spacing: 0.04em;
   color: var(--bk-meta);
+}
+/* An empty shelf between two filled ones (Sidebar.astro): a muted label, no caret, nothing to open --
+   "Acts 41–60  not yet told". The badge Starlight renders after the label is remade into the second
+   phrase; the details is inert. Cold reads 3 and 4: the silent jump read as a bug. */
+.sidebar-content details:has(> summary .book-shelf-empty) {
+  pointer-events: none;
+}
+.sidebar-content details:has(> summary .book-shelf-empty) > summary .caret {
+  display: none;
+}
+.sidebar-content details:has(> summary .book-shelf-empty) > summary .group-label > span {
+  color: color-mix(in srgb, var(--bk-meta) 70%, transparent);
+}
+.sidebar-content .book-shelf-empty {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  margin-inline-start: 0.6em;
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--bk-meta) 70%, transparent);
 }
 .sidebar-content details details > ul {
   border-inline-start: 0;
@@ -613,10 +638,11 @@ starlight-theme-select select {
   color: var(--bk-meta);
 }
 .book-evidence .book-evidence-note {
-  /* the documentation-range note (src/evidence.ts): the caption's voice, one step smaller */
+  /* the documentation-range note (src/evidence.ts): the machine's voice at the meta size -- was
+     one step smaller, the smallest text on the site ("hard to read", cold read 4). Same as the garden. */
   margin: 0.35rem 0 0;
   font-family: var(--sl-font-mono);
-  font-size: calc(var(--bk-meta-size) * 0.92);
+  font-size: var(--bk-meta-size);
   color: var(--bk-meta);
 }
 

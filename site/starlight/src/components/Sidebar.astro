@@ -56,10 +56,24 @@ function shelve(links: Link[]): SidebarEntry[] {
   }
   const indices = [...shelves.keys()].sort((a, b) => a - b);
   const newest = indices[indices.length - 1];
+  const oldest = indices[0];
   const out: SidebarEntry[] = door ? [door] : [];
-  for (const i of indices) {
-    const sorted = shelves.get(i)!.sort((a, b) => (actByHref.get(a.href)! - actByHref.get(b.href)!) || (dateByHref.get(a.href)! - dateByHref.get(b.href)!) || a.href.localeCompare(b.href));
-    out.push({ type: 'group', label: shelfLabel(i), entries: nightly(sorted), collapsed: i !== newest, badge: undefined } as Group);
+  // Cold reads 3 and 4 (journey-site#140, #189; Joe, 2026-09-21): on the DOOR every shelf is open --
+  // a chronicle whose table of contents is behind a chevron loses the ninety-second reader, and at
+  // this size the whole spine fits a laptop fold. Inside a chapter the older shelves fold as before,
+  // and Starlight's persister keeps whatever the reader did. An EMPTY shelf between two filled ones
+  // ("no 41-60, and 61-80 holds one item ... the empty band still reads as a bug", two rounds
+  // running) is rendered as a muted label with no caret and nothing under it, so the gap is stated
+  // where it is seen instead of explained on the door: a group with no entries and a badge that
+  // custom.css turns into the words "not yet told". Never before the first shelf or after the last.
+  for (let i = oldest; i <= newest; i++) {
+    const links = shelves.get(i);
+    if (!links) {
+      out.push({ type: 'group', label: shelfLabel(i), entries: [], collapsed: true, badge: { text: 'not yet told', variant: 'default', class: 'book-shelf-empty' } } as Group);
+      continue;
+    }
+    const sorted = links.sort((a, b) => (actByHref.get(a.href)! - actByHref.get(b.href)!) || (dateByHref.get(a.href)! - dateByHref.get(b.href)!) || a.href.localeCompare(b.href));
+    out.push({ type: 'group', label: shelfLabel(i), entries: nightly(sorted), collapsed: !isDoor && i !== newest, badge: undefined } as Group);
   }
   return out;
 }
@@ -90,7 +104,9 @@ function nightly(sorted: Link[]): SidebarEntry[] {
   return out;
 }
 
-const { sidebar } = Astro.locals.starlightRoute;
+const { sidebar, entry } = Astro.locals.starlightRoute;
+/** The front door is the folder's index: every shelf opens there (see shelve). */
+const isDoor = entry.id === CHRONICLE.replaceAll('/', '');
 const shelved: SidebarEntry[] = sidebar.map((entry) => {
   if (entry.type !== 'group') return entry;
   const links = entry.entries.filter((e): e is Link => e.type === 'link');

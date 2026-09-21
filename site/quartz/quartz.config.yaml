@@ -318,8 +318,12 @@ plugins:
       position: left
       priority: 30
       group: toolbar
+  # Off (Joe, 2026-09-21): reader mode hides the sidebars' contents but keeps their columns, so on
+  # desktop it emptied the right column without widening the page, and on a phone it did nothing a
+  # reader could see. With the graph gone the right column is the table of contents alone, and it
+  # stays on. The book icon it drew beside the dark-mode toggle goes with it.
   - source: "@quartz-community/reader-mode"
-    enabled: true
+    enabled: false
     layout:
       position: left
       priority: 35
@@ -413,7 +417,6 @@ layout:
     content: {}
     folder:
       exclude:
-        - reader-mode
         - disclosure # a generated listing has no author line
       positions:
         right: []

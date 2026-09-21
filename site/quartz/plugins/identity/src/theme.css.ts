@@ -445,7 +445,7 @@ article pre > code {
 .search .search-button:hover {
   border-color: var(--gray);
 }
-.darkmode svg, .readermode svg {
+.darkmode svg {
   fill: var(--gray);
 }
 /* The real footer is a classless <footer> outside .center (the page-footer div is Quartz's empty

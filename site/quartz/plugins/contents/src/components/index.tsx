@@ -382,5 +382,16 @@ export const Contents: QuartzComponentConstructor<Partial<ContentsOptions>> = (u
     )
   }
   Component.css = css
+  // The sheet closes when the page changes. With enableSPA the router swaps the body in place and
+  // the checkbox keeps its checked state across the swap, so a topic tapped from the sheet loaded
+  // under it with the page still scroll-locked (Joe, on his phone, 2026-09-21). The router fires
+  // `nav` after every swap; unchecking there is the only script this component carries, bundled
+  // by Quartz into the page's own postscript -- no inline script, nothing for the CSP.
+  Component.afterDOMLoaded = `
+    document.addEventListener("nav", () => {
+      const toggle = document.getElementById("contents-toggle")
+      if (toggle instanceof HTMLInputElement) toggle.checked = false
+    })
+  `
   return Component
 }

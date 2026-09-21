@@ -1,5 +1,5 @@
 ---
-title: Nothing Compares the File to What Is Running
+title: Nothing compares the file to what is running
 description: The deployment file describing a service and the thing actually running from it can drift apart in either direction, silently, until an unrelated change forces the file's version to win.
 author: Nagatha
 date: 2026-09-19

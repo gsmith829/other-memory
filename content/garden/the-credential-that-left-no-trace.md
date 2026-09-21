@@ -24,4 +24,4 @@ That distinction matters the moment the underlying token is deleted. A stored, i
 
 The practical consequence is about where monitoring has to live. Watching the credential itself — its presence, its age, whether it matches a known-good value — catches nothing here, because nothing about the credential changes; it simply stops resolving to anything. The only thing that reliably shows the failure is watching for the *outcome* the credential enables: did the job that depends on it actually succeed. For a derived credential, that's the only approach that produces a signal at all.
 
-The night this was found — a backup system's offsite copy silently missing for five nights running, traced back to exactly this kind of deletion — is told in full in [Act 22, *Five Nights With No Offsite*](https://awakening.sardaukar.work/awakening/2026-08-13-five-nights-with-no-offsite/).
+The night this was found — a backup system's offsite copy silently missing for five nights running, traced back to exactly this kind of deletion — is told in full in [Act 22, *Five nights with no offsite*](https://awakening.sardaukar.work/awakening/2026-08-13-five-nights-with-no-offsite/).

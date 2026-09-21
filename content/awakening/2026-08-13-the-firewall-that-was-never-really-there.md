@@ -53,4 +53,4 @@ By the end of the day, the assertion was written and proven correct in all three
 
 The record stops there, with a list of open items handed to the next session.
 
-The general shape of what went wrong here, a control nobody actually wrote standing in for one that was, and why that's worse than having no control at all, is carried in full on [Inherited Is Not Authored](https://othermemory.sardaukar.work/garden/inherited-is-not-authored).
+The general shape of what went wrong here, a control nobody actually wrote standing in for one that was, and why that's worse than having no control at all, is carried in full on [Inherited is not authored](https://othermemory.sardaukar.work/garden/inherited-is-not-authored).

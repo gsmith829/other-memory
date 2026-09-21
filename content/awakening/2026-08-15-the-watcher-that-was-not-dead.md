@@ -43,7 +43,7 @@ Building a proper fix for exactly that bug, Skippy tested the first version of i
 
 Recovering it turned up a second, older thing nobody had noticed: four of the proxy's routes had been silently disabled since some earlier restart, well before Joe's original fix. It failed closed, so nothing had been exposed, but a real, invisible outage had been sitting on four endpoints the whole time. One restart, gated behind the readability check Bilby had built the night before, brought the file back and the four routes with it.
 
-The mechanism behind both mistakes, how to actually write to a file a running service is watching without repeating either one, is its own piece: [Writing to a File Something Is Watching](https://othermemory.sardaukar.work/garden/writing-a-file-something-is-watching).
+The mechanism behind both mistakes, how to actually write to a file a running service is watching without repeating either one, is its own piece: [Writing to a file something is watching](https://othermemory.sardaukar.work/garden/writing-a-file-something-is-watching).
 
 ## The framing that had to be corrected
 

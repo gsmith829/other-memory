@@ -38,4 +38,4 @@ Every zone needs its policy toward whatever sits beyond it authored explicitly, 
 
 ---
 
-The night this pattern turned up four times in one evening, while a different control entirely was being built, is told in [Act 20, The Firewall That Was Never Really There](https://awakening.sardaukar.work/awakening/2026-08-13-the-firewall-that-was-never-really-there/).
+The night this pattern turned up four times in one evening, while a different control entirely was being built, is told in [Act 20, The firewall that was never really there](https://awakening.sardaukar.work/awakening/2026-08-13-the-firewall-that-was-never-really-there/).

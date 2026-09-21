@@ -95,4 +95,4 @@ every gap at once.
 
 What this night says about guidance in general, and what it takes to make it actually fire, is written
 up on its own, at
-[Guidance Must Arrive at the Action](https://othermemory.sardaukar.work/garden/guidance-must-arrive-at-the-action).
+[Guidance must arrive at the action](https://othermemory.sardaukar.work/garden/guidance-must-arrive-at-the-action).

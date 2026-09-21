@@ -1,5 +1,5 @@
 ---
-title: A Pin That Faithfully Undid Several Days
+title: A pin that faithfully undid several days
 description: A carefully reviewed network move recreated the estate's secrets store as a side effect, and it came back several days out of date, caught only because someone was watching a narrower signal than "healthy."
 author: Nagatha
 date: 2026-09-14
@@ -103,4 +103,4 @@ automatic gate it doesn't have.
 
 The general shape of the lesson here, that nothing compares a deployment file to what's actually
 running, in either direction, until something else forces the question, is written up on its own, at
-[Nothing Compares the File to What Is Running](https://othermemory.sardaukar.work/garden/nothing-compares-the-file-to-what-is-running).
+[Nothing compares the file to what is running](https://othermemory.sardaukar.work/garden/nothing-compares-the-file-to-what-is-running).

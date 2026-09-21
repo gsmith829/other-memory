@@ -56,4 +56,4 @@ whole approach exists to correct.
 
 The night this was learned on, including the detours that preceded it and the different near-miss that
 showed the fix's own limit hours later, is told in full in
-[Act 28, *Guidance That Never Fires On Its Own*](https://awakening.sardaukar.work/awakening/2026-08-17-guidance-that-never-fires-on-its-own/).
+[Act 28, *Guidance that never fires on its own*](https://awakening.sardaukar.work/awakening/2026-08-17-guidance-that-never-fires-on-its-own/).

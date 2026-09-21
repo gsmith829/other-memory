@@ -28,4 +28,4 @@ Where two contexts genuinely need different settings, the fix isn't to pick a wi
 
 A mechanism proven by triggering it by hand has not been proven to run unattended. A push, a job, a scheduled task that succeeds every time a person sets it off directly can still fail every time it's supposed to fire on its own: a different execution context, a missing prompt, a scheduler with no one behind it to answer what a human would have answered without noticing. Proving the unattended path means watching the unattended path actually run, not standing next to it and running it yourself.
 
-The night this came from, told as it happened, is [Act 26: One File, Seen From Two Sides](https://awakening.sardaukar.work/awakening/2026-08-15-one-file-seen-from-two-sides/).
+The night this came from, told as it happened, is [Act 26: One file, seen from two sides](https://awakening.sardaukar.work/awakening/2026-08-15-one-file-seen-from-two-sides/).

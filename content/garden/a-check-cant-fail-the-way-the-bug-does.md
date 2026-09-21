@@ -34,4 +34,4 @@ The other thing that reliably catches a check's blind spot is a second check bui
 
 None of this argues against checks, gates, or coverage: the alternative to an imperfect check is no check, which is worse. It argues against reading a pass as proof rather than as evidence bounded by what the check was actually built to look for. A passing suite tells you the system behaved correctly along every path the suite exercises. It says nothing about the paths it doesn't.
 
-The night this pattern showed up six times in a row, each in a different part of the same system, is told in [Every Check Was Checking Something Else](https://awakening.sardaukar.work/awakening/2026-08-25-every-check-was-checking-something-else/).
+The night this pattern showed up six times in a row, each in a different part of the same system, is told in [Every check was checking something else](https://awakening.sardaukar.work/awakening/2026-08-25-every-check-was-checking-something-else/).

@@ -26,11 +26,12 @@ QUARTZ_SHA="3dff48b5df6d84c9544a5ae19c8f2cbb01dc44e5" # v5 branch, 2026-09-15 02
 # have sent -- minus the third party at read time. no-third-party.py patches the plugin sources
 # BEFORE the build (so Quartz's content-hashed script names change with the content) and fails
 # the build AFTER it if any CDN reference survives in the output.
-#   d3 / pixi.js  : graph view fetches "d3@7" and "pixi.js@8" (floating majors) -- pinned exact here
 #   mermaid       : obsidian-flavored-markdown imports EXACTLY this version by URL; when the plugin
 #                   bumps it the patch step fails loudly and this pin moves with it
-export VENDOR_D3="7.9.0"
-export VENDOR_PIXI="8.20.1"
+#   d3 / pixi.js  : were vendored for the graph view; the graph is OFF (quartz.config.yaml, Joe,
+#                   2026-09-20) and they are gone from here -- 2.6 MB a deploy, loaded by no page.
+#                   Re-enabling the graph puts its CDN loads back in the output and the check
+#                   FAILS the build naming them; the vendoring returns with the graph, reviewed.
 export VENDOR_MERMAID="11.4.0"
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -100,19 +101,14 @@ echo "== build $ROOT/content -> $OUT"
 # A build that "succeeds" with no front door is not a success.
 [ -s "$OUT/index.html" ] || { echo "FAIL: no index.html in $OUT" >&2; exit 1; }
 
-echo "== vendor runtime libraries (d3 $VENDOR_D3, pixi.js $VENDOR_PIXI, mermaid $VENDOR_MERMAID)"
+echo "== vendor runtime libraries (mermaid $VENDOR_MERMAID)"
 # Versioned directories: a bump changes the URL, so no immutable cache can serve an old copy.
 VEND="$OUT/static/vendor"
 PACK="$(mktemp -d)"
 trap 'rm -rf "$PACK"' EXIT
-(cd "$PACK" && npm pack --silent --loglevel=error "d3@$VENDOR_D3" "pixi.js@$VENDOR_PIXI" "mermaid@$VENDOR_MERMAID" >/dev/null)
-mkdir -p "$VEND/d3-$VENDOR_D3" "$VEND/pixi-$VENDOR_PIXI" "$VEND/mermaid-$VENDOR_MERMAID" "$PACK/d3" "$PACK/pixi" "$PACK/mermaid"
-tar -xzf "$PACK/d3-$VENDOR_D3.tgz"           -C "$PACK/d3"      package/dist/d3.min.js
-tar -xzf "$PACK/pixi.js-$VENDOR_PIXI.tgz"    -C "$PACK/pixi"    package/dist/pixi.js package/dist/packages/unsafe-eval.js
+(cd "$PACK" && npm pack --silent --loglevel=error "mermaid@$VENDOR_MERMAID" >/dev/null)
+mkdir -p "$VEND/mermaid-$VENDOR_MERMAID" "$PACK/mermaid"
 tar -xzf "$PACK/mermaid-$VENDOR_MERMAID.tgz" -C "$PACK/mermaid" package/dist/mermaid.esm.min.mjs package/dist/chunks/mermaid.esm.min
-cp "$PACK/d3/package/dist/d3.min.js"                "$VEND/d3-$VENDOR_D3/d3.min.js"
-cp "$PACK/pixi/package/dist/pixi.js"                "$VEND/pixi-$VENDOR_PIXI/pixi.js"
-cp "$PACK/pixi/package/dist/packages/unsafe-eval.js" "$VEND/pixi-$VENDOR_PIXI/unsafe-eval.js" # eval-free shader path; see no-third-party.py
 cp "$PACK/mermaid/package/dist/mermaid.esm.min.mjs" "$VEND/mermaid-$VENDOR_MERMAID/mermaid.esm.min.mjs"
 cp -R "$PACK/mermaid/package/dist/chunks"           "$VEND/mermaid-$VENDOR_MERMAID/chunks"
 

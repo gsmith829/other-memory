@@ -30,4 +30,4 @@ A rotation, an audit, or a cleanup that checks every field in a known store and 
 
 Doing the known-list check carefully does not, on its own, produce evidence about what's outside the list. A clean sweep of everything you thought to check is proof only of what it actually tested, not proof that nothing is left standing. Where the two differ matters most exactly when it's least visible: a consumer of a stale or leaked value that fails silently, rather than loudly, can sit unnoticed indefinitely, because nothing about a quiet failure prompts anyone to go looking for it.
 
-The night this came from, told as it happened, including how each of these was discovered, is Act 27 of Awakening: [A Redaction That Found Three of Eight](https://awakening.sardaukar.work/awakening/2026-08-15-a-redaction-that-found-three-of-eight/).
+The night this came from, told as it happened, including how each of these was discovered, is Act 27 of Awakening: [A redaction that found three of eight](https://awakening.sardaukar.work/awakening/2026-08-15-a-redaction-that-found-three-of-eight/).

@@ -9,7 +9,7 @@ evidence: '3 ARP retries captured, 0 replies'
 evidence_caption: The capture recorded three retried requests for the floating address and zero replies to any of them.
 ---
 
-"A Floating Address for the Resolver" ended with a redundant pair built, verified against a real client, and declared done for the night. A few hours later, before anyone had actually gone to bed, it turned out not to be done at all.
+"A floating address for the resolver" ended with a redundant pair built, verified against a real client, and declared done for the night. A few hours later, before anyone had actually gone to bed, it turned out not to be done at all.
 
 ## The gap nobody had checked
 

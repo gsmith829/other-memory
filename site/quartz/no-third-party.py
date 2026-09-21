@@ -7,15 +7,21 @@ Called by site/quartz/build.sh; stdlib only.
     no-third-party.py check <output-dir> --csp-inc <path> # AFTER it
     no-third-party.py --selftest
 
-Pins come from the environment (VENDOR_D3, VENDOR_PIXI, VENDOR_MERMAID), set once in
-build.sh next to the upstream Quartz pin so all four move in one reviewed diff.
+The pin comes from the environment (VENDOR_MERMAID), set once in build.sh next to the
+upstream Quartz pin so both move in one reviewed diff.
 
-WHY. Upstream Quartz v5 plugins hard-code three runtime loads from public CDNs -- the graph
-view injects d3 + pixi from jsdelivr on every page, and obsidian-flavored-markdown imports
+WHY. Upstream Quartz v5 plugins hard-code runtime loads from public CDNs -- the graph view
+injects d3 + pixi from jsdelivr on every page, and obsidian-flavored-markdown imports
 mermaid from cdnjs on pages with a diagram -- plus a preconnect hint to cdnjs in every
 page head. No option turns any of it off and no integrity attribute guards it. For a site
 whose story is "the private stuff stayed private", executing a third party's JavaScript
 at read time (and telling that third party who is reading) is the wrong posture.
+
+The graph is OFF (quartz.config.yaml, Joe, 2026-09-20, cold read round 3), so d3 and
+pixi are no longer vendored, rewritten or patched here (journey-site#141 left 2.6 MB of
+them in every deploy, loaded by no page). If the graph is ever re-enabled, its d3/pixi
+CDN loads reach the output unrewritten and `check` FAILS the build naming them -- turning
+the graph back on is a deliberate act that brings its vendoring back with it, reviewed.
 
 WHY PATCH BEFORE THE BUILD, NOT REWRITE AFTER. Quartz names its emitted scripts by content
 hash and they are served immutable for 30 days. A post-build rewrite changes the bytes but
@@ -58,7 +64,7 @@ PLUGIN_ROOT = os.path.join("node_modules", "@quartz-community")
 
 
 def pins():
-    p = {k: os.environ.get(v) for k, v in (("d3", "VENDOR_D3"), ("pixi", "VENDOR_PIXI"), ("mermaid", "VENDOR_MERMAID"))}
+    p = {k: os.environ.get(v) for k, v in (("mermaid", "VENDOR_MERMAID"),)}
     missing = [k for k, v in p.items() if not v]
     if missing:
         sys.exit(f"CANNOT EVALUATE: vendor pin(s) not set in the environment: {missing}")
@@ -70,43 +76,15 @@ def rewrites(p):
     Keyed by the FULL URL on purpose: a plugin bump that changes the version changes the
     key, the 'not found' assertion fires, and the vendor pin gets bumped in the same change."""
     return {
-        "https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js": f"/static/vendor/d3-{p['d3']}/d3.min.js",
-        "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.js": f"/static/vendor/pixi-{p['pixi']}/pixi.js",
         f"https://cdnjs.cloudflare.com/ajax/libs/mermaid/{p['mermaid']}/mermaid.esm.min.mjs":
             f"/static/vendor/mermaid-{p['mermaid']}/mermaid.esm.min.mjs",
     }
-
-
-def code_patches(p):
-    """Loader-shape patches that do more than swap a URL, keyed on the exact minified call so
-    an upstream change fails loudly instead of half-applying.
-    pixi.js generates shader/uniform code with `new Function` and refuses to run under a policy
-    without 'unsafe-eval' -- unless its own `unsafe-eval` add-on is loaded AFTER it, which swaps
-    in eval-free implementations. Chain that load onto pixi's, using the plugin's own loader."""
-    local = f"/static/vendor/pixi-{p['pixi']}"
-    return {
-        'e("https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.js")':
-            f'e("{local}/pixi.js").then(function(){{return e("{local}/unsafe-eval.js")}})',
-    }
-
-
-def extra_vendored(p):
-    """Files build.sh must vendor beyond the direct URL swaps."""
-    return [f"/static/vendor/pixi-{p['pixi']}/unsafe-eval.js"]
 
 
 # Exact strings deleted from the OUTPUT (HTML is not content-hashed). A removal that finds
 # nothing is not a failure -- upstream may stop emitting it; the survivor scan is the check.
 REMOVALS = [
     '<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/>',
-]
-
-# Known-dormant references inside a vendored library: (output-relative path prefix, line
-# pattern). pixi.js carries CDN URLs for its Basis/KTX compressed-texture transcoders; they
-# are fetched only when such a texture is decoded, which the graph never does -- and the
-# policy's connect-src/script-src 'self' would refuse the fetch anyway. Constants, not requests.
-EXEMPT = [
-    ("static/vendor/pixi-", re.compile(r"cdn\.jsdelivr\.net/npm/pixi\.js/transcoders/(?:basis|ktx)/")),
 ]
 
 # Any of these surviving anywhere in the output is a failure, matched or not.
@@ -191,12 +169,9 @@ def survivors(root):
     found = []
     for path in text_files(root):
         rel = os.path.relpath(path, root)
-        exempt = [pat for (prefix, pat) in EXEMPT if rel.startswith(prefix)]
         with open(path, "r", encoding="utf-8", errors="surrogateescape") as f:
             for i, line in enumerate(f, 1):
                 if not FORBIDDEN_HOSTS.search(line):
-                    continue
-                if any(pat.search(line) for pat in exempt):
                     continue
                 for m in FORBIDDEN_HOSTS.finditer(line):
                     found.append((rel, i, m.group(0)))
@@ -260,18 +235,8 @@ def patch(workdir, p, quiet=False):
         say(f"CANNOT EVALUATE: {root} does not exist (npm ci not run?)")
         return 2
     fails = 0
-    # Loader-shape patches first: they contain the bare URLs the second pass would otherwise eat.
-    shaped = replace_all(root, code_patches(p))
-    for call, n in shaped.items():
-        if n == 0:
-            say(f"FAIL: expected loader call not found in any plugin source (upstream loader changed?): {call}")
-            fails += 1
-        else:
-            say(f"patched {n:3d}x  {call[:60]}... -> chained unsafe-eval loader")
     counts = replace_all(root, rewrites(p))
     for url, n in counts.items():
-        # A URL consumed entirely by a loader-shape patch above still counts as found.
-        n += sum(k for c, k in shaped.items() if url in c)
         if n == 0:
             say(f"FAIL: expected CDN URL not found in any plugin source (upstream loader changed?): {url}")
             fails += 1
@@ -297,7 +262,7 @@ def check(root, csp_inc, p, quiet=False):
             write(fonts, new)
         say(f"relativised {n} absolute font URL(s) in {FONT_CSS}")
     fails = 0
-    for local in list(rewrites(p).values()) + extra_vendored(p):
+    for local in rewrites(p).values():
         target = os.path.join(root, local.lstrip("/"))
         if not os.path.isfile(target) or os.path.getsize(target) == 0:
             say(f"FAIL: vendored file missing or empty: {local}")
@@ -335,23 +300,20 @@ def selftest():
             print("  FAIL", msg)
             fails += 1
 
-    p = {"d3": "7.9.0", "pixi": "8.20.1", "mermaid": "11.4.0"}
+    p = {"mermaid": "11.4.0"}
     R = rewrites(p)
     tmp = tempfile.mkdtemp(prefix="no-third-party-selftest-")
     try:
-        # --- patch: a fake upstream checkout with one plugin source naming all three URLs
+        # --- patch: a fake upstream checkout with one plugin source naming the mermaid URL
         work = os.path.join(tmp, "work")
-        plug = os.path.join(work, PLUGIN_ROOT, "graph", "dist")
+        plug = os.path.join(work, PLUGIN_ROOT, "obsidian-flavored-markdown", "dist")
         os.makedirs(plug)
-        pixi_cdn = "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.js"
         write(os.path.join(plug, "index.js"),
               "Promise.all([" + ",".join(f'e("{u}")' for u in R) + "])")
         write(os.path.join(plug, "index.js.map"), " ".join(R))  # bare URLs, as a source map carries them
         ok(patch(work, p, quiet=True) == 0, "patch succeeds when every URL is present")
         s = read(os.path.join(plug, "index.js"))
         ok(all(u not in s for u in R) and all(v in s for v in R.values()), "patch rewrote every URL")
-        ok(f'e("{R[pixi_cdn]}").then(function(){{return e("{extra_vendored(p)[0]}")}})' in s,
-           "pixi load is chained with its unsafe-eval add-on")
         ok(all(u not in read(os.path.join(plug, "index.js.map")) for u in R), "bare URLs in the map rewritten too")
         ok(patch(work, p, quiet=True) == 1, "a second patch finds nothing and FAILS (loader changed)")
         ok(patch(os.path.join(tmp, "nowhere"), p, quiet=True) == 2, "no node_modules -> CANNOT EVALUATE")
@@ -361,7 +323,7 @@ def selftest():
         out = os.path.join(tmp, "out")
         os.makedirs(os.path.join(out, "static", "scripts"))
         os.makedirs(os.path.join(out, "static", "fonts"))
-        for v in list(R.values()) + extra_vendored(p):
+        for v in R.values():
             os.makedirs(os.path.dirname(os.path.join(out, v.lstrip("/"))), exist_ok=True)
             write(os.path.join(out, v.lstrip("/")), "// vendored\n")
         write(os.path.join(out, "static", "scripts", "s.js"), " ".join(R.values()))
@@ -404,18 +366,17 @@ def selftest():
         ok(check(out, inc, p, quiet=True) == 1, "unpatched CDN URL in output fails")
         write(os.path.join(out, "static", "scripts", "s.js"), " ".join(R.values()))
         # Negative 3: a vendored target missing must fail.
-        d3 = os.path.join(out, R["https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"].lstrip("/"))
-        os.remove(d3)
+        mm = os.path.join(out, list(R.values())[0].lstrip("/"))
+        os.remove(mm)
         ok(check(out, inc, p, quiet=True) == 1, "missing vendored file fails")
-        write(d3, "// vendored\n")
-        # Exemption is PATH-scoped: pixi's transcoder URL is fine inside pixi's own dir, a failure elsewhere.
-        tx = 'x = "https://cdn.jsdelivr.net/npm/pixi.js/transcoders/basis/basis_transcoder.js"'
-        pixi = os.path.join(out, R["https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.js"].lstrip("/"))
-        write(pixi, "// vendored\n" + tx + "\n")
-        ok(check(out, inc, p, quiet=True) == 0, "dormant transcoder URL inside pixi is exempt")
-        write(os.path.join(out, "static", "scripts", "other.js"), tx + "\n")
-        ok(check(out, inc, p, quiet=True) == 1 and survivors(out)[0][0] == os.path.join("static", "scripts", "other.js"),
-           "the same URL outside pixi fails")
+        write(mm, "// vendored\n")
+        # Negative 4: the graph's d3/pixi CDN loads, no longer rewritten, must FAIL the check if
+        # they ever reach the output again (the graph re-enabled) -- named, not exempted.
+        write(os.path.join(out, "static", "scripts", "graph.js"),
+              'e("https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js");e("https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.js")\n')
+        ok(check(out, inc, p, quiet=True) == 1 and len(survivors(out)) == 2 and survivors(out)[0][0] == os.path.join("static", "scripts", "graph.js"),
+           "an un-vendored graph load fails the build, named")
+        os.remove(os.path.join(out, "static", "scripts", "graph.js"))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print(f"selftest: {'ok' if fails == 0 else str(fails) + ' failed'}")

@@ -16,9 +16,9 @@ That is the whole disclosure. The rest of this page is the longer, more honest v
 
 ## Who owns this
 
-A human, named **Jerry**. He is called **Joe** throughout the rest of this site — the one deliberate persona name here, and the same running joke as everyone else: in Craig Alanson's *Expeditionary Force* novels the human protagonist is Joe Bishop, and the two AI engineers who work on this homelab were named after that series' characters first. Naming the human after the human in the books was the consistent thing to do.
+A human, named **Jerry**. The writing calls him **Joe** — the one deliberate persona name here, and the same running joke as everyone else: in Craig Alanson's *Expeditionary Force* novels the human protagonist is Joe Bishop, and the two AI engineers who work on this homelab were named after that series' characters first. Naming the human after the human in the books was the consistent thing to do. Wherever this site states a real-world fact instead of telling the story — his employer, his title, the link that proves either — that's Jerry, not Joe; the split is by what's being said, not by which page it's on.
 
-This site is not anonymous. Out in the world he is **Jerry Smith** — the everyday form of his name; [his LinkedIn](https://www.linkedin.com/in/gsmith829/) carries the more formal one and confirms the rest: Manager, Systems Management at Optum by day, and nights and weekends the architect and operator of everything documented here. Questions about any of it can go to [gsmith829@gmail.com](mailto:gsmith829@gmail.com). Everywhere else on this site, he's **Joe** — the pseudonym already explained above, not a disguise, no identity being protected, just a conceit kept straight.
+This site is not anonymous. Out in the world he is **Jerry Smith** — the everyday form of his name; [his LinkedIn](https://www.linkedin.com/in/gsmith829/) carries the more formal one and confirms the rest: Manager, Systems Management at Optum by day, and nights and weekends the architect and operator of everything documented here. Questions about any of it can go to [gsmith829@gmail.com](mailto:gsmith829@gmail.com). In the story itself, he's **Joe** — not a disguise, no identity being protected, just a conceit kept straight.
 
 ## Who writes this
 

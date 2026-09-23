@@ -223,6 +223,15 @@ body[data-slug="index"] .page-header {
   border-bottom: 1px solid var(--om-rule);
   margin-bottom: 1.75rem;
 }
+/* The door is the one page where the header's rule and the receipt's own bottom border stack --
+   the figure renders inside the header, so a reader sees TWO lines 26px apart between the evidence
+   and the body, where every other page shows one (Joe, 2026-09-23; measured: 557 and 583, body at
+   613). The figure is a framed exhibit and keeps its own pair; the header gives up its rule when it
+   is carrying one, and closes the gap it was holding open for it. */
+body[data-slug="index"] .page-header:has(figure.evidence) {
+  border-bottom: 0;
+  margin-bottom: 0.6rem;
+}
 body[data-slug="index"] h1.article-title {
   font-size: 3.6rem;
   font-weight: 400;

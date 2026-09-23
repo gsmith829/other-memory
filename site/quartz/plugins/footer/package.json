@@ -1,0 +1,30 @@
+{
+  "name": "@othermemory/footer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: the garden's footer -- the links out, and no generator credit (the colophon already names Quartz, with a link; journey-site cold read 5)",
+  "type": "module",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./components": { "import": "./dist/components/index.js" },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": { "preact": "^10.0.0", "unified": "^11.0.5", "vfile": "^6.0.3" },
+  "quartz": {
+    "name": "footer",
+    "displayName": "Footer",
+    "category": ["transformer", "component"],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "defaultOrder": 100,
+    "defaultEnabled": true,
+    "components": {
+      "Footer": {
+        "displayName": "Footer",
+        "description": "The garden's own footer: the links out, no generator credit",
+        "defaultPosition": "footer",
+        "defaultPriority": 50
+      }
+    }
+  }
+}

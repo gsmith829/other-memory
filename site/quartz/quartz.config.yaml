@@ -312,8 +312,20 @@ plugins:
     layout:
       position: left
       priority: 10
+  # Off (cold read 5, 2026-09-23; Joe): upstream's is a two-state sun/moon, so the garden pinned a
+  # choice the moment a reader touched it while the book kept following the OS -- "the two sites
+  # rendered in different themes side by side" (the round-5 recruiter). ./site-plugins/theme below
+  # gives the garden the book's three states, and Auto is the absence of the stored key, which is
+  # how upstream already read it.
   - source: "@quartz-community/darkmode"
+    enabled: false
+    layout:
+      position: left
+      priority: 30
+      group: toolbar
+  - source: ./site-plugins/theme
     enabled: true
+    order: 101
     layout:
       position: left
       priority: 30
@@ -342,11 +354,26 @@ plugins:
     layout:
       position: afterBody
       priority: 10
+  # Off (cold read 5, 2026-09-23; Joe): upstream's footer renders "Created with Quartz v5.0.0 ©
+  # 2026" above the links and its options carry only `links` -- the credit is hardcoded. A cold
+  # reader's single biggest ask for this site was to drop it ("the colophon already does that job
+  # better"), and the colophon does name Quartz and Starlight, with links. ./site-plugins/footer
+  # below emits the links and nothing else -- not a CSS hide, which leaves the text for a screen
+  # reader and an index.
   - source: "@quartz-community/footer"
-    enabled: true
+    enabled: false
     options:
       links:
         Colophon: /colophon
+    layout:
+      position: footer
+      priority: 50
+  - source: ./site-plugins/footer
+    enabled: true
+    order: 100
+    options:
+      links:
+        Colophon: colophon
     layout:
       position: footer
       priority: 50

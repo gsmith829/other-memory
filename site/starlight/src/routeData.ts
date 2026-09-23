@@ -91,6 +91,18 @@ export const onRequest = defineRouteMiddleware((context) => {
     head.push({ tag: 'meta', attrs: { property: 'og:description', content: text } });
   }
 
+  // The chronicle's door is titled "Awakening" and so is the site, so Starlight's `title | siteTitle`
+  // template renders "Awakening | Awakening" in the tab (cold read 5, 2026-09-23). Starlight has no
+  // dedupe of its own and the page's title is content, not mine -- so the tag is corrected here,
+  // where the head is already ours to edit, and only when the two are exactly equal.
+  if (head.some((t) => t.tag === 'title')) {
+    for (const tag of head) {
+      if (tag.tag !== 'title' || typeof tag.content !== 'string') continue;
+      const [own, ...rest] = tag.content.split(' | ');
+      if (rest.length === 1 && rest[0] === own) tag.content = own;
+    }
+  }
+
   // The card: one PNG per page under /og/, keyed by the entry id (the same key the og route uses).
   // The 404 is not a content entry and has no card: no tag beats a tag pointing at nothing.
   if (entry.id !== '404') {

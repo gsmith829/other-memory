@@ -1,0 +1,30 @@
+{
+  "name": "@othermemory/theme",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Other Memory: a three-state colour control -- Auto, Dark, Light -- so the garden can follow the OS the way the book does (journey-site cold read 5)",
+  "type": "module",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./components": { "import": "./dist/components/index.js" },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": { "preact": "^10.0.0", "unified": "^11.0.5", "vfile": "^6.0.3" },
+  "quartz": {
+    "name": "theme",
+    "displayName": "Theme",
+    "category": ["transformer", "component"],
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "defaultOrder": 101,
+    "defaultEnabled": true,
+    "components": {
+      "Theme": {
+        "displayName": "Theme",
+        "description": "Auto / Dark / Light, with Auto following the OS -- the book's affordance on the garden",
+        "defaultPosition": "left",
+        "defaultPriority": 30
+      }
+    }
+  }
+}

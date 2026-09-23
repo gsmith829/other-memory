@@ -62,6 +62,8 @@ export interface ContentsOptions {
   folder: string
   /** The garden's descriptor: pinned above the groups, never inside one. */
   descriptorSlug: string
+  /** The garden's own front door: not under `folder`, but it carries a receipt like any page. */
+  doorSlug: string
   /** Links out, rendered after the groups: label -> slug. */
   linksOut: Record<string, string>
   /** The heading over the whole thing. */
@@ -70,6 +72,7 @@ export interface ContentsOptions {
 
 const defaults: ContentsOptions = {
   folder: "garden",
+  doorSlug: "index",
   descriptorSlug: "garden/how-this-garden-grows",
   linksOut: { Colophon: "colophon" },
   title: "Contents",
@@ -331,8 +334,12 @@ export const Contents: QuartzComponentConstructor<Partial<ContentsOptions>> = (u
         related: relatedOf(f),
       }))
     checkRelated(garden, prefix)
+    // The gate (#145, bilby): every garden page AND the garden's own door. The door is not under
+    // `garden/` -- it is content/index.md, slug `index` -- so it was outside both this gate and the
+    // rendering until Joe put a receipt on it (cold read 4: "the first screen is all framing; the
+    // proof is one click away"). Widened here rather than in a second gate: one mechanism per field.
     for (const f of allFiles) {
-      if (typeof f.slug === "string" && f.slug.startsWith(prefix)) evidenceOf(f) // the gate; the rendering reads it again
+      if (typeof f.slug === "string" && (f.slug.startsWith(prefix) || f.slug === opts.doorSlug)) evidenceOf(f)
     }
     const descriptor = garden.find((p) => p.slug === opts.descriptorSlug)
     const rest = garden.filter((p) => p.slug !== opts.descriptorSlug).sort(byTitle)

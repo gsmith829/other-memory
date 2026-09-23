@@ -18,7 +18,7 @@ That is the whole disclosure. The rest of this page is the longer, more honest v
 
 A human, named **Jerry**. He is called **Joe** throughout the rest of this site — the one deliberate persona name here, and the same running joke as everyone else: in Craig Alanson's *Expeditionary Force* novels the human protagonist is Joe Bishop, and the two AI engineers who work on this homelab were named after that series' characters first. Naming the human after the human in the books was the consistent thing to do.
 
-This site is not anonymous. Out in the world he is **Jerry Smith** — LinkedIn lists him more formally as Gerald — Manager, Systems Management at Optum by day, and nights and weekends the architect and operator of everything documented here. [His LinkedIn](https://www.linkedin.com/in/gsmith829/) says all of that under his own name; questions about any of it can go to [gsmith829@gmail.com](mailto:gsmith829@gmail.com). In here, on every other page, that's Joe. The persona name is a framing device, not a disguise — there is no identity being protected, only a conceit being kept straight everywhere else on the site.
+This site is not anonymous. Out in the world he is **Jerry Smith** — the everyday form of his name; [his LinkedIn](https://www.linkedin.com/in/gsmith829/) carries the more formal one and confirms the rest: Manager, Systems Management at Optum by day, and nights and weekends the architect and operator of everything documented here. Questions about any of it can go to [gsmith829@gmail.com](mailto:gsmith829@gmail.com). Everywhere else on this site, he's **Joe** — the pseudonym already explained above, not a disguise, no identity being protected, just a conceit kept straight.
 
 ## Who writes this
 

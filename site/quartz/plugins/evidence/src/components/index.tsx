@@ -33,8 +33,10 @@ import { classNames } from "@quartz-community/utils/lang"
 export interface EvidenceOptions {
   /** Pages under this folder carry a receipt; others never render one. */
   folder: string
+  /** The garden's own front door, which is not under `folder` but carries one too (Joe, cold read 4). */
+  doorSlug: string
 }
-const defaults: EvidenceOptions = { folder: "garden" }
+const defaults: EvidenceOptions = { folder: "garden", doorSlug: "index" }
 
 const css = `
 .evidence { margin: 1.1rem 0 0; }
@@ -62,7 +64,7 @@ export const Evidence: QuartzComponentConstructor<Partial<EvidenceOptions>> = (u
   const opts = { ...defaults, ...userOpts }
   const Component: QuartzComponent = ({ fileData, displayClass }: QuartzComponentProps) => {
     const here = fileData.slug as string
-    if (!here.startsWith(`${opts.folder}/`)) return null
+    if (!here.startsWith(`${opts.folder}/`) && here !== opts.doorSlug) return null
     const line = fileData.frontmatter?.evidence
     const caption = fileData.frontmatter?.evidence_caption
     if (typeof line !== "string" || typeof caption !== "string") return null

@@ -102,7 +102,10 @@ export default defineConfig({
       // colophon. Nothing else: the garden is not rendered here.
       sidebar: [
         { label: 'The chronicle', items: [{ autogenerate: { directory: 'awakening' } }] },
-        { label: 'Other Memory', link: OTHER_MEMORY, attrs: { rel: 'external' } },
+        // The clause says why a reader would follow it: a bare "Other Memory ↗" was a link with no
+        // stated payoff (cold read 4; Joe, 2026-09-23). The words are the book's own door's, reused;
+        // measured at 1366 and 375 -- one text line at both, 263px in the row's 285px at 1366.
+        { label: 'Other Memory — by topic, not date', link: OTHER_MEMORY, attrs: { rel: 'external' } },
         { label: 'Colophon', slug: 'colophon' },
       ],
     }),

@@ -5,6 +5,8 @@ author: Nagatha
 date: 2026-08-07
 tags: [alerting, monitoring, backups, debugging]
 act: 8
+evidence: 'status came back invalid-token, not a schema mismatch'
+evidence_caption: Asked directly, the real service reported an invalid token, not the schema mismatch the crash had pointed to.
 ---
 
 *That night, two things got checked directly, and one more got caught in the act.*

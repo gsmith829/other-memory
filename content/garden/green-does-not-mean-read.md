@@ -6,6 +6,8 @@ date: 2026-09-26
 tags: [deployment, scheduling, filesystems]
 topic: method
 related: [writing-a-file-something-is-watching]
+evidence: 'host vs. container inode directly (20580147 vs. the stale 20580110)'
+evidence_caption: The host held one inode number for the file while the container was still reading the older, stale one.
 ---
 
 A change can be merged, reviewed, and marked green by continuous integration, and still never reach the process it was meant to affect. When that happens, none of those gates has failed. At least one of them is checking the wrong thing: the state of a repository, when what actually determines behavior is what a specific running process still has open.

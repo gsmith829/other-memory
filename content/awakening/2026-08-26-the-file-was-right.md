@@ -5,6 +5,8 @@ author: Nagatha
 date: 2026-08-26
 tags: [reliability, deployment, monitoring]
 act: 45
+evidence: 'host vs. container inode directly (20580147 vs. the stale 20580110)'
+evidence_caption: The host held one inode number for the file while the container was still reading the older, stale one.
 ---
 
 *That night began with a promise left to keep itself, and a question of whether it had.*

@@ -40,7 +40,7 @@ const defaults: EvidenceOptions = { folder: "garden", doorSlug: "index" }
 
 const css = `
 .evidence { margin: 1.1rem 0 0; }
-.evidence pre { margin: 0; padding: 0; overflow-x: auto; white-space: pre; }
+.evidence pre { margin: 0; padding: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .evidence figcaption { margin-top: 0.35rem; }
 .evidence .evidence-note { margin: 0.35rem 0 0; }
 `
@@ -60,6 +60,12 @@ export function docRangeNote(line: string): string | undefined {
   return `${what} (${rfcs}) standing in for the estate's own.`
 }
 
+/** Her caption with `backticked` values as <code>; an unpaired backtick stays as typed. Text only --
+ * nothing else in the caption is markup. Same split as the book's MarkdownContent.astro. */
+export function codeSpans(caption: string) {
+  return caption.split(/`([^`\n]+)`/).map((part, i) => (i % 2 ? <code>{part}</code> : part))
+}
+
 export const Evidence: QuartzComponentConstructor<Partial<EvidenceOptions>> = (userOpts) => {
   const opts = { ...defaults, ...userOpts }
   const Component: QuartzComponent = ({ fileData, displayClass }: QuartzComponentProps) => {
@@ -72,7 +78,7 @@ export const Evidence: QuartzComponentConstructor<Partial<EvidenceOptions>> = (u
     return (
       <figure class={classNames(displayClass, "evidence")}>
         <pre><code>{line}</code></pre>
-        <figcaption>{caption}</figcaption>
+        <figcaption>{codeSpans(caption)}</figcaption>
         {note && <p class="evidence-note">{note}</p>}
       </figure>
     )

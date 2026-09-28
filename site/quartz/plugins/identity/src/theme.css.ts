@@ -386,10 +386,15 @@ article pre > code {
   padding: 0.7rem 0;
 }
 .evidence pre {
+  /* WRAPS, never scrolls (cold read 6, 2026-09-28): on a 375 phone the box shows ~40 of the
+     measure's 72 characters, and BOTH strangers read the door's scroll as the line being cut off --
+     "192.0.2.2 → ser", with the payoff "serial = 5" out of sight. A line that fits never wraps, so
+     nothing changes at desktop; a continuation hangs one indent in so it reads as the same line. */
   margin: 0;
-  padding: 0;
-  white-space: pre;
-  overflow-x: auto;
+  padding: 0 0 0 1.5em;
+  text-indent: -1.5em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   background: transparent;
   border: 0;
 }
@@ -401,7 +406,7 @@ article pre > code {
   background: transparent;
   border: 0;
   padding: 0;
-  white-space: pre;
+  white-space: inherit;
   display: inline; /* upstream's highlighter sets pre > code to grid, which clips a long line at the box instead of letting pre scroll it (measured: 636px of text, 630px box, scrollWidth 630) */
 }
 /* The caption is HER sentence about the line, so it takes the deck's voice -- the serif, italic --
@@ -415,6 +420,17 @@ article pre > code {
   font-size: 0.92rem;
   line-height: 1.45;
   color: var(--gray);
+}
+/* A value she quotes in backticks renders as code, in the line's mono at the caption's size (cold
+   read 6: the caption on local-zone showed its raw backticks). Upright, so it reads as the machine's. */
+.evidence figcaption code {
+  font-family: var(--codeFont);
+  font-style: normal;
+  font-size: 0.9em;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--dark);
 }
 .evidence .evidence-note {
   /* the documentation-range note (plugins/evidence): the machine's voice at the meta size. It was

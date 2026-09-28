@@ -10,7 +10,9 @@
 // gate is src/evidence.ts, run from routeData.ts on every page (#145, Bilby).
 //
 // This is a Starlight component override wrapping the default: the body renders exactly as it did,
-// and the figure follows it inside the same article.
+// and the figure follows it inside the same article. A value she quotes in `backticks` inside the
+// caption renders as code (cold read 6 saw the raw backticks); the same split as the garden's
+// codeSpans(), and nothing else in the caption is markup.
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import { evidenceOf } from '../evidence';
 
@@ -22,7 +24,7 @@ const receipt = evidenceOf(entry.id, entry.data as { evidence?: unknown; evidenc
 {receipt && (
 	<figure class="book-evidence">
 		<pre><code>{receipt.line}</code></pre>
-		<figcaption>{receipt.caption}</figcaption>
+		<figcaption>{receipt.caption.split(/`([^`\n]+)`/).map((part, i) => (i % 2 ? <code>{part}</code> : part))}</figcaption>
 		{receipt.note && <p class="book-evidence-note">{receipt.note}</p>}
 	</figure>
 )}

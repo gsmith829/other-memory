@@ -609,10 +609,15 @@ starlight-theme-select select {
   border-bottom: 1px solid var(--bk-rule);
 }
 .book-evidence pre {
+  /* WRAPS, never scrolls (cold read 6, 2026-09-28): on a 375 phone the box shows ~40 of the
+     measure's 72 characters, and BOTH strangers read the door's scroll as the line being cut off --
+     "192.0.2.2 → ser", with the payoff "serial = 5" out of sight. A line that fits never wraps, so
+     nothing changes at desktop; a continuation hangs one indent in so it reads as the same line. */
   margin: 0;
-  padding: 0;
-  overflow-x: auto;
-  white-space: pre;
+  padding: 0 0 0 1.5em;
+  text-indent: -1.5em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   background: transparent;
   border: 0;
 }
@@ -621,7 +626,7 @@ starlight-theme-select select {
   font-size: 0.78rem; /* 13.26px on the 17px body: 7.96px a character, 72 characters in 573px -- inside the 592px content column at 1280 */
   line-height: 1.5;
   color: var(--bk-ink);
-  white-space: pre;
+  white-space: inherit;
   display: inline;
   background: transparent;
   padding: 0;
@@ -636,6 +641,16 @@ starlight-theme-select select {
   font-size: 0.92rem;
   line-height: 1.45;
   color: var(--bk-meta);
+}
+/* A value she quotes in backticks renders as code (cold read 6); same rule as the garden's. */
+.book-evidence figcaption code {
+  font-family: var(--sl-font-mono);
+  font-style: normal;
+  font-size: 0.9em;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--bk-ink);
 }
 .book-evidence .book-evidence-note {
   /* the documentation-range note (src/evidence.ts): the machine's voice at the meta size -- was

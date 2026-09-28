@@ -16,27 +16,21 @@
 // garden's `topic:` (#96): both are fields told in the tray brief, copied never derived, and D17
 // says every chapter carries the Narrative's number (#81). A warning that ships was the first cut;
 // Bilby's review of #97 asked for parity and Joe chose `fail` (2026-09-19). Site template, not content.
-import { getCollection } from 'astro:content';
 import MobileMenuFooter from 'virtual:starlight/components/MobileMenuFooter';
 import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
 import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
 import type { SidebarEntry } from '@astrojs/starlight/utils/routing/types';
+import { CHRONICLE, bySpine, spineKeys } from '../spine';
 
 /** Acts per shelf. */
 const SHELF = 20;
-/** The chronicle: content/awakening/ -> /awakening/... */
-const CHRONICLE = '/awakening/';
 
 type Link = Extract<SidebarEntry, { type: 'link' }>;
 type Group = Extract<SidebarEntry, { type: 'group' }>;
 
-const docs = await getCollection('docs');
-const actByHref = new Map<string, number | undefined>();
-const dateByHref = new Map<string, number>();
-for (const d of docs) {
-  actByHref.set(`/${d.id}/`, d.data.act);
-  dateByHref.set(`/${d.id}/`, d.data.date ? new Date(d.data.date).getTime() : 0);
-}
+// The order lives in src/spine.ts, shared with prev/next in routeData.ts (cold read 6).
+const keys = await spineKeys();
+const actByHref = keys.act;
 
 const shelfOf = (act: number) => Math.floor((act - 1) / SHELF);
 const shelfLabel = (i: number) => `Acts ${i * SHELF + 1}–${(i + 1) * SHELF}`;
@@ -72,7 +66,7 @@ function shelve(links: Link[]): SidebarEntry[] {
       out.push({ type: 'group', label: shelfLabel(i), entries: [], collapsed: true, badge: { text: 'not yet told', variant: 'default', class: 'book-shelf-empty' } } as Group);
       continue;
     }
-    const sorted = links.sort((a, b) => (actByHref.get(a.href)! - actByHref.get(b.href)!) || (dateByHref.get(a.href)! - dateByHref.get(b.href)!) || a.href.localeCompare(b.href));
+    const sorted = links.sort(bySpine(keys));
     out.push({ type: 'group', label: shelfLabel(i), entries: nightly(sorted), collapsed: !isDoor && i !== newest, badge: undefined } as Group);
   }
   return out;

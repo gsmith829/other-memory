@@ -82,8 +82,10 @@ type Page = { slug: FullSlug; title: string; tags: string[]; topic: Topic; relat
 
 /**
  * The measure: the longest `evidence:` line the figure sets without wrapping. 684px of article at
- * 1440 over Plex Mono at ~0.9rem is ~79 characters; on a phone the block scrolls, never wraps.
- * A wrap is the wrong artifact -- pick a shorter line -- and the build says so. Owned by the
+ * 1440 over Plex Mono at ~0.9rem is ~79 characters. A wrap AT DESKTOP is the wrong artifact -- pick
+ * a shorter line -- and the build says so. On a phone no measure fits (~40 characters at 375), so
+ * there the line wraps with a hanging indent; it scrolled until cold read 6, when both strangers read
+ * the scroll as the line being cut off (2026-09-28). Owned by the
  * rendering (#142, dutchman): tune it there when the figure's type is fixed.
  */
 import measure from "../../evidence.json" with { type: "json" }

@@ -28,13 +28,19 @@
  *                a cold reader's "I expected chapter II and got a different website"). The book's
  *                prev/next is chapter to chapter and nothing else: a link survives only when this
  *                page AND its target are under the chronicle's own path. The sidebar keeps the link
- *                out -- that is navigation, not pagination.
+ *                out -- that is navigation, not pagination. And prev/next walks the SPINE's order
+ *                (src/spine.ts: Act, then date), not Starlight's filename order -- cold read 6
+ *                followed Next from Act 18 to Act 22 and back to Act 20.
  *   og:image     the 404 has no card (src/pages/og/[...route].ts draws content entries), so it gets
  *                no og:image tag rather than one pointing at a file that does not exist.
  */
 import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 import disclosure from '../disclosure.json' with { type: 'json' };
+import type { SidebarEntry } from '@astrojs/starlight/utils/routing/types';
 import { evidenceOf } from './evidence';
+import { bySpine, spineKeys } from './spine';
+
+type Link = Extract<SidebarEntry, { type: 'link' }>;
 
 /** The chronicle: content/awakening/ -> /awakening/... (the `directory` the sidebar autogenerates from). */
 const CHRONICLE_ID = 'awakening';
@@ -56,7 +62,7 @@ export const withDisclosure = (own: string | undefined) => {
 /** Markdown -> the plain words a reader sees, enough to find the callout's text in it. */
 const plainWords = (md: string) => norm(md.replace(/^>\s?/gm, '').replace(/[*_`]+/g, ''));
 
-export const onRequest = defineRouteMiddleware((context) => {
+export const onRequest = defineRouteMiddleware(async (context) => {
   const route = context.locals.starlightRoute;
   const { entry, head } = route;
 
@@ -119,6 +125,19 @@ export const onRequest = defineRouteMiddleware((context) => {
   const inBook = (href: string | undefined) => typeof href === 'string' && href.startsWith(CHRONICLE_PATH);
   const thisPageInBook = entry.id === CHRONICLE_ID || entry.id.startsWith(`${CHRONICLE_ID}/`);
   const { pagination } = route;
-  if (!thisPageInBook || !inBook(pagination.prev?.href)) pagination.prev = undefined;
-  if (!thisPageInBook || !inBook(pagination.next?.href)) pagination.next = undefined;
+  if (!thisPageInBook) {
+    pagination.prev = pagination.next = undefined;
+    return;
+  }
+  // The book's own links, flattened from the sidebar Starlight built: the door first (the folder's
+  // index, first by autogenerate -- the same assumption Sidebar.astro states), then every chapter in
+  // the spine's order. Neighbours in that list are prev and next; nothing outside it is either.
+  const links: Link[] = [];
+  const walk = (es: SidebarEntry[]) => es.forEach((e) => (e.type === 'link' ? links.push(e) : walk(e.entries)));
+  walk(route.sidebar);
+  const [door, ...chapters] = links.filter((l) => inBook(l.href));
+  const order = door ? [door, ...chapters.sort(bySpine(await spineKeys()))] : [];
+  const at = order.findIndex((l) => l.href === `/${entry.id}/`);
+  pagination.prev = at > 0 ? { ...order[at - 1], isCurrent: false } : undefined;
+  pagination.next = at >= 0 && at < order.length - 1 ? { ...order[at + 1], isCurrent: false } : undefined;
 });

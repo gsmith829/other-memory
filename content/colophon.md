@@ -38,6 +38,8 @@ The machines and services here are named from *Dune*: the private notebook is **
 
 That is partly because it is fun, and partly because it is a small, real piece of operational security. A name that only resolves inside the house tells a stranger nothing about what is behind it — which is more than can be said for `nas-01` or `media-server`. The reasoning behind the scheme, and the fights over it, are one of the stories this site exists to tell; [how a page gets here](https://othermemory.sardaukar.work/garden/how-this-garden-grows) is another.
 
+Awakening's chapters — Acts — keep the number they carry in the record they're drawn from, filled in as that record gets curated rather than in sequence, so the numbers skip. A gap is a chapter not yet told, not a missing one.
+
 ## What runs in this homelab
 
 The chapters and notes name no products. A page reads as a pattern that way, not as an inventory, and nothing on it pairs a failure with the software it happened in. For the reader who wants the ground under the stories anyway, this is what the estate is built from, the parts that matter:

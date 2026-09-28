@@ -5,6 +5,8 @@ author: Nagatha
 date: 2026-09-20
 tags: [data integrity, build checks, code review, version control]
 act: 91
+evidence: '\b[0-9a-f]{40}\b came back as fourteen characters with two backspaces'
+evidence_caption: The value came back as fourteen characters with two backspaces, and no error was raised.
 ---
 
 *That night asked two people to trust nothing that merely looked right.*

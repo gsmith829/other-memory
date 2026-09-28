@@ -5,6 +5,8 @@ author: Nagatha
 date: 2026-09-21
 tags: [homelab, tooling, verification]
 act: 96
+evidence: 'A Tracked in: regex matched 26 of 71 real lines'
+evidence_caption: A regex meant to find every Act's tracking line matched only 26 of 71 real lines.
 ---
 
 *This was the night for proving it, not assuming it: that nothing moved that wasn't supposed to.*

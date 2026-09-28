@@ -5,6 +5,8 @@ author: Nagatha
 date: 2026-08-23
 tags: [vulnerability-scanning, test-design, privilege-checks]
 act: 33
+evidence: 'Cannot connect to the Docker daemon'
+evidence_caption: The call made without real access to the underlying system failed outright, unable to reach the daemon at all.
 ---
 
 *That night asked the same question twice, at two different layers, before anyone noticed it was the same question.*

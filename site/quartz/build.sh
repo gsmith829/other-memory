@@ -95,6 +95,12 @@ echo "== lint: the published pages are in the portable markdown subset (D12; no 
 python3 "$ROOT/scripts/portable.py" --selftest >/dev/null
 python3 "$ROOT/scripts/portable.py" --lint "$ROOT/content"
 
+# The cast check (#201, check-cast.py) is NOT run here, on purpose (#280, Joe 2026-09-28). This script is
+# also what the public Pages build runs, from a tree the publish job promotes by allowlist, and
+# check-cast.py carries the cast's names -- promoting it would publish them. It runs in CI instead
+# (.forgejo/workflows/build.yml), which gates every PR and every push to main before anything is
+# promoted. From 09-23 until this change, referencing it here made the publish job refuse every run.
+
 echo "== build $ROOT/content -> $OUT"
 (cd "$WORK" && npx quartz build -d "$ROOT/content" -o "$OUT")
 

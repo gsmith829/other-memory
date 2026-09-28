@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [file-watchers, atomic-writes, permissions, configuration-management]
 topic: systems
-related: [one-git-config-reachable-from-two-mounts]
+related: [one-git-config-reachable-from-two-mounts, green-does-not-mean-read]
 evidence: 'mv "$TMP" "$F"'
 evidence_caption: This is the move step of the build-then-rename pattern, atomic only when the temporary file and the target share a filesystem, and a silent copy when they don't.
 ---

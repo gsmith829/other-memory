@@ -6,6 +6,8 @@ date: 2026-09-27
 tags: [containers, resource-limits, authentication]
 topic: systems
 related: []
+evidence: 'docker stats showed 510/512 PIDs'
+evidence_caption: The count of 510/512 PIDs showed the container had hit its own process ceiling and could no longer create threads or processes, including the process for its own healthcheck.
 ---
 
 A process-count ceiling that never causes trouble on an ordinary container can still be the wrong number for a different kind of container: one whose job, by design, is to fan a single event out to many other things at once. In this case, that ceiling had been applied the same way across the whole fleet, sized for containers with a single job each, and the container that ran out of room was the one every other app behind it depends on.

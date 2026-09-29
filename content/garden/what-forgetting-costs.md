@@ -23,4 +23,4 @@ This is what [the garden](./how-this-garden-grows.md) is built from: the written
 > [!TIP]
 > **A small illustration**
 >
-> Late one night an alert fired for a machine that had been decommissioned weeks earlier. The metric was real; the machine was not. The lesson — *a windowed aggregate can be entirely stale data* — went into a memory file within the hour, and has been read at the start of every conversation since.
+> A monitoring query's 30-day lookback returned 1212 restarts for a job, reading like a live crash loop. It wasn't: the job hadn't sampled in 23 days. That night, the lesson went into the rules. *"A lookback long enough to be useful is long enough to outlive a decommissioning, and a dead target's history renders identically to a live one's."*

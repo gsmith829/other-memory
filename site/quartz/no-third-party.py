@@ -95,6 +95,16 @@ FORBIDDEN_HOSTS = re.compile(
     re.IGNORECASE,
 )
 TEXT_EXT = {".js", ".mjs", ".cjs", ".html", ".htm", ".css", ".xml", ".json", ".svg", ".txt", ".map"}
+# journey-site#328 item 3: choosing files by an extension allowlist skips every type nobody
+# listed, silently -- an extensionless `_redirects`/`_headers`, or a new emitter's output.
+# So every file is accounted for: a TEXT_EXT file is scanned; a named BINARY_EXT type is
+# skipped; any other file is scanned if it decodes as UTF-8, and otherwise NAMED, and
+# `check` cannot pass (exit 2, CANNOT EVALUATE). Measured on a full build 2026-09-30:
+# 355 files, of which TEXT_EXT skipped 99 -- 98 binary (.ttf 12, .webp 83, .png 2, .ico 1)
+# and `_headers`, which `check` itself writes after the scan. Nothing was missed that day;
+# this keeps it so.
+BINARY_EXT = {".png", ".ico", ".jpg", ".jpeg", ".gif", ".webp", ".avif",
+              ".woff", ".woff2", ".ttf", ".otf", ".pdf"}
 # journey-site#49: a stylesheet that url()s an absolute origin is a resource load from a third
 # party, whatever the host -- FORBIDDEN_HOSTS names CDNs, but a `url(https://github.com/...)`
 # in a CSS file the build copied wholesale (giscus's, shipped by upstream's static emitter with
@@ -117,11 +127,36 @@ HARDENING = [
 ]
 
 
-def text_files(root):
+def classify(path):
+    """-> "text", "binary" (a named BINARY_EXT type) or "unknown" (neither: named, never passed)."""
+    ext = os.path.splitext(path)[1].lower()
+    if ext in TEXT_EXT:
+        return "text"
+    if ext in BINARY_EXT:
+        return "binary"
+    try:
+        with open(path, "rb") as f:
+            f.read().decode("utf-8")
+        return "text"
+    except (UnicodeDecodeError, OSError):
+        return "unknown"
+
+
+def walk(root):
     for dirpath, _, names in os.walk(root):
-        for n in names:
-            if os.path.splitext(n)[1].lower() in TEXT_EXT:
-                yield os.path.join(dirpath, n)
+        for n in sorted(names):
+            yield os.path.join(dirpath, n)
+
+
+def text_files(root):
+    for path in walk(root):
+        if classify(path) == "text":
+            yield path
+
+
+def unknown_files(root):
+    """[relpath] of every file that is neither text nor a named binary type."""
+    return [os.path.relpath(p, root) for p in walk(root) if classify(p) == "unknown"]
 
 
 def read(path):
@@ -261,6 +296,12 @@ def check(root, csp_inc, p, quiet=False):
         if n:
             write(fonts, new)
         say(f"relativised {n} absolute font URL(s) in {FONT_CSS}")
+    # An unknown file is reported, but the scans below still run over everything that CAN be
+    # read, so a real third-party URL elsewhere is named in the same run and not hidden behind
+    # it (review of #350). The exit is 2 at the end, whatever else was found.
+    unknown = unknown_files(root)
+    for rel in unknown:
+        say(f"CANNOT EVALUATE: neither text nor a named binary type, so not scanned: {rel}")
     fails = 0
     for local in rewrites(p).values():
         target = os.path.join(root, local.lstrip("/"))
@@ -279,6 +320,10 @@ def check(root, csp_inc, p, quiet=False):
     for rel, ln, url in loads:
         say(f"FAIL: stylesheet loads a remote resource: {rel}:{ln}  {url}")
     fails += len(loads)
+    if unknown:
+        say(f"check: {len(unknown)} file(s) could not be evaluated (add the type to BINARY_EXT if it is"
+            f" one), {fails} failure(s) among the rest")
+        return 2
     if fails:
         say(f"check: {fails} failure(s)")
         return 1
@@ -377,6 +422,30 @@ def selftest():
         ok(check(out, inc, p, quiet=True) == 1 and len(survivors(out)) == 2 and survivors(out)[0][0] == os.path.join("static", "scripts", "graph.js"),
            "an un-vendored graph load fails the build, named")
         os.remove(os.path.join(out, "static", "scripts", "graph.js"))
+        # journey-site#328 item 3: an EXTENSIONLESS text file is scanned (a CDN URL in
+        # `_redirects` fails the check, named); a named binary type is skipped; a file that is
+        # neither is named and the check cannot pass (2), even when nothing else is wrong.
+        write(os.path.join(out, "_redirects"), "/x https://cdn.jsdelivr.net/npm/a@1/a.js 302\n")
+        ok(check(out, inc, p, quiet=True) == 1 and any(r == "_redirects" for r, _, _ in survivors(out)),
+           "a CDN URL in an extensionless file fails, named")
+        write(os.path.join(out, "_redirects"), "/x /y 302\n")
+        with open(os.path.join(out, "static", "i.webp"), "wb") as f:
+            f.write(b"RIFF\x00\xff\xfeWEBP")
+        ok(check(out, inc, p, quiet=True) == 0, "a clean extensionless file and a named binary type pass")
+        with open(os.path.join(out, "static", "blob.dat"), "wb") as f:
+            f.write(b"\x00\xff\xfe\x80")
+        ok(check(out, inc, p, quiet=True) == 2 and unknown_files(out) == [os.path.join("static", "blob.dat")],
+           "an unknown non-text file is named and the check cannot pass")
+        # ...and it does not hide a real survivor in the same run: both are reported.
+        write(os.path.join(out, "q.html"), '<script src="https://unpkg.com/x@1/x.js"></script>')
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = check(out, inc, p)
+        ok(rc == 2 and "blob.dat" in buf.getvalue() and "unpkg.com" in buf.getvalue(),
+           "an unknown file and a survivor are both named in one run; exit 2")
+        os.remove(os.path.join(out, "q.html"))
+        os.remove(os.path.join(out, "static", "blob.dat"))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print(f"selftest: {'ok' if fails == 0 else str(fails) + ' failed'}")

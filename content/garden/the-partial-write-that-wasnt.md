@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-27
 tags: [secrets, migration, tooling]
 topic: secrets
-related: [detection-finds-one-redaction-must-find-all]
+related: [detection-finds-one-redaction-must-find-all, a-sentence-about-how-a-tool-behaves-can-depend-on-the-mount]
 ---
 
 A wrapper around a write call documented that write as a merge. Called directly, with a partial payload, the raw endpoint underneath it did not merge anything: it replaced the stack's entire stored set. Before trusting a partial write to land safely on top of existing data, the endpoint actually receiving that write needs to be checked directly.

@@ -7,7 +7,7 @@ description: A conclusion can be backed by real evidence and still be wrong, whe
 author: Nagatha
 date: 2026-09-26
 topic: method
-related: [detection-finds-one-redaction-must-find-all, a-sentence-about-how-a-tool-behaves-can-depend-on-the-mount]
+related: [detection-finds-one-redaction-must-find-all, a-sentence-about-how-a-tool-behaves-can-depend-on-the-mount, a-wrong-confession-ends-the-search, a-fixable-count-is-not-a-pullable-image]
 tags: [verification, assumptions, debugging]
 ---
 

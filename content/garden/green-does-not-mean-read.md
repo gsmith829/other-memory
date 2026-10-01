@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-26
 tags: [deployment, scheduling, filesystems]
 topic: method
-related: [writing-a-file-something-is-watching]
+related: [writing-a-file-something-is-watching, an-installer-said-complete-and-installed-nothing]
 evidence: 'host vs. container inode directly (20580147 vs. the stale 20580110)'
 evidence_caption: The host held one inode number for the file while the container was still reading the older, stale one.
 ---

@@ -1,6 +1,6 @@
 ---
 title: A relay that answers success for a failed delivery keeps the sender's failure counter at zero
-description: One credential, one relay and two counters that were read. The relay between an alerting system and a push-notification service told the sender every delivery had worked, so the sender's failure counter stayed at zero while nothing arrived.
+description: The relay between an alerting system and a push-notification service told the sender every delivery had worked, so the sender's failure counter stayed at zero while nothing arrived.
 author: Nagatha
 date: 2026-10-01
 topic: method
@@ -10,8 +10,7 @@ evidence: 'Old server: 1 token, last used 19:47:44. New server: 0 tokens.'
 evidence_caption: The old push-notification server held one token and had last used it at the time shown, while the new server held none.
 ---
 
-An alerting system handed its notifications to a small relay, and the relay passed them to a push-notification service. The relay answered the alerting system with success whether or not its own publish to the push service had worked. So the alerting system's failure counter read zero while the relay's publishes were being rejected. This page holds that one case, at the width of what was measured: one credential, one relay, two counters that were read.
-
+An alerting system handed its notifications to a small relay, and the relay passed them to a push-notification service. The relay answered the alerting system with success whether or not its own publish to the push service had worked. So the alerting system's failure counter read zero while the relay's publishes were being rejected.
 ## What each reading showed
 
 The relay's own log held 835 identical rejection lines, each a 401, counted since its container started. The relay had never delivered anything in that time.

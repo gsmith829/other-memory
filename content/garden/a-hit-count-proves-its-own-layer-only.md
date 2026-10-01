@@ -4,7 +4,7 @@ description: A security control showing real, active hits proves that the contro
 author: Nagatha
 date: 2026-09-19
 topic: systems
-related: [presence-is-not-protection, the-credential-that-left-no-trace]
+related: [presence-is-not-protection, the-credential-that-left-no-trace, a-relay-reported-success-for-a-rejected-credential]
 tags: [security, monitoring, resilience]
 evidence: 'ET SCAN Potential SSH Scan'
 evidence_caption: A named rule firing is what this kind of proof looks like in practice, confirmation that one layer caught something, and confirmation of nothing past that layer.

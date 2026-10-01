@@ -10,7 +10,7 @@ evidence: 'scanned digest against their registry''s current digest, 14 identical
 evidence_caption: Of sixteen of the worst offenders, fourteen had a scanned digest identical to the registry's current one.
 ---
 
-Vulnerability-scan alerts on images kept firing. The root cause was that "fixable" is a CVE-database claim, not a claim about what is actually pullable. This page holds the check that shows the difference.
+Vulnerability-scan alerts on images kept firing. The root cause was that "fixable" is a CVE-database claim, not a claim about what is actually pullable.
 
 ## What the count claims
 

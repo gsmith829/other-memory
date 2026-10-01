@@ -26,6 +26,18 @@ Cloudflare Pages and as an nginx `add_header` include (--csp-inc) for the privat
 import base64, hashlib, os, re, sys, tempfile
 
 TEXT = {".html", ".htm", ".css", ".js", ".mjs", ".xml", ".svg"}
+# journey-site#328 item 3, the book's copy (the garden's was #350): choosing files by an extension
+# list skipped every type nobody listed, silently. So every file is accounted for: a TEXT file is
+# scanned as before; a named BINARY_EXT type is counted and skipped; any other file is scanned if it
+# decodes as UTF-8 (CDN strings only: it is not a page or a stylesheet), and otherwise NAMED, and the
+# check cannot pass (exit 2, CANNOT EVALUATE). Measured on a full build 2026-10-01: 140 files, of
+# which TEXT skipped 86 -- 83 binary (.png 30, .woff 9, .woff2 9, Pagefind's .pf_fragment 29,
+# .pf_index 3, .pf_meta 1, .pagefind 2) and 3 text (`_redirects`, `_headers`,
+# `pagefind/pagefind-entry.json`), with 0 third-party hits over the three. Nothing was missed that
+# day; this keeps it so.
+BINARY_EXT = {".png", ".ico", ".jpg", ".jpeg", ".gif", ".webp", ".avif",
+              ".woff", ".woff2", ".ttf", ".otf", ".pdf",
+              ".pagefind", ".pf_fragment", ".pf_index", ".pf_meta"}
 URL = r"https?://([A-Za-z0-9.-]+)"
 HTML_LOADS = [
     re.compile(r"<script\b[^>]*\ssrc\s*=\s*[\"']" + URL, re.I),
@@ -102,11 +114,33 @@ def write_csp_inc(path, csp):
                 f'add_header Content-Security-Policy "{csp}" always;\n')
 
 
+def classify(path):
+    """-> "text", "binary" (a named BINARY_EXT type) or "unknown" (neither: named, never passed)."""
+    ext = os.path.splitext(path)[1].lower()
+    if ext in TEXT:
+        return "text"
+    if ext in BINARY_EXT:
+        return "binary"
+    try:
+        with open(path, "rb") as f:
+            f.read().decode("utf-8")
+        return "text"
+    except (UnicodeDecodeError, OSError):
+        return "unknown"
+
+
+def unknown_files(root):
+    """[relpath] of every file that is neither text nor a named binary type."""
+    return sorted(os.path.relpath(os.path.join(d, n), root)
+                  for d, _, names in os.walk(root) for n in names
+                  if classify(os.path.join(d, n)) == "unknown")
+
+
 def scan(root, site_host, exempt=()):
     hits, files, exempted = [], 0, []
     for d, _, names in os.walk(root):
         for n in names:
-            if os.path.splitext(n)[1].lower() not in TEXT:
+            if classify(os.path.join(d, n)) != "text":
                 continue
             p = os.path.join(d, n); files += 1
             s = open(p, encoding="utf-8", errors="surrogateescape").read()
@@ -142,11 +176,21 @@ def main(argv):
     files, hits, exempted = scan(root, host, exempt)
     if files == 0:
         print(f"CANNOT EVALUATE: no text files under {root}"); return 2
+    # An unknown file is named, but the scan above still ran over everything that CAN be read, so a
+    # real third-party load elsewhere is named in the same run and not hidden behind it (the
+    # garden's copy, review of #350). The exit is 2 whatever else was found.
+    unknown = unknown_files(root)
+    for rel in unknown:
+        print(f"CANNOT EVALUATE: neither text nor a named binary type, so not scanned: {rel}")
     for rel, kind, what, why in sorted(set(exempted)):
         print(f"exempt: {kind}: {rel}: {what} -- {why}")
     for rel, kind, what, _ in sorted(set(hits)):
         print(f"FAIL: {kind}: {rel}: {what}")
-    print(f"no-third-party: inspected {files} files, {len(hits)} third-party load(s), {len(exempted)} exempted")
+    print(f"no-third-party: inspected {files} files, {len(hits)} third-party load(s), {len(exempted)} exempted,"
+          f" {len(unknown)} not evaluated")
+    if unknown:
+        print(f"no-third-party: {len(unknown)} file(s) could not be evaluated (add the type to BINARY_EXT if it is one)")
+        return 2
     if hits:
         return 1
     hashes = inline_script_hashes(root)
@@ -190,6 +234,29 @@ def selftest():
     fails += (not open(inc).read().startswith("# generated") or "add_header Content-Security-Policy" not in open(inc).read()) and print("  FAIL csp.inc") is None
     rc = main([os.path.join(tmp, "bad"), "--site-host", "wallach.example"])
     fails += (rc != 1 or os.path.exists(os.path.join(tmp, "bad", "_headers"))) and print("  FAIL a dirty tree must get no _headers") is None
+    # journey-site#328 item 3: an EXTENSIONLESS text file is scanned (a CDN URL in `_redirects` fails,
+    # named); a named binary type is skipped; a file that is neither is named and the check cannot
+    # pass (2), even when nothing else is wrong -- and it does not hide a real load in the same run.
+    w("every/index.html", "<p>ok</p>")
+    w("every/_redirects", "/x https://cdn.jsdelivr.net/npm/a@1/a.js 302\n")
+    n, h, _ = scan(os.path.join(tmp, "every"), "wallach.example")
+    fails += (not any(r == "_redirects" and k == "cdn-string" for r, k, _, _ in h)) and print("  FAIL extensionless _redirects not scanned:", h) is None
+    w("every/_redirects", "/x /y 302\n")
+    with open(os.path.join(tmp, "every", "i.woff2"), "wb") as f:
+        f.write(b"wOF2\x00\xff\xfe\x80")
+    with open(os.path.join(tmp, "every", "e.pf_fragment"), "wb") as f:
+        f.write(b"\x1f\x8b\x08\x00\xff")
+    fails += (main([os.path.join(tmp, "every"), "--site-host", "wallach.example"]) != 0) and print("  FAIL clean extensionless + named binaries must pass") is None
+    with open(os.path.join(tmp, "every", "blob.dat"), "wb") as f:
+        f.write(b"\x00\xff\xfe\x80")
+    fails += (unknown_files(os.path.join(tmp, "every")) != ["blob.dat"]) and print("  FAIL unknown not named") is None
+    fails += (main([os.path.join(tmp, "every"), "--site-host", "wallach.example"]) != 2) and print("  FAIL an unknown file must be exit 2") is None
+    w("every/q.html", '<script src="https://unpkg.com/x@1/x.js"></script>')
+    import io, contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = main([os.path.join(tmp, "every"), "--site-host", "wallach.example"])
+    fails += (rc != 2 or "blob.dat" not in buf.getvalue() or "unpkg.com" not in buf.getvalue()) and print("  FAIL unknown + survivor must both be named, exit 2:", rc) is None
     print("selftest:", "ok" if not fails else f"{fails} failure(s)")
     return 1 if fails else 0
 

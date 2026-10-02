@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-27
 tags: [verification, evidence]
 topic: method
-related: [the-wrong-way-home]
+related: [the-wrong-way-home, a-wrong-record-passes-every-score-against-it]
 evidence: 'ip route get 192.0.2.3 → via 203.0.113.1 dev eth5 src 203.0.113.2'
 evidence_caption: The line as published now carries the source address the kernel actually chose, not one a reconstruction later assumed.
 ---

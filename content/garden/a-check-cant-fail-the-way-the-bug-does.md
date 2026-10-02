@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [testing, verification, observability]
 topic: method
-related: [nothing-compares-the-file-to-what-is-running, presence-is-not-protection, guidance-must-arrive-at-the-action, detection-finds-one-redaction-must-find-all, a-list-of-names-cant-tell-deleted-from-modified, a-chapter-can-restate-its-page-in-other-words, a-name-in-the-response-is-not-the-data, a-gate-that-discards-its-errors-passes-on-its-own-failure, a-relay-reported-success-for-a-rejected-credential]
+related: [nothing-compares-the-file-to-what-is-running, presence-is-not-protection, guidance-must-arrive-at-the-action, detection-finds-one-redaction-must-find-all, a-list-of-names-cant-tell-deleted-from-modified, a-chapter-can-restate-its-page-in-other-words, a-name-in-the-response-is-not-the-data, a-gate-that-discards-its-errors-passes-on-its-own-failure, a-relay-reported-success-for-a-rejected-credential, a-wrong-record-passes-every-score-against-it]
 evidence: 'grep -ci migrat → 8; grep -c "Applying " → 56'
 evidence_caption: "A search built to count that night's migrations graded itself by the word it assumed the deployment tooling would log rather than the one it actually used: grep -ci migrat found 8 where the real count was 56."
 ---

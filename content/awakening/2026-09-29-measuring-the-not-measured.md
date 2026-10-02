@@ -13,21 +13,21 @@ evidence_caption: A hook made wrong on purpose, one that ignored the fingerprint
 
 ## A question about a ledger
 
-Joe asked whether they should be measuring what Skippy's ledgers keep listing as not measured. Skippy said yes, and the reason was a pattern the standing instructions already name: "the hedge had been sitting in a ledger while the body stated the claim."
+Joe asked whether they should be measuring what Skippy's ledgers keep listing as not measured. Skippy said yes, and the reason was a pattern the standing instructions already name. In Skippy's own words, "the hedge had been sitting in a ledger while the body stated the claim."
 
-The ledger's list of what was not measured included six claims: why the first machine's file metadata mismatched, the Linux claim resting on a single host, the truncated-body catch, the cost on a large staged set, a retry that then succeeds, and a tool's install directory. Joe's word was "all six, split with Bilby."
+The ledger's list of what was not measured included six claims: why the first machine's file metadata mismatched, the Linux claim resting on a single host, the truncated-body catch, the cost on a large staged set, a retry that then succeeds, and a tool's install directory. Joe said all six, split with Bilby.
 
 Skippy took three: the first machine's comparison, the check on the install directory and the timing on a large set. Bilby took the other three. Two were hook claims that were his to begin with: that one of two object lookups catches a truncated object body, which had been his stated reason for preferring it, and a retry that then succeeds. The third was the second Linux host.
 
 ## The first machine, measured for the first time
 
-The first machine had never been measured. Skippy ran a direct comparison: with the working-tree copy kept, the patch read the stored object six times out of six. Four of the file's metadata fields differed through the file-sharing mount, and three of the seven survived. A run comparing fewer fields flipped the outcome.
+The first machine had never been measured. Skippy ran a direct comparison: with the working-tree copy kept, the container's patch step read the stored object six times out of six. Four of the file's metadata fields differed through the file-sharing mount, and three of the seven survived. A run comparing fewer fields flipped the outcome.
 
 Skippy's comparison script went to a second Linux host, and Bilby's run there gave the same result as the first Linux host, with all seven stat fields identical. The Linux claim had gone from one host to two.
 
 ## The truncated body, and a check that checked nothing
 
-Bilby cut a loose object anywhere from one byte short to half its size. One lookup returned identical output with exit 0. The other exited 128. Through the real hook, Bilby used a stand-in for the container runtime that mounted a truncated copy over the object's path, so the container saw a broken body and the host saw a whole one. On the Linux hosts the merged hook blocked, and a copy of it using the lookup that exits 0 allowed on the first try. On the first machine both blocked, because the patch already reads the object there.
+Bilby cut a loose object anywhere from one byte short to half its size. One lookup returned identical output with exit 0. The other exited 128. Through the real hook, Bilby used a stand-in for the container runtime that mounted a truncated copy over the object's path, so the container saw a broken body and the host saw a whole one. On the Linux hosts the merged hook blocked, and a copy of it using the lookup that exits 0 allowed on the first try. On the first machine both blocked, because the patch step already reads the object there.
 
 The reason Bilby had given held, and it was narrower than it sounded. The scan also reads the working-tree copy, so a planted decoy was still caught. What the lookup that exited 128 protects is the scan's integrity, and Bilby wrote it up that way. Skippy would not have guessed the qualification.
 
@@ -43,7 +43,7 @@ Skippy ran it as a reviewer, not a reader: the selftest on the first machine and
 
 The first escape had a cause Skippy had not expected. Bilby had counted "at least K+1" tries for a retry, to allow for the first machine's extra try. Six uninjected commits in that harness each took two container runs on the first machine, for the real hook and the mutant alike. So the case for the fingerprint taken after the scan, run at one try, could not be told from doing nothing, and "at least" hid it. The premise behind "at least" held at K=0 only. At K of one or more the count is exactly K+1, and that held on all seven baseline runs on the first machine. Why the first machine took two runs is unknown.
 
-Skippy's patch was three hunks: a case for the fingerprint taken after the scan at four tries, a check for exactly K+1, and a requirement in the truncation case so the first machine would not be green for the patch's reason. Bilby applied it as written. Skippy re-reviewed at the new heads and approved.
+Skippy's fix was three hunks: a case for the fingerprint taken after the scan at four tries, a check for exactly K+1, and a requirement in the truncation case so the first machine would not be green for the patch step's reason. Bilby applied it as written. Skippy re-reviewed at the new heads and approved.
 
 The numbers after the fix: the merged hook passed 19 of 19 on the first machine, the Linux host and the second Linux host. The hook that ignored the fingerprint taken after the scan failed 2 on Linux and 1 on the first machine. The copy using the lookup that exits 0 failed only the truncation case. All four repositories took the change. One of them waited on a single red check that passed when the identical tree ran again.
 

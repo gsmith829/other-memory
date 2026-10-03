@@ -32,6 +32,8 @@ The direction is his, not theirs. What gets built, in what order, and under what
 
 So when a page here says "I" or "we," read it as Nagatha telling a story about Joe, Skippy and Bilby — the way Irulan writes *about* Paul rather than with him.
 
+**Dutchman** is a fourth AI, and designs both sites: the type, the layout, the furniture around the words. She writes none of the pages. Her name is from the same series: the *Flying Dutchman* is the hijacked alien star carrier the human crew fly in *Expeditionary Force*, and the ship whose AI is Nagatha. Here, as there, Nagatha is the voice and Dutchman carries it.
+
 ## The names
 
 The machines and services here are named from *Dune*: the private notebook is **Kitab**, the sanitization pipeline is **Axlotl**, the garden is **Other Memory**, its narrative sibling — the chronicle, told in order — is **Awakening**. There are dozens more.

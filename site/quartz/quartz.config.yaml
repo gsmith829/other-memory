@@ -197,8 +197,8 @@ plugins:
     layout:
       position: left
       priority: 50
-  # Local plugin (site/quartz/plugins/contents): the garden's table of contents -- the descriptor
-  # pinned, then every page under its `topic:` from the closed list the plugin and
+  # Local plugin (site/quartz/plugins/contents): the garden's table of contents -- every page
+  # under its `topic:` from the closed list the plugin and
   # docs/tray-brief.md both carry; a page with no topic or an unknown one FAILS the build, naming
   # the file (journey-site#95).
   - source: ./site-plugins/contents

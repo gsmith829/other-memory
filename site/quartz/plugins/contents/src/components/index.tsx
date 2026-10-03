@@ -6,8 +6,7 @@
  * build time from the content index, so it can read every page's frontmatter and needs no
  * script: nothing for the CSP to block, no localStorage state, the same on every visit.
  *
- *   the descriptor    garden/how-this-garden-grows, pinned above the groups: it is the map
- *   the groups        every other garden page under its `topic:` -- a CLOSED list, told to the
+ *   the groups        every garden page under its `topic:` -- a CLOSED list, told to the
  *                     chronicler in the tray brief's `pieces:` and copied into frontmatter,
  *                     never derived (docs/tray-brief.md carries the same five words and the
  *                     placement rule). A garden page with no topic, or one not in the list,
@@ -60,8 +59,6 @@ type Topic = (typeof TOPICS)[number]
 export interface ContentsOptions {
   /** Pages under this folder are the garden and must carry a topic. */
   folder: string
-  /** The garden's descriptor: pinned above the groups, never inside one. */
-  descriptorSlug: string
   /** The garden's own front door: not under `folder`, but it carries a receipt like any page. */
   doorSlug: string
   /** Links out, rendered after the groups: label -> slug. */
@@ -73,7 +70,6 @@ export interface ContentsOptions {
 const defaults: ContentsOptions = {
   folder: "garden",
   doorSlug: "index",
-  descriptorSlug: "garden/how-this-garden-grows",
   linksOut: { Colophon: "colophon" },
   title: "Contents",
 }
@@ -260,8 +256,6 @@ const css = `
 .contents .contents-page { padding: 0.45rem 0 0.45rem 0.7rem; border-left: 2px solid transparent; }
 .contents .contents-page.active { border-left-color: var(--secondary); }
 .contents .contents-page.active .contents-title { color: var(--dark); }
-.contents .contents-descriptor { border-bottom: 1px solid var(--lightgray); margin-bottom: 0.6rem; }
-.contents .contents-descriptor .contents-page { padding-left: 0; border-left: 0; }
 .contents .contents-topic { margin-top: 0.7rem; }
 .contents .contents-topic > h3 {
   font-family: var(--codeFont); font-size: 0.72rem; font-weight: 400; letter-spacing: 0.04em;
@@ -332,7 +326,7 @@ export const Contents: QuartzComponentConstructor<Partial<ContentsOptions>> = (u
         slug: f.slug as FullSlug,
         title: f.frontmatter?.title ?? (f.slug as string),
         tags: Array.isArray(f.frontmatter?.tags) ? (f.frontmatter!.tags as string[]) : [],
-        topic: topicOf(f), // every garden page, the descriptor included -- it is pinned by slug below, not exempted here
+        topic: topicOf(f), // every garden page, no exemptions
         related: relatedOf(f),
       }))
     checkRelated(garden, prefix)
@@ -343,8 +337,12 @@ export const Contents: QuartzComponentConstructor<Partial<ContentsOptions>> = (u
     for (const f of allFiles) {
       if (typeof f.slug === "string" && (f.slug.startsWith(prefix) || f.slug === opts.doorSlug)) evidenceOf(f)
     }
-    const descriptor = garden.find((p) => p.slug === opts.descriptorSlug)
-    const rest = garden.filter((p) => p.slug !== opts.descriptorSlug).sort(byTitle)
+    // No pin (Joe, 2026-10-03). "How this garden grows" was pinned above the groups as the map while
+    // the garden had a handful of pages; at 41 the topic headings are the map, and a pinned page about
+    // the site made the sidebar open on the site describing itself -- the framing-before-engineering
+    // finding of cold reads 5 and 6. Its topic is `garden`, the last of the five, so it now sits at the
+    // foot of the list beside the colophon link: the pages about the site, together, after the work.
+    const rest = [...garden].sort(byTitle)
     const link = (slug: string) => resolveRelative(here, simplifySlug(slug as FullSlug) as SimpleSlug)
     const isHere = (slug: string) => simplifySlug(here) === simplifySlug(slug as FullSlug)
 
@@ -368,7 +366,6 @@ export const Contents: QuartzComponentConstructor<Partial<ContentsOptions>> = (u
         </label>
         <div class="contents-sheet">
           <h2>{opts.title}</h2>
-          {descriptor && <ul class="contents-descriptor">{row(descriptor)}</ul>}
           {TOPICS.map((t) => {
             const pages = rest.filter((p) => p.topic === t)
             if (pages.length === 0) return null

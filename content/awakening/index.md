@@ -7,7 +7,7 @@ evidence: 'nslookup -type=SOA example.com 192.0.2.2 → serial = 5'
 evidence_caption: "One of the two lookups that settled a real incident here, not a hypothetical. The chapters below are built from findings this concrete — most carry their own receipt."
 ---
 
-This is the chronicle of a real homelab, owned and run by Joe, told in the order it happened from his own notes. Out in the world he's [Jerry](https://www.linkedin.com/in/gsmith829/), Manager, Systems Management at Optum — architect and operator of everything here nights and weekends.
+From Joe's own notes. Out in the world he's [Jerry](https://www.linkedin.com/in/gsmith829/), Manager, Systems Management at Optum — architect and operator of everything here nights and weekends.
 
 <!-- Curated pick, dated so it's easy to tell when it's gone stale: revisit these three as new
      chapters land, rather than letting the same three stand forever. Chosen 2026-09-23 for

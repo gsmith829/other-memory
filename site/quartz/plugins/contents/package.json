@@ -2,7 +2,7 @@
   "name": "@othermemory/contents",
   "version": "1.0.0",
   "private": true,
-  "description": "Other Memory: the garden's table of contents -- the descriptor pinned, then every page under its topic, server-rendered at build time from the content index; replaces the client-side explorer (journey-site#95)",
+  "description": "Other Memory: the garden's table of contents -- every page under its topic, server-rendered at build time from the content index; replaces the client-side explorer (journey-site#95)",
   "type": "module",
   "exports": {
     ".": {
@@ -32,7 +32,7 @@
     "components": {
       "Contents": {
         "displayName": "Contents",
-        "description": "The garden's table of contents: the descriptor, then pages grouped by their closed-list topic; fails the build on a page with no topic or an unknown one",
+        "description": "The garden's table of contents: pages grouped by their closed-list topic; fails the build on a page with no topic or an unknown one",
         "defaultPosition": "left",
         "defaultPriority": 50
       }

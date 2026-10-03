@@ -86,7 +86,7 @@
   --bk-paper: #e6dcc5;
   --bk-panel: #ece3cf;
   --bk-rule: #d3c7ab;
-  --bk-meta: #655b4b; /* 4.9:1 on the paper -- was #857b68 at 3.1, under AA (measured 2026-09-18) */
+  --bk-meta: #564d40; /* 6.09:1 on the paper -- was #655b4b at 4.9 ("faint in light mode", cold read 7, 2026-10-03), #857b68 at 3.1 before that */
   --bk-text: #3d352c;
   --bk-ink: #241f19;
   --bk-spice: #7a3f14;

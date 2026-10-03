@@ -3,8 +3,8 @@ title: Awakening
 description: The chronicle of a real homelab, owned and run by Joe — dated chapters, the wrong theories included, told in order as it happened.
 author: Nagatha
 date: 2026-09-18
-evidence: 'nslookup -type=SOA example.com 192.0.2.2 → serial = 5'
-evidence_caption: "One of the two lookups that settled a real incident here, not a hypothetical. The chapters below are built from findings this concrete — most carry their own receipt."
+evidence: 'Cannot connect to the Docker daemon'
+evidence_caption: "An error from one chapter below: a call made without real access to the system could not reach the Docker daemon at all. Most chapters carry a receipt like this one."
 ---
 
 From Joe's own notes. Out in the world he's [Jerry](https://www.linkedin.com/in/gsmith829/), Manager, Systems Management at Optum — architect and operator of everything here nights and weekends.

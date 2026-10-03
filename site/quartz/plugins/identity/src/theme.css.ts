@@ -490,21 +490,19 @@ article pre > code {
   font-size: var(--om-meta-size);
   color: var(--gray);
   margin-top: 0.5rem;
-  /* The plugin's markup is fixed: the framework credit, then the links. The site's own link
-     (the colophon -- the page every byline points at) should lead, so the two are drawn in
-     reverse. Visual order only; the DOM and a screen reader still read credit first. */
-  display: flex;
-  flex-direction: column-reverse;
 }
-#quartz-body > footer p {
-  color: var(--gray);
-  margin: 0.3rem 0 0;
-}
-/* The footer plugin's own sheet sets ul { margin-top: -1rem } to tuck the list under the <p>'s
-   default 1em bottom margin; with that margin gone the list climbed into the line above
-   (measured: text boxes overlapping by 2px). The leading is chosen here, not by the plugin. */
+/* The links, as a row of plain words. Since #198 the footer is our own component (site-plugins/
+   footer): it emits a <ul> of links and nothing else, and upstream's footer sheet -- which turned
+   that list into an inline row -- no longer ships with it. So the browser's default list showed: a
+   disc and a 40px indent, read by cold read 7 as 'a lone "• Colophon" bullet looks unfinished'
+   (2026-10-03). No marker, no indent; several links sit in a row with a gap, one sits alone. */
 #quartz-body > footer ul {
-  margin-top: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
 }
 #quartz-body > footer a {
   color: var(--gray);

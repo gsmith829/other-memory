@@ -46,9 +46,7 @@ with a private address.
 Two quick checks killed it. First: ask the resolver for the domain's SOA record. It answered
 from a local authoritative zone it held itself, serial 5. Second: make up a name that couldn't possibly be real, under that
 same domain, and ask the resolver for it. It said the name didn't exist. Then ask a public resolver
-the identical made-up name. It answered, or at least didn't refuse it the same way. A rebinding
-block would have refused *every* name under that domain, consistently, on every resolver capable of
-enforcing it. A local zone only refuses the names nobody has entered, and lets the ones already
+the identical made-up name. It answered, or at least didn't refuse it the same way. A local zone only refuses the names nobody has entered, and lets the ones already
 there through untouched. That split answer is the signature, and it took two lookups to see it.
 
 The fix was a wildcard: add an entry that catches every name under that domain, so
@@ -73,9 +71,8 @@ the monitor audit: a count of monitors that didn't match the list of names actua
 two monitors flagged as needing cleanup that had, in fact, already been removed. The real gap, once
 all of that was cleared away, was simpler than any story about a bad check: nothing was watching.
 And worse. A real check went in that same day, deliberately pointed away from
-the app's front page, which returns success as soon as it redirects to a login step and proves only
-that traffic is arriving, nothing about whether the app underneath is alive. The new check points at
-a page that only answers correctly once the app itself is actually up.
+the app's front page. That page returns success only after following an auth redirect, which proves
+routing, not that the app is alive.
 
 The general shape of what happened here, what a local zone does to every name under a public
 domain, the two lookups that prove it, and why the fix adds instead of deletes, is written up on its

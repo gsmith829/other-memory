@@ -22,8 +22,8 @@ The homelab started in 2013 with an 8-bay NAS and a Windows box; two upgrades la
 
 <!-- Curated pick, dated so it's easy to tell when it's gone stale: revisit these three as new
      chapters land, rather than letting the same three stand forever. Chosen 2026-10-03 (Joe) for
-     the three slots the design record's Positioning names: a claim corrected, an infrastructure
-     postmortem, and AI review measured (journey-site#472). -->
+     the three slots the design record's Positioning names (one infrastructure incident, one
+     AI-governance story, one correction story); the labels are Joe's (journey-site#472). -->
 **Start here:** [Shadow zone](./2026-08-12-shadow-zone.md) (a claim corrected), [Broken in a way nobody had checked](./2026-08-05-broken-in-a-way-nobody-had-checked.md) (an infrastructure postmortem), or [The caution put on the scale](./2026-09-29-the-caution-put-on-the-scale.md) (AI review, measured).
 
 Who writes this, why the numbers skip, and what everything here is named after, is on the [colophon](../colophon.md).

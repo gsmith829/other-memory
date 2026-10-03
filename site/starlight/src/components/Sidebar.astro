@@ -67,7 +67,12 @@ function shelve(links: Link[]): SidebarEntry[] {
       continue;
     }
     const sorted = links.sort(bySpine(keys));
-    out.push({ type: 'group', label: shelfLabel(i), entries: nightly(sorted), collapsed: !isDoor && i !== newest, badge: undefined } as Group);
+    // How many of the shelf's Acts are told (Joe, 2026-10-03, after cold read 6: the gaps across 98
+    // Acts read as "unfinished" to both strangers). "Acts 1–20 · N told" says the book is a selection
+    // where the gaps are seen, so the door no longer has to explain it. Acts, not chapters: a night
+    // told in two chapters is one Act, and the label counts Acts.
+    const told = new Set(sorted.map((l) => actByHref.get(l.href))).size;
+    out.push({ type: 'group', label: shelfLabel(i), entries: nightly(sorted), collapsed: !isDoor && i !== newest, badge: { text: `${told} told`, variant: 'default', class: 'book-shelf-told' } } as Group);
   }
   return out;
 }

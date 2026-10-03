@@ -35,7 +35,7 @@ python3 "$ROOT/scripts/portable.py" --lint "$ROOT/content"
 echo "== toolchain (npm ci, package-lock.json)"
 # --legacy-peer-deps: satteri-resolve-markdown-links 0.1.2 declares satteri ^0.7||^0.8; Astro 7.3
 # ships 0.10.x. The resolver is kept (astro.config.mjs says why); this flag is the cost, recorded.
-(cd "$HERE" && npm ci --no-audit --no-fund --loglevel=error --legacy-peer-deps)
+(cd "$HERE" && npm ci --fetch-timeout=60000 --fetch-retries=2 --no-audit --no-fund --loglevel=error --legacy-peer-deps)
 
 sha256() { if command -v sha256sum >/dev/null; then sha256sum "$1"; else shasum -a 256 "$1"; fi | cut -d' ' -f1; }
 echo "== fonts: IBM Plex $PLEX_TAG, sha256-verified"

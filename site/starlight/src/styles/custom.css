@@ -429,7 +429,7 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
   color: var(--bk-meta);
 }
 /* An empty shelf between two filled ones (Sidebar.astro): a muted label, no caret, nothing to open --
-   "Acts 41–60  not yet told". The badge Starlight renders after the label is remade into the second
+   "Acts 41–60 · not yet told". The badge Starlight renders after the label is remade into the second
    phrase; the details is inert. Cold reads 3 and 4: the silent jump read as a bug. */
 .sidebar-content details:has(> summary .book-shelf-empty) {
   pointer-events: none;
@@ -440,17 +440,31 @@ main:has(.book-title[data-route='colophon']) .sl-markdown-content > .starlight-a
 .sidebar-content details:has(> summary .book-shelf-empty) > summary .group-label > span {
   color: color-mix(in srgb, var(--bk-meta) 70%, transparent);
 }
+/* Every shelf states its count in the same phrase family (Joe, 2026-10-03, after cold read 6):
+   "Acts 1–20 · N told" on a filled shelf, "Acts 41–60 · not yet told" on an empty one. Both are
+   Starlight's group badge, remade into plain meta text; the middot is drawn here and carries an
+   empty alt so a screen reader hears "Acts 1–20, N told", not "middle dot". The empty one stays
+   italic and muted -- an absence; the count is upright -- a fact. */
+.sidebar-content .book-shelf-told,
 .sidebar-content .book-shelf-empty {
   border: 0;
   background: transparent;
   padding: 0;
   border-radius: 0;
-  margin-inline-start: 0.6em;
+  margin-inline-start: 0.45em;
   font-family: var(--sl-font-mono);
   font-size: var(--bk-meta-size);
   font-weight: 400;
-  font-style: italic;
   letter-spacing: 0;
+  color: var(--bk-meta);
+}
+.sidebar-content .book-shelf-told::before,
+.sidebar-content .book-shelf-empty::before {
+  content: "·" / "";
+  margin-inline-end: 0.45em;
+}
+.sidebar-content .book-shelf-empty {
+  font-style: italic;
   color: color-mix(in srgb, var(--bk-meta) 70%, transparent);
 }
 .sidebar-content details details > ul {

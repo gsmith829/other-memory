@@ -52,7 +52,7 @@ fi
 [ "$(git -C "$WORK" rev-parse HEAD)" = "$QUARTZ_SHA" ] || { echo "FAIL: upstream checkout is not at $QUARTZ_SHA" >&2; exit 2; }
 
 echo "== dependencies (upstream package-lock.json; the plugins are npm packages pinned there)"
-(cd "$WORK" && npm ci --no-audit --no-fund --loglevel=error)
+(cd "$WORK" && npm ci --fetch-timeout=60000 --fetch-retries=2 --no-audit --no-fund --loglevel=error)
 
 echo "== point the plugin sources at the vendored libraries (before the build, on purpose)"
 python3 "$ROOT/site/quartz/no-third-party.py" patch "$WORK"

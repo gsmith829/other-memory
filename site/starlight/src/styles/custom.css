@@ -184,10 +184,10 @@ body {
 .sl-markdown-content {
   line-height: 1.65;
 }
-.sl-markdown-content p {
+.sl-markdown-content p:not(:where(.not-content *)) {
   margin-block: 0 1.1rem;
 }
-.sl-markdown-content strong {
+.sl-markdown-content strong:not(:where(.not-content *)) {
   color: var(--bk-ink);
 }
 .sl-markdown-content a:not(:where(.not-content *)) {
@@ -206,11 +206,11 @@ body {
   border-top: 1px solid var(--bk-rule);
   margin: 2.5rem 0;
 }
-.sl-markdown-content code {
+.sl-markdown-content code:not(:where(.not-content *)) {
   font-size: 0.86em;
   border-radius: 2px;
 }
-.sl-markdown-content pre {
+.sl-markdown-content pre:not(:where(.not-content *)) {
   border: 1px solid var(--bk-rule);
   border-radius: 3px;
 }
@@ -620,10 +620,10 @@ starlight-theme-select select {
 .book-evidence {
   margin: 2.4rem 0 0;
   padding: 0.7rem 0;
-  /* The door sets this figure INSIDE the markdown body (after the thesis; cold read 8), where
-     Starlight's own rules size a pre at --sl-text-code with a tighter line: measured 14.875px and
-     line-height 24.5px against the chapters' 17px and 29.75px at the foot. Pinned to the body's
-     values so the figure is one size at either end. */
+  /* The door sets this figure INSIDE the markdown body (after the thesis; cold read 8). The figure
+     carries `not-content`, so no markdown rule reaches what is in it -- but the body's line-height
+     (1.65, below) is INHERITED, which no class stops; the page's own 1.75 is restated here so the
+     figure is one size at either end (the door measured 28.05px a line against 29.75 at the foot). */
   line-height: var(--sl-line-height);
   border-top: 1px solid var(--bk-rule);
   border-bottom: 1px solid var(--bk-rule);
@@ -634,8 +634,6 @@ starlight-theme-select select {
      "192.0.2.2 → ser", with the payoff "serial = 5" out of sight. A line that fits never wraps, so
      nothing changes at desktop; a continuation hangs one indent in so it reads as the same line. */
   margin: 0;
-  font-size: inherit;
-  line-height: inherit;
   padding: 0 0 0 1.5em;
   text-indent: -1.5em;
   white-space: pre-wrap;

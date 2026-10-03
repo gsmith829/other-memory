@@ -24,8 +24,11 @@ const receipt = evidenceOf(entry.id, entry.data as { evidence?: unknown; evidenc
 const cast = castOf(entry.id, entry.data as { cast?: { name: string; role: string }[] });
 
 // The figure's markup, written once and used at either end (escaped: it is inserted with set:html).
+// `not-content` is Starlight's own escape hatch: every markdown rule (theirs and custom.css's) is
+// written `:not(:where(.not-content *))`, so on the door, inside the body, nothing in the figure is
+// restyled as body text; at the foot, outside the body, it changes nothing.
 const figure = receipt
-	? `<figure class="book-evidence"><pre><code>${esc(receipt.line)}</code></pre><figcaption>${receipt.caption
+	? `<figure class="book-evidence not-content"><pre><code>${esc(receipt.line)}</code></pre><figcaption>${receipt.caption
 			.split(/`([^`\n]+)`/)
 			.map((part, i) => (i % 2 ? `<code>${esc(part)}</code>` : esc(part)))
 			.join('')}</figcaption>${receipt.note ? `<p class="book-evidence-note">${esc(receipt.note)}</p>` : ''}</figure>`

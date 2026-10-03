@@ -24,6 +24,14 @@ export const collections = {
         // from routeData.ts -- a refine here could not name the file the way that throw does.
         evidence: z.string().optional(),
         evidence_caption: z.string().optional(),
+        // The book door's cast key (journey-site#459): name and role, at most four rows. Rendered after
+        // the door's first paragraph by src/components/MarkdownContent.astro; any other page carrying
+        // one fails the build in src/cast.ts. Content's words, the rendering's shape.
+        cast: z
+          .array(z.object({ name: z.string().trim().min(1), role: z.string().trim().min(1) }).strict())
+          .min(1)
+          .max(4)
+          .optional(),
       }),
     }),
   }),

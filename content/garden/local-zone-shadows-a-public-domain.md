@@ -6,8 +6,8 @@ topic: networks
 related: [inherited-is-not-authored, the-wrong-way-home]
 date: 2026-09-18
 tags: [dns, resolution, architecture]
-evidence: 'nslookup -type=SOA example.com 192.0.2.2 → serial = 5'
-evidence_caption: "The first of the two general-purpose lookups: asking the resolver for the domain's SOA record, whose answer is authoritative and carries a locally-assigned serial, `5`, not the public zone's real one."
+evidence: 'SOA serial 5'
+evidence_caption: "What the resolver held for the domain was a local authoritative zone, with real name-server records and an SOA serial of 5."
 ---
 
 If a DNS resolver holds a local, authoritative zone for a domain someone else owns publicly, it

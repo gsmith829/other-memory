@@ -15,12 +15,18 @@
 // codeSpans(), and nothing else in the caption is markup.
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import { evidenceOf } from '../evidence';
+import { castOf, withCast } from '../cast';
 
 const { entry } = Astro.locals.starlightRoute;
 const receipt = evidenceOf(entry.id, entry.data as { evidence?: unknown; evidence_caption?: unknown });
+// The door's cast key (journey-site#459) goes after the body's first paragraph -- the identity line --
+// so the body is rendered to a string once, on the door only, when it carries a cast. Every other
+// page takes the slot path exactly as before.
+const cast = castOf(entry.id, entry.data as { cast?: { name: string; role: string }[] });
+const body = cast ? withCast(await Astro.slots.render('default'), cast) : undefined;
 ---
 
-<Default {...Astro.props}><slot /></Default>
+{body !== undefined ? <Default {...Astro.props}><Fragment set:html={body} /></Default> : <Default {...Astro.props}><slot /></Default>}
 {receipt && (
 	<figure class="book-evidence">
 		<pre><code>{receipt.line}</code></pre>

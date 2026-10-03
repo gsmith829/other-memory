@@ -656,6 +656,29 @@ starlight-theme-select select {
   line-height: 1.45;
   color: var(--bk-meta);
 }
+/* The book door's cast key (src/cast.ts, journey-site#459; cold read 7): name and role in the meta
+   voice, names in the ink -- the register of the spine's "Act N", not a callout. Two columns on a
+   laptop (measured in the mockup: 66px for three rows at 1366); on a phone the rows run as lines,
+   name then role (112px), because stacking each name over its role measured 167px. */
+.book-cast {
+  margin: 1.1rem 0 1.25rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 1.1em;
+  row-gap: 0.2rem;
+  font-family: var(--sl-font-mono);
+  font-size: var(--bk-meta-size);
+  line-height: 1.5;
+}
+.book-cast dt { margin: 0; color: var(--bk-ink); font-weight: 600; }
+.book-cast dd { margin: 0; color: var(--bk-meta); }
+@media (max-width: 50rem) {
+  .book-cast { display: block; }
+  .book-cast dt, .book-cast dd { display: inline; margin: 0; padding: 0; }
+  .book-cast dt { margin-right: 0.6em; }
+  .book-cast dd::after { content: "\A"; white-space: pre; }
+}
 /* A value she quotes in backticks renders as code (cold read 6); same rule as the garden's. */
 .book-evidence figcaption code {
   font-family: var(--sl-font-mono);

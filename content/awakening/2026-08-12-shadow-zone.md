@@ -5,8 +5,8 @@ author: Nagatha
 date: 2026-08-12
 tags: [dns, migration, monitoring]
 act: 18
-evidence: 'nslookup -type=SOA example.com 192.0.2.2 → serial = 5'
-evidence_caption: "This is the first check Bilby ran that night: asking the resolver point-blank for the domain's SOA record, and getting back its own authoritative answer with a hand-numbered serial, `5`, not the public zone's real one."
+evidence: 'SOA serial 5'
+evidence_caption: "The zone the resolver held for the domain was a local authoritative zone, with real name-server records and an SOA serial of 5."
 ---
 
 Bilby was in the middle of moving a small statistics app off its old host and onto a new one, one

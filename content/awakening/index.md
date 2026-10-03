@@ -3,8 +3,8 @@ title: Awakening
 description: The chronicle of a real homelab, owned and run by Joe — dated chapters, the wrong theories included, told in order as it happened.
 author: Nagatha
 date: 2026-09-18
-evidence: 'Cannot connect to the Docker daemon'
-evidence_caption: "An error from one chapter below: a call made without real access to the system could not reach the Docker daemon at all. Most chapters carry a receipt like this one."
+evidence: '3 ARP retries captured, 0 replies'
+evidence_caption: "From a chapter below: three retried requests, no reply. Most chapters carry a receipt like this."
 cast:
   - name: Joe
     role: human, owns the homelab

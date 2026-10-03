@@ -615,10 +615,16 @@ starlight-theme-select select {
 /* ---------- previous / next: the running feet ---------- */
 /* The chapter's receipt (src/components/MarkdownContent.astro, journey-site#142): the one told line
    in the mono, a hairline above and below so it reads as an exhibit, the caption beneath in the
-   meta voice; after the body, before prev/next. The same figure the garden sets at the head. */
+   meta voice; after the body, before prev/next. The same figure the garden sets at the head -- and
+   on the book's front door, after the thesis (cold read 8, Joe 2026-10-03). */
 .book-evidence {
   margin: 2.4rem 0 0;
   padding: 0.7rem 0;
+  /* The door sets this figure INSIDE the markdown body (after the thesis; cold read 8), where
+     Starlight's own rules size a pre at --sl-text-code with a tighter line: measured 14.875px and
+     line-height 24.5px against the chapters' 17px and 29.75px at the foot. Pinned to the body's
+     values so the figure is one size at either end. */
+  line-height: var(--sl-line-height);
   border-top: 1px solid var(--bk-rule);
   border-bottom: 1px solid var(--bk-rule);
 }
@@ -628,6 +634,8 @@ starlight-theme-select select {
      "192.0.2.2 → ser", with the payoff "serial = 5" out of sight. A line that fits never wraps, so
      nothing changes at desktop; a continuation hangs one indent in so it reads as the same line. */
   margin: 0;
+  font-size: inherit;
+  line-height: inherit;
   padding: 0 0 0 1.5em;
   text-indent: -1.5em;
   white-space: pre-wrap;

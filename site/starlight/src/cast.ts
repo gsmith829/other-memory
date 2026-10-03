@@ -30,8 +30,11 @@ export function castHtml(rows: Row[]): string {
   return `<dl class="book-cast" aria-label="Who is who">${items}</dl>`;
 }
 
-/** The body with the key after its first paragraph; the body unchanged if it has none. */
-export function withCast(body: string, rows: Row[]): string {
+/** Markup after the body's first paragraph (the door's thesis); before the body if it has none, so
+ *  nothing handed in is lost. The door's receipt and key both go here (MarkdownContent.astro). */
+export function afterFirstParagraph(body: string, html: string): string {
   const end = body.indexOf('</p>');
-  return end < 0 ? body : body.slice(0, end + 4) + castHtml(rows) + body.slice(end + 4);
+  return end < 0 ? html + body : body.slice(0, end + 4) + html + body.slice(end + 4);
 }
+
+export { esc };

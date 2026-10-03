@@ -1,5 +1,6 @@
 ---
-// The chapter's receipt (journey-site#142; Joe, 2026-09-20; the slot settled by the crew: the FOOT).
+// The chapter's receipt (journey-site#142; Joe, 2026-09-20; the slot settled by the crew: the FOOT;
+// the front door is the one exception, below).
 // `evidence:` is the one sanitised line that proved the night -- the query, the rule, the number --
 // told in the tray brief and copied by the chronicler character for character; `evidence_caption:`
 // is her one sentence saying what it shows. A chapter is a story: house-acts opens on the night,
@@ -15,22 +16,31 @@
 // codeSpans(), and nothing else in the caption is markup.
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import { evidenceOf } from '../evidence';
-import { castOf, withCast } from '../cast';
+import { CAST_PAGE, afterFirstParagraph, castHtml, castOf, esc } from '../cast';
 
 const { entry } = Astro.locals.starlightRoute;
 const receipt = evidenceOf(entry.id, entry.data as { evidence?: unknown; evidence_caption?: unknown });
-// The door's cast key (journey-site#459) goes after the body's first paragraph -- the identity line --
-// so the body is rendered to a string once, on the door only, when it carries a cast. Every other
-// page takes the slot path exactly as before.
+// The door's cast key (journey-site#459) goes after the body's first paragraph, the thesis.
 const cast = castOf(entry.id, entry.data as { cast?: { name: string; role: string }[] });
-const body = cast ? withCast(await Astro.slots.render('default'), cast) : undefined;
+
+// The figure's markup, written once and used at either end (escaped: it is inserted with set:html).
+const figure = receipt
+	? `<figure class="book-evidence"><pre><code>${esc(receipt.line)}</code></pre><figcaption>${receipt.caption
+			.split(/`([^`\n]+)`/)
+			.map((part, i) => (i % 2 ? `<code>${esc(part)}</code>` : esc(part)))
+			.join('')}</figcaption>${receipt.note ? `<p class="book-evidence-note">${esc(receipt.note)}</p>` : ''}</figure>`
+	: '';
+
+// The DOOR leads with its proof (cold read 8; Joe, 2026-10-03, option "B"): a chapter is a story and
+// keeps its receipt at the foot, but the door is the page a ninety-second reader judges, and at the
+// foot its receipt sat at 989px on a laptop and 1208 on a phone -- off both first screens. "Lead
+// with proof, not with characters" (the engineer). So on the door the figure goes after the thesis,
+// above the cast key: thesis, proof, who is who. The body is rendered to a string once, on the door
+// only; every other page takes the slot path exactly as before, and its figure is byte-identical.
+const isDoor = entry.id === CAST_PAGE;
+const lead = isDoor ? figure + (cast ? castHtml(cast) : '') : '';
+const body = lead ? afterFirstParagraph(await Astro.slots.render('default'), lead) : undefined;
 ---
 
 {body !== undefined ? <Default {...Astro.props}><Fragment set:html={body} /></Default> : <Default {...Astro.props}><slot /></Default>}
-{receipt && (
-	<figure class="book-evidence">
-		<pre><code>{receipt.line}</code></pre>
-		<figcaption>{receipt.caption.split(/`([^`\n]+)`/).map((part, i) => (i % 2 ? <code>{part}</code> : part))}</figcaption>
-		{receipt.note && <p class="book-evidence-note">{receipt.note}</p>}
-	</figure>
-)}
+{figure && !isDoor && <Fragment set:html={figure} />}

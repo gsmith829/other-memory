@@ -253,6 +253,10 @@ plugins:
     layout:
       position: beforeBody
       priority: 20
+      # Not on the front door (2026-10-03, Joe's word): the door is not a dated piece. Its date (the
+      # day the door was first written, 09-17) and "2 min read" sat above a garden updated weeks later
+      # and read as a site that stopped. Every page keeps its own date and reading time.
+      condition: not-index
   # Local plugin (site/quartz/plugins/disclosure, overlaid into the checkout by build.sh as
   # site-plugins/ -- the path below is relative to the Quartz root at build time). The transformer
   # appends `disclosure` to every page's feed item, og:description and meta description (the

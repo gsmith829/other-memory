@@ -23,7 +23,11 @@ import Default from '@astrojs/starlight/components/PageTitle.astro';
 import disclosure from '../../disclosure.json' with { type: 'json' };
 const { entry } = Astro.locals.starlightRoute;
 const { date, tags, author, description, act } = entry.data;
-const shown = date ? date.toISOString().slice(0, 10) : undefined;
+// The front door shows no date (2026-10-03, Joe's word): the door is not a dated piece, and the day
+// it was first written (09-18) sat above chapters running weeks later, reading as a site that had
+// stopped. Every chapter keeps its date.
+const isDoor = entry.id === 'awakening';
+const shown = date && !isDoor ? date.toISOString().slice(0, 10) : undefined;
 const isColophon = entry.id === disclosure.colophonSlug;
 // No byline on the 404 (src/pages/404.astro): there is no chapter for her to sign, and
 // check-emitted.py does not count 404.html among the pages that must carry one.

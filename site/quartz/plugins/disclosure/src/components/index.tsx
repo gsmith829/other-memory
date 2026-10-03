@@ -1,5 +1,5 @@
 /**
- * Byline -- "Nagatha — an AI chronicler; what that means" under the date line of every content
+ * Byline -- "Nagatha — an AI chronicler; how this is made" under the date line of every content
  * page (journey-site#21). The colophon page itself, the link's target, gets no byline.
  *
  * The author is the page's `author:` frontmatter (every page here sets it), falling back to the
@@ -33,7 +33,7 @@ export interface BylineOptions {
 const defaults: BylineOptions = {
   author: "Nagatha",
   role: "an AI chronicler",
-  linkText: "what that means",
+  linkText: "how this is made",
   colophonSlug: "colophon",
 }
 

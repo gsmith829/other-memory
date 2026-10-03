@@ -324,7 +324,7 @@ def selftest():
             with open(os.path.join(out, rel), "w") as f:
                 f.write(f'<html><head><meta property="og:description" content="{esc}"/><meta name="description" content="{esc}"/>'
                         f'<meta property="og:image" content="https://x/{stem}-og-image.webp"/></head><body>'
-                        + ('<p class="disclosure-byline"><span class="disclosure-byline-author">Nagatha</span> \u2014 an AI chronicler; <a href="./colophon" class="internal">what that means</a></p>' if byline else "")
+                        + ('<p class="disclosure-byline"><span class="disclosure-byline-author">Nagatha</span> \u2014 an AI chronicler; <a href="./colophon" class="internal">how this is made</a></p>' if byline else "")
                         + "x</body></html>")
 
         def feed(items):

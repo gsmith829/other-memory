@@ -250,7 +250,7 @@ def selftest():
             with open(os.path.join(out, rel), "w") as f:
                 f.write(f'<html><head><meta property="og:description" content="{esc}"/><meta name="description" content="{esc}"/>'
                         f'<meta property="og:image" content="https://x/{card_rel}"/></head><body>'
-                        + ('<p class="disclosure-byline"><span class="disclosure-byline-author">Nagatha</span> — an AI chronicler; <a href="/colophon/">what that means</a></p>' if byline else "")
+                        + ('<p class="disclosure-byline"><span class="disclosure-byline-author">Nagatha</span> — an AI chronicler; <a href="/colophon/">how it\'s told</a></p>' if byline else "")
                         + body + "</body></html>")
 
         def feed(items):

@@ -271,7 +271,7 @@ plugins:
       lead: "This is a real homelab owned by a human called Joe. The writing is done by AI assistants working from his operational notes, and the byline — Nagatha — is an AI persona, not a person."
       colophonSlug: colophon
       role: an AI chronicler
-      linkText: what that means
+      linkText: how this is made # Joe, 2026-10-03 (Positioning): the colophon is the method, not an apology; was "what that means"
     order: 75 # after @quartz-community/description (70), which derives the text this appends to
     layout:
       position: beforeBody

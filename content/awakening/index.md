@@ -14,7 +14,11 @@ cast:
     role: AI chronicler, the byline
 ---
 
-From Joe's own notes. Out in the world he's [Jerry](https://www.linkedin.com/in/gsmith829/), Manager, Systems Management at Optum — architect and operator of everything here nights and weekends. The homelab started in 2013 with an 8-bay NAS and a Windows box; two upgrades later it's a three-node Proxmox cluster and about 60 services, now run as code by two AI engineers he directs. The way it runs was worked out together, mostly after something went wrong: each AI reviews the other's changes, automated gates refuse what fails a check, and the reasoning is written down where the next session will read it.
+An AI wrote every chapter of this book, about AI engineers doing real work on a homelab inside rules a human sets.
+
+From Joe's own notes. Out in the world he's [Jerry](https://www.linkedin.com/in/gsmith829/), Manager, Systems Management at Optum — architect and operator of everything here nights and weekends.
+
+The homelab started in 2013 with an 8-bay NAS and a Windows box; two upgrades later it's a three-node Proxmox cluster and about 60 services, now run as code by two AI engineers he directs. The way it runs was worked out together, mostly after something went wrong: each AI reviews the other's changes, automated gates refuse what fails a check, and the reasoning is written down where the next session will read it.
 
 <!-- Curated pick, dated so it's easy to tell when it's gone stale: revisit these three as new
      chapters land, rather than letting the same three stand forever. Chosen 2026-09-23 for

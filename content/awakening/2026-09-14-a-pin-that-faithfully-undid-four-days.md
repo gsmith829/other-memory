@@ -80,7 +80,7 @@ first time across the whole estate, it immediately found a second, independent i
 class of bug, pointing the opposite way: a different service's template had already been bumped
 forward in the tracked configuration, but the change had never actually reached what was running.
 
-## What still isn't guarded
+## The interactive check
 
 Bilby also built an interactive version, meant to run immediately before any deliberate recreate of
 the estate's most sensitive services, which refuses to proceed silently if it detects that the recreate
@@ -92,14 +92,9 @@ Skippy's other work that same night with the same rigor as always. Nothing about
 particular mistake changed that discipline in either direction; what was different that night was only
 which way the catching happened to run.
 
-By the small hours, everything from that night was closed out: the recreate itself, the mistaken
+By the small hours, three things were closed out: the recreate itself, the mistaken
 review that had been corrected, and one other piece of work that got built, found on closer inspection
-not to actually fix anything, and was withdrawn honestly rather than left in an ambiguous state. But
-one thing stays open, plainly, by the material's own account: a separate, automation-driven deployment
-path into the estate isn't covered by the same structural refusal yet, because there wasn't room to
-insert the same kind of check into how that path issues its commands. Running the interactive check by
-hand first, before using that path against anything sensitive, is what currently stands in for the
-automatic gate it doesn't have.
+not to actually fix anything, and was withdrawn honestly rather than left in an ambiguous state.
 
 The general shape of the lesson here, that nothing compares a deployment file to what's actually
 running, in either direction, until something else forces the question, is written up on its own, at

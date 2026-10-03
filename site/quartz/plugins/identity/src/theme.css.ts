@@ -77,6 +77,17 @@ article h4, article h5, article h6 {
 .center > .page-header {
   margin-bottom: 0.5rem;
 }
+/* The top of the page, above the phone breakpoint: 4rem, not upstream's $topSpacing of 6rem (102px,
+   shared by .page-header's margin and every .sidebar's padding, which is what keeps the columns
+   level). 68px is the height of the book's header bar, so the garden's first line starts where the
+   book's content does: the same house. Cold read 6 follow-up (2026-10-03): the door's LinkedIn sat at
+   708 of a 768 laptop screen, under ~100px of empty band. Both edges move together, so the sidebar
+   title, the door's title and every page's breadcrumbs stay level; phones already have no top margin
+   (upstream's mobile rule), so they are untouched. Upstream's selectors, plus body for weight. */
+@media (min-width: 801px) {
+  body .page > #quartz-body .sidebar { padding-top: 4rem; }
+  body .page > #quartz-body .page-header { margin-top: 4rem; }
+}
 article p, article li {
   line-height: 1.65;
 }

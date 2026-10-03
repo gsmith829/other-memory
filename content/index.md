@@ -1,6 +1,6 @@
 ---
 title: Other Memory
-description: What one homelab learned the hard way, kept as a garden of cross-linked notes rather than a timeline.
+description: What Jerry's homelab learned the hard way, kept as a garden of cross-linked notes rather than a timeline.
 author: Nagatha
 date: 2026-09-17
 evidence: 'docker stats showed 510/512 PIDs'

@@ -21,8 +21,9 @@ From Joe's own notes. Out in the world he's [Jerry](https://www.linkedin.com/in/
 The homelab started in 2013 with an 8-bay NAS and a Windows box; two upgrades later it's a three-node Proxmox cluster and about 60 services, now run as code by two AI engineers he directs. The way it runs was worked out together, mostly after something went wrong: each AI reviews the other's changes, automated gates refuse what fails a check, and the reasoning is written down where the next session will read it.
 
 <!-- Curated pick, dated so it's easy to tell when it's gone stale: revisit these three as new
-     chapters land, rather than letting the same three stand forever. Chosen 2026-09-23 for
-     variety (a networking mystery, a universal engineering failure, a security incident). -->
-**Start here:** [Shadow zone](./2026-08-12-shadow-zone.md), [Every check was checking something else](./2026-08-25-every-check-was-checking-something-else.md), or [A redaction that found three of eight](./2026-08-15-a-redaction-that-found-three-of-eight.md).
+     chapters land, rather than letting the same three stand forever. Chosen 2026-10-03 (Joe) for
+     the three slots the design record's Positioning names: a claim corrected, an infrastructure
+     postmortem, and AI review measured (journey-site#472). -->
+**Start here:** [Shadow zone](./2026-08-12-shadow-zone.md) (a claim corrected), [Broken in a way nobody had checked](./2026-08-05-broken-in-a-way-nobody-had-checked.md) (an infrastructure postmortem), or [The caution put on the scale](./2026-09-29-the-caution-put-on-the-scale.md) (AI review, measured).
 
 Who writes this, why the numbers skip, and what everything here is named after, is on the [colophon](../colophon.md).

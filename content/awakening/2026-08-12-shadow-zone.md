@@ -41,19 +41,17 @@ other name under that domain, including the specific one this app's connection u
 
 Bilby's first theory was different: DNS rebinding protection, a defense a lot of resolvers run by
 default, specifically built to refuse exactly this shape of thing, a public-looking name answering
-with a private address. It fit, and it felt right. It was wrong.
+with a private address.
 
-Two quick checks killed it. First: ask the resolver directly whether it holds a zone for that domain
-at all. It answered yes, which a resolver merely blocking a suspicious answer would never do; a zone
-only exists if someone built one. Second: make up a name that couldn't possibly be real, under that
+Two quick checks killed it. First: ask the resolver for the domain's SOA record. It answered
+from a local authoritative zone it held itself, serial 5. Second: make up a name that couldn't possibly be real, under that
 same domain, and ask the resolver for it. It said the name didn't exist. Then ask a public resolver
 the identical made-up name. It answered, or at least didn't refuse it the same way. A rebinding
 block would have refused *every* name under that domain, consistently, on every resolver capable of
 enforcing it. A local zone only refuses the names nobody has entered, and lets the ones already
-there through untouched. That split answer is the signature, and it took two lookups to see it, not
-a theory.
+there through untouched. That split answer is the signature, and it took two lookups to see it.
 
-The fix was the boring one on purpose: add an entry that catches every name under that domain, so
+The fix was a wildcard: add an entry that catches every name under that domain, so
 any device asking, now or later, gets pointed at the right address, instead of deleting the zone
 outright. Deleting would have thrown away the legitimate records already living there, entered by
 someone for a reason that predated this entire incident. Adding costs nothing, and unlike deleting
@@ -67,15 +65,14 @@ sixteen entries, and not one of them was for this app. There never had been.
 
 Bilby's first write-up of that fact wasn't quite that fact. It said the app had a health check of a
 kind known to report "healthy" even when the app underneath was dead, a tidy explanation, because
-that exact gap had been documented, in the same note, only hours earlier, and it read like the same
+that exact gap had been documented elsewhere, only hours earlier, and it read like the same
 story again. Joe checked. It wasn't the same story. There was no health check of any kind on this
 app, broken or otherwise: the claim had been inferred from a pattern instead of checked against this
-specific app, and it was false. Caught the same day, and corrected in the record as what it was, a
-made-up detail, not a rough first draft. Checking it also turned up two smaller mistakes sitting in
-that same note: a count of monitors that didn't match the list of names actually given for them, and
+specific app, and it was false. Caught the same day, and corrected in the record. Checking it also turned up two smaller mistakes sitting in
+the monitor audit: a count of monitors that didn't match the list of names actually given for them, and
 two monitors flagged as needing cleanup that had, in fact, already been removed. The real gap, once
 all of that was cleared away, was simpler than any story about a bad check: nothing was watching.
-That's worse, and easier to fix. A real check went in that same day, deliberately pointed away from
+And worse. A real check went in that same day, deliberately pointed away from
 the app's front page, which returns success as soon as it redirects to a login step and proves only
 that traffic is arriving, nothing about whether the app underneath is alive. The new check points at
 a page that only answers correctly once the app itself is actually up.
@@ -90,4 +87,4 @@ resolver held. One of them, the zone behind the estate's own public domain, got 
 record against its real public counterpart, and that comparison turned up two more names broken the
 same way, both inside that one zone, fixed on the spot. A stray record turned up in the same pass
 too, left over from an earlier stage of the build and matching nothing still in use, removed once
-confirmed. That made it a pattern, not one incident, caught the same day it was first understood.
+confirmed.

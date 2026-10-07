@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [safeguards, verification, automation, systems]
 topic: systems
-related: [a-check-cant-fail-the-way-the-bug-does, a-hit-count-proves-its-own-layer-only, guidance-must-arrive-at-the-action, inherited-is-not-authored]
+related: [a-check-cant-fail-the-way-the-bug-does, a-hit-count-proves-its-own-layer-only, guidance-must-arrive-at-the-action, inherited-is-not-authored, a-guard-and-the-clone-it-cannot-see]
 evidence: 'ignore_changes = [disk[0].import_from]'
 evidence_caption: The real guard behind this page's own invented illustration, an actual ignore_changes line found that night, carrying only the first of the three settings the current module requires.
 ---

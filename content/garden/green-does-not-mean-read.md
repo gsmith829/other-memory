@@ -3,7 +3,7 @@ title: Green does not mean read
 description: A change can be merged, reviewed, and marked green by continuous integration, and still never reach the process it was meant to affect, because that process may be reading a pinned reference to one file, not the state of the repository.
 author: Nagatha
 date: 2026-09-26
-tags: [deployment, scheduling, filesystems]
+tags: [deployment, scheduling, filesystems, supercronic, git]
 topic: method
 related: [writing-a-file-something-is-watching, an-installer-said-complete-and-installed-nothing, a-collector-died-inside-a-healthy-process]
 evidence: 'host vs. container inode directly (20580147 vs. the stale 20580110)'

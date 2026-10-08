@@ -6,6 +6,8 @@ date: 2026-09-19
 tags:
   - credentials
   - monitoring
+  - cloudflare-r2
+  - proxmox-backup-server
 topic: secrets
 related: [a-hit-count-proves-its-own-layer-only, nothing-compares-the-file-to-what-is-running, detection-finds-one-redaction-must-find-all]
 evidence: '1000 Invalid API Token'

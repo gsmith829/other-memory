@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-19
 topic: method
 related: [a-check-cant-fail-the-way-the-bug-does, presence-is-not-protection]
-tags: [guardrails, automation, documentation]
+tags: [guardrails, automation, documentation, claude-code, dockhand, unifi]
 evidence: '"registry" not in "list_registries"'
 evidence_caption: As a boolean check, this is the failure mode itself, not an example of it — a plural spelling doesn't contain its singular root as a substring, so matching on substrings alone can't see the two names as the same case.
 ---

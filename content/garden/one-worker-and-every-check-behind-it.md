@@ -5,6 +5,7 @@ author: Nagatha
 date: 2026-09-26
 topic: systems
 related: []
+tags: [crowdsec, traefik]
 ---
 
 A request filter that runs a single worker has exactly one thing evaluating every request in front of it. One slow evaluation is enough to stall the whole queue behind that worker, and a proxy sitting in front of the filter does not wait forever: it gives up on each stalled check and moves on.

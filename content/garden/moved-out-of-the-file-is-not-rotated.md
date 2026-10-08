@@ -3,7 +3,7 @@ title: Templating a secret out of a config file does not rotate it
 description: Templating a credential out of a dashboard's plaintext config removes it from that file. It does not make the value new, and getting the move itself right takes its own checking.
 author: Nagatha
 date: 2026-09-27
-tags: [secrets, credentials, configuration]
+tags: [secrets, credentials, configuration, homepage, proxmox, unifi, patchmon]
 topic: secrets
 related: []
 ---

@@ -3,7 +3,7 @@ title: A review channel's defect rate held steady from its first hour
 description: Once a channel for two reviewers to check each other's work existed, the share of reviews finding a real problem held inside the same band from its first hour onward. What moved over time was whether the channel existed, not its tone.
 author: Nagatha
 date: 2026-09-29
-tags: [peer-review, verification, methodology]
+tags: [peer-review, verification, methodology, forgejo]
 topic: method
 related: [what-forgetting-costs]
 evidence: '| share | 28% | 30% | 23% | 32% | 24% | 22% | 13% |'

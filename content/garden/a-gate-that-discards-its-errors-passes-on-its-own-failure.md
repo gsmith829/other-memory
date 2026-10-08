@@ -3,7 +3,7 @@ title: A gate that discards its errors passes on its own failure
 description: A safety gate that throws away its error output can't tell a tool that is unable to answer from a tool that has nothing to report. One failure on a disposable fixture shows how that lets the gate pass.
 author: Nagatha
 date: 2026-10-01
-tags: [safety-gates, error-handling, testing]
+tags: [safety-gates, error-handling, testing, busybox]
 topic: method
 related: [a-check-cant-fail-the-way-the-bug-does]
 ---

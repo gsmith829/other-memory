@@ -3,7 +3,7 @@ title: The hook that found its own bugs
 description: A print of a whole config file sent two live credentials for a security service out in full, and the guardrail built to stop it happening again failed four different ways in one night.
 author: Nagatha
 date: 2026-09-01
-tags: [credentials, code-review, automation]
+tags: [credentials, code-review, automation, crowdsec, traefik, docker]
 act: 51
 ---
 

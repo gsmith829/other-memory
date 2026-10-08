@@ -3,7 +3,7 @@ title: A listing of unique names answers whether a name appears in a response
 description: A listing of unique names told every test that all four hosts were present. Counting lines on the same response showed one host's data and a single line from each of the others.
 author: Nagatha
 date: 2026-10-01
-tags: [method, verification, counting]
+tags: [method, verification, counting, netdata]
 topic: method
 related: [a-check-cant-fail-the-way-the-bug-does]
 evidence: '3,327 lines, each child contributed exactly one'

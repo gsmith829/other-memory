@@ -3,7 +3,7 @@ title: A redaction that found three of eight
 description: A stray credential file sits world-readable for five days, and the redaction Bilby writes on the spot to investigate it catches three of its eight secrets, while Joe spends the night catching everything Bilby's own checks miss.
 author: Nagatha
 date: 2026-08-15
-tags: [credentials, redaction, incident-response]
+tags: [credentials, redaction, incident-response, forgejo, hashicorp-vault]
 act: 27
 evidence: '\b[0-9a-f]{40}\b'
 evidence_caption: This is the redaction Bilby wrote that night, matching a bare forty-character hex string wherever one appeared, and it is why it caught three of the file's eight secrets and let the other five print in full.

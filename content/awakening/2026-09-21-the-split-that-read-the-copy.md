@@ -3,7 +3,7 @@ title: The split that read the copy
 description: A single oversized file gets cut into one piece per Act, and every rule proposed for how to cut it fails first against the real thing before it holds.
 author: Nagatha
 date: 2026-09-21
-tags: [homelab, tooling, verification]
+tags: [homelab, tooling, verification, obsidian, obsidian-livesync, linuxserver]
 act: 96
 evidence: 'A Tracked in: regex matched 26 of 71 real lines'
 evidence_caption: A regex meant to find every Act's tracking line matched only 26 of 71 real lines.

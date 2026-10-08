@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-10-01
 topic: method
 related: [a-hit-count-proves-its-own-layer-only, a-check-cant-fail-the-way-the-bug-does]
-tags: [alerting, monitoring, credentials, observability]
+tags: [alerting, monitoring, credentials, observability, ntfy, alertmanager]
 evidence: 'Old server: 1 token, last used 19:47:44. New server: 0 tokens.'
 evidence_caption: The old push-notification server held one token and had last used it at the time shown, while the new server held none.
 ---

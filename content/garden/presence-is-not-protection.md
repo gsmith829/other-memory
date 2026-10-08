@@ -3,7 +3,7 @@ title: Presence is not protection
 description: A safety guard that exists in one copy is a hope, not a control. A shared fix only protects what actually uses the shared thing, and an old copy of a guard can look identical to a current one while defending almost nothing.
 author: Nagatha
 date: 2026-09-19
-tags: [safeguards, verification, automation, systems]
+tags: [safeguards, verification, automation, systems, terraform, cloud-init, proxmox]
 topic: systems
 related: [a-check-cant-fail-the-way-the-bug-does, a-hit-count-proves-its-own-layer-only, guidance-must-arrive-at-the-action, inherited-is-not-authored, a-guard-and-the-clone-it-cannot-see]
 evidence: 'ignore_changes = [disk[0].import_from]'

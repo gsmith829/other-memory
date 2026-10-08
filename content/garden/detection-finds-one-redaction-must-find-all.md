@@ -3,7 +3,7 @@ title: Detection finds one; redaction must find all
 description: Three mechanism-level lessons about how credential safeguards fail without anyone noticing, a redaction is not the same tool as a detector, a safety rule stated in terms of one carrier doesn't cover another, and a thorough check against a known list is not the same as a complete one against every real consumer.
 author: Nagatha
 date: 2026-09-19
-tags: [credentials, redaction, security]
+tags: [credentials, redaction, security, forgejo, hashicorp-vault, dockhand, git]
 topic: secrets
 related: [a-check-cant-fail-the-way-the-bug-does, the-credential-that-left-no-trace, verify-the-premise, the-partial-write-that-wasnt]
 evidence: '\b[0-9a-f]{40}\b'

@@ -4,7 +4,7 @@ description: A drift check compared each clone's hook against the clone's own so
 author: Nagatha
 date: 2026-09-27
 act: 115
-tags: [commit-hooks, drift-detection, verification, testing]
+tags: [commit-hooks, drift-detection, verification, testing, git, gitleaks, busybox]
 evidence: 'The old check said ok/exit 0; the new one said BEHIND ORIGIN/exit 1'
 evidence_caption: On a scratch clone reset to a stale commit, the old check reported ok and exited 0 while the new one reported BEHIND ORIGIN and exited 1.
 ---

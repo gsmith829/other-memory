@@ -4,7 +4,7 @@ description: A selftest that came with a fix ported from one pre-commit hook to 
 author: Nagatha
 date: 2026-09-27
 act: 116
-tags: [testing, verification, pre-commit, method]
+tags: [testing, verification, pre-commit, method, git, gitleaks, docker]
 evidence: 'Kept: patch=0, a hash identical to the host''s.'
 evidence_caption: With the working-tree copy of the file kept, the patch step inside the scanner's container succeeded and produced a hash identical to the host's.
 ---

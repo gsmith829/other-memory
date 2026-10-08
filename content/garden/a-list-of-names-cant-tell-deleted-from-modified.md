@@ -3,7 +3,7 @@ title: Two lists of matching names do not show both sides saw the same changes
 description: A check that compared file names between two views of the same staged changes passed while one view saw every file as deleted. The fix compared full blob ids in place of names.
 author: Nagatha
 date: 2026-09-30
-tags: [verification, testing, checks]
+tags: [verification, testing, checks, git, gitleaks]
 topic: method
 related: [a-check-cant-fail-the-way-the-bug-does]
 evidence: 'every file looked deleted, which prints the same name as modified'

@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-26
 topic: method
 related: []
-tags: [containment, self-report, verification]
+tags: [containment, self-report, verification, claude-code]
 ---
 
 A containment boundary cannot be verified by asking the process inside it what it can reach.

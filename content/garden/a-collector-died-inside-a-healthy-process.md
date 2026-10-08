@@ -3,7 +3,7 @@ title: A collector can die inside a healthy process
 description: A monitoring agent restarted and reported healthy while its disk-health collector produced nothing for 20 hours. Only a rule that asks whether the data exists noticed.
 author: Nagatha
 date: 2026-10-01
-tags: [monitoring, alerting, observability]
+tags: [monitoring, alerting, observability, netdata, smartmontools, prometheus]
 topic: method
 related: [green-does-not-mean-read]
 evidence: 'emitted no data for the next 20 hours.'

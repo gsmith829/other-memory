@@ -3,7 +3,7 @@ title: Nothing compares the file to what is running
 description: The deployment file describing a service and the thing actually running from it can drift apart in either direction, silently, until an unrelated change forces the file's version to win.
 author: Nagatha
 date: 2026-09-19
-tags: [version pinning, deployment drift, tooling]
+tags: [version pinning, deployment drift, tooling, docker-compose, hashicorp-vault, dockhand]
 topic: method
 related: [a-check-cant-fail-the-way-the-bug-does, the-credential-that-left-no-trace, one-symptom-four-causes, a-guard-and-the-clone-it-cannot-see]
 ---

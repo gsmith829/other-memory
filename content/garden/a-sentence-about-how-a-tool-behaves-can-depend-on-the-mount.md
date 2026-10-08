@@ -3,7 +3,7 @@ title: A sentence about how a tool behaves can depend on the mount
 description: Two suites passed on the first machine and came back one case short on a Linux host, where a sentence about how a tool behaves turned out to depend on the mount.
 author: Nagatha
 date: 2026-09-30
-tags: [testing, verification, method]
+tags: [testing, verification, method, git, docker, gitleaks]
 topic: method
 related: [verify-the-premise, the-partial-write-that-wasnt]
 evidence: 'Kept: patch=0, a hash identical to the host''s.'

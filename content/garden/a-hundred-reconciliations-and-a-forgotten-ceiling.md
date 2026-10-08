@@ -3,7 +3,7 @@ title: One process ceiling, copied everywhere, doesn't fit the service built to 
 description: A resource limit sized for single-purpose containers strangled the one service whose normal job is to push updates out to every app behind it at once.
 author: Nagatha
 date: 2026-09-27
-tags: [containers, resource-limits, authentication]
+tags: [containers, resource-limits, authentication, authentik, docker, docker-compose]
 topic: systems
 related: []
 evidence: 'docker stats showed 510/512 PIDs'

@@ -3,7 +3,7 @@ title: The stall was one worker wide
 description: An intrusion-prevention service goes dark for the second time in a week, this time past a ceiling already raised tenfold, and the cause turns out to be a single worker with a queue backed up behind it.
 author: Nagatha
 date: 2026-09-22
-tags: [concurrency, outages, monitoring]
+tags: [concurrency, outages, monitoring, crowdsec, traefik, pprof]
 act: 98
 ---
 

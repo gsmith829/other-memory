@@ -3,7 +3,7 @@ title: One symptom, four distinct causes
 description: An app running under the wrong user id, or a volume owned by one, turned out to be four different bugs wearing the same symptom. A shared lookup table only ever fixes two of them.
 author: Nagatha
 date: 2026-09-27
-tags: [containers, identity, ownership]
+tags: [containers, identity, ownership, docker, pihole, unbound, redis]
 topic: systems
 related: [nothing-compares-the-file-to-what-is-running]
 ---

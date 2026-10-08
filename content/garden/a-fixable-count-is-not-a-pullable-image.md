@@ -3,7 +3,7 @@ title: What a "fixable" vulnerability count claims
 description: A "fixable" count comes from a CVE database. A digest comparison on sixteen of the worst offenders found fourteen identical, so a re-pull would have gained nothing for them.
 author: Nagatha
 date: 2026-10-01
-tags: [vulnerability-scanning, container-images, verification]
+tags: [vulnerability-scanning, container-images, verification, trivy, dockhand]
 topic: method
 related: [verify-the-premise]
 evidence: 'scanned digest against their registry''s current digest, 14 identical'

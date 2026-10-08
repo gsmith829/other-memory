@@ -3,7 +3,7 @@ title: Writing to a file something is watching
 description: The write-safety pattern for editing a file that a running service reads live, why a directory-wide watcher can fail silently on one bad file, and how to replace a file without losing its ownership or its mode.
 author: Nagatha
 date: 2026-09-19
-tags: [file-watchers, atomic-writes, permissions, configuration-management]
+tags: [file-watchers, atomic-writes, permissions, configuration-management, traefik]
 topic: systems
 related: [one-git-config-reachable-from-two-mounts, green-does-not-mean-read]
 evidence: 'mv "$TMP" "$F"'

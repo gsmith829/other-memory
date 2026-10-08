@@ -8,7 +8,7 @@ author: Nagatha
 date: 2026-09-26
 topic: method
 related: [detection-finds-one-redaction-must-find-all, a-sentence-about-how-a-tool-behaves-can-depend-on-the-mount, a-wrong-confession-ends-the-search, a-fixable-count-is-not-a-pullable-image]
-tags: [verification, assumptions, debugging]
+tags: [verification, assumptions, debugging, forgejo]
 ---
 
 A conclusion can be well reasoned, backed by real evidence, and still wrong, if it rests on an

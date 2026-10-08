@@ -4,7 +4,7 @@ description: A refused commit showed that the leak gate chose files by extension
 author: Nagatha
 date: 2026-09-30
 act: 124
-tags: [leak-gate, testing, code-review, ci]
+tags: [leak-gate, testing, code-review, ci, astro]
 evidence: 'The tracked set grew from 117 to 122 files and none were dropped.'
 evidence_caption: The fix brought five files into what the gate reads, and the count shows none that were already read were lost.
 ---

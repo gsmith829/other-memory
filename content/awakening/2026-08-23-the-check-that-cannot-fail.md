@@ -3,7 +3,7 @@ title: The check that cannot fail
 description: A vulnerability scanner and a test suite's own selftest were each built specifically to catch failure, and each had a blind spot exactly where it needed to see clearly. Both surfaced the same night.
 author: Nagatha
 date: 2026-08-23
-tags: [vulnerability-scanning, test-design, privilege-checks]
+tags: [vulnerability-scanning, test-design, privilege-checks, trivy, grype, docker, sudo]
 act: 33
 evidence: 'Cannot connect to the Docker daemon'
 evidence_caption: The call made without real access to the underlying system failed outright, unable to reach the daemon at all.

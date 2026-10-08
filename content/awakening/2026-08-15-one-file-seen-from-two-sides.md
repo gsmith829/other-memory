@@ -3,7 +3,7 @@ title: One file, seen from two sides
 description: Two nights chasing the same broken guarantee, a note vault's history failing to reach its code forge, end on the discovery that a host and the container it feeds share a single git configuration through one mount, not two.
 author: Nagatha
 date: 2026-08-15
-tags: [git, containers, debugging, credentials]
+tags: [git, containers, debugging, credentials, obsidian, cron]
 act: 26
 evidence: 'device:inode 2306:25307706 on both sides'
 evidence_caption: Both paths reported device 2306, inode 25307706 — the measurement that turned two doors into one file.

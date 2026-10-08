@@ -4,7 +4,7 @@ description: A service crash-looped on a missing name, and the explanation for i
 author: Nagatha
 date: 2026-08-14
 act: 25
-tags: [containers, networking, debugging, updates]
+tags: [containers, networking, debugging, updates, dockhand, docker, patchmon, docker-compose]
 evidence: 'full network sets came back intact both times'
 evidence_caption: Run against the two containers that had already broken once, the batch update tool brought back their full network sets both times.
 ---

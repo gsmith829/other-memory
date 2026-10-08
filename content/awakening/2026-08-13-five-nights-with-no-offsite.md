@@ -7,6 +7,10 @@ tags:
   - backups
   - monitoring
   - alerting
+  - cloudflare-r2
+  - proxmox-backup-server
+  - rclone
+  - prometheus
 act: 22
 evidence: '1000 Invalid API Token'
 evidence_caption: This is the storage provider's own answer once the token itself was queried directly, showing that a credential which had matched byte for byte on every local copy had already been deleted upstream.

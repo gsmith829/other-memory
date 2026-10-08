@@ -3,7 +3,7 @@ title: A watcher saw a secret passed as an argument
 description: A watcher scanning the command lines of running processes found a secret handed to a write helper as an argument, and did not find it on standard input.
 author: Nagatha
 date: 2026-09-30
-tags: [secrets, command-lines, testing]
+tags: [secrets, command-lines, testing, hashicorp-vault, busybox]
 topic: secrets
 related: []
 evidence: 'saw an argv secret 15 times in 55 scans, and the stdin path 0 in 52.'

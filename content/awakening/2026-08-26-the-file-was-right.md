@@ -3,7 +3,7 @@ title: The file was right
 description: A nightly check came back with nothing to show, even though the change behind it had been merged, reviewed, and marked green, because the process running it was still reading a file that no longer existed anywhere but in its own open handle.
 author: Nagatha
 date: 2026-08-26
-tags: [reliability, deployment, monitoring]
+tags: [reliability, deployment, monitoring, supercronic, git, prometheus]
 act: 45
 evidence: 'host vs. container inode directly (20580147 vs. the stale 20580110)'
 evidence_caption: The host held one inode number for the file while the container was still reading the older, stale one.

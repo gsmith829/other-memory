@@ -3,7 +3,7 @@ title: The partial write that wasn't
 description: A single call meant to add one variable to a stack erased six, because a wrapper's word for what it did wasn't a description of the layer underneath it.
 author: Nagatha
 date: 2026-09-17
-tags: [secrets, migration, tooling]
+tags: [secrets, migration, tooling, dockhand, hashicorp-vault, docker-compose]
 act: 76
 ---
 

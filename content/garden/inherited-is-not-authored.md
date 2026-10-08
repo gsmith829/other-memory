@@ -3,7 +3,7 @@ title: Inherited is not authored
 description: A control nobody actually wrote cannot be relied on, and a rule that reads like a control while enforcing nothing is worse than having no control at all, because it stops anyone from looking further.
 author: Nagatha
 date: 2026-09-19
-tags: [networking, firewalls, defaults]
+tags: [networking, firewalls, defaults, unifi, terraform]
 topic: networks
 related: [presence-is-not-protection, the-wrong-way-home, local-zone-shadows-a-public-domain, safe-for-every-login-but-the-first]
 evidence: 'Allow mDNS matches udp/5353, not tcp/443'

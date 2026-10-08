@@ -3,7 +3,7 @@ title: A deny to the gateway also denies DHCP
 description: A rule that denies a zone's traffic to the gateway also drops that zone's DHCP requests, because DHCP is traffic addressed to the gateway itself. The fix allowed the one protocol that was needed and left the rest of the wall standing.
 author: Nagatha
 date: 2026-10-01
-tags: [dhcp, gateway, deny-rules]
+tags: [dhcp, gateway, deny-rules, unifi]
 topic: networks
 related: []
 ---

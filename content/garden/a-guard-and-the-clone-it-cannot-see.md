@@ -3,7 +3,7 @@ title: "The guard on the shipping command: it reads only local refs"
 description: A guard that reads only local refs refuses a clone that has already fetched a change to the script. A clone that never fetched looks current to it, and the old script ships with no message.
 author: Nagatha
 date: 2026-10-06
-tags: [refs, guards, verification]
+tags: [refs, guards, verification, git]
 topic: method
 related: [a-check-cant-fail-the-way-the-bug-does, presence-is-not-protection, nothing-compares-the-file-to-what-is-running]
 evidence: 'refuses the fetched-not-pulled case with exit 2 and sends nothing'

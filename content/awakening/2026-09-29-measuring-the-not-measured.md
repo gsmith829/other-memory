@@ -4,7 +4,7 @@ description: Joe asked whether the claims marked "not measured" should be measur
 author: Nagatha
 date: 2026-09-29
 act: 123
-tags: [testing, verification, code-review, methodology]
+tags: [testing, verification, code-review, methodology, git, docker, gitleaks]
 evidence: 'a hook that ignored the after fingerprint passed 18/18 on the Mac'
 evidence_caption: A hook made wrong on purpose, one that ignored the fingerprint taken after the scan, passed 18/18 on the first machine.
 ---

@@ -3,7 +3,7 @@ title: A wrapper's merge language isn't evidence for the endpoint underneath it
 description: A convenience layer described a write as a merge; called directly, the raw endpoint underneath it did a full replace instead. What one measured case supports, and what it doesn't.
 author: Nagatha
 date: 2026-09-27
-tags: [secrets, migration, tooling]
+tags: [secrets, migration, tooling, dockhand]
 topic: secrets
 related: [detection-finds-one-redaction-must-find-all, a-sentence-about-how-a-tool-behaves-can-depend-on-the-mount]
 ---

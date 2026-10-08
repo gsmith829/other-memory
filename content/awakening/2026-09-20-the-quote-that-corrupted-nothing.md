@@ -3,7 +3,7 @@ title: The quote that corrupted nothing
 description: A line meant to carry one exact value came back wrong under one quoting style and right under another, and the fix that followed got tangled in a push to a branch nobody checked the state of first.
 author: Nagatha
 date: 2026-09-20
-tags: [data integrity, build checks, code review, version control]
+tags: [data integrity, build checks, code review, version control, js-yaml, pyyaml, git, forgejo]
 act: 91
 evidence: '\b[0-9a-f]{40}\b came back as fourteen characters with two backspaces'
 evidence_caption: The value came back as fourteen characters with two backspaces, and no error was raised.

@@ -3,7 +3,7 @@ title: Guidance that never fires on its own
 description: A blocked firewall change turns into two expensive research detours for a problem that was already solved and already written down, and the fix that finally worked wasn't a better document.
 author: Nagatha
 date: 2026-08-17
-tags: [guardrails, automation, incident-review]
+tags: [guardrails, automation, incident-review, unifi, claude-code, dockhand, obsidian]
 act: 28
 evidence: '"registry" not in "list_registries"'
 evidence_caption: This is the exact gap the early substring match had, made literal — the word "registry" never occurs inside "list_registries", so the covered case and its pluralized twin looked unrelated to a check built to catch both.

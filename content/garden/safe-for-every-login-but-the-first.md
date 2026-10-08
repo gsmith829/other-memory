@@ -7,6 +7,10 @@ tags:
   - identity
   - authentication
   - access-control
+  - authentik
+  - navidrome
+  - paperless-ngx
+  - immich
 topic: systems
 related: [inherited-is-not-authored]
 ---

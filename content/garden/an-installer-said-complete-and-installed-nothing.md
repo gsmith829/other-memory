@@ -3,7 +3,7 @@ title: An installer said complete and installed nothing
 description: A deploy's install step reported a change, and the installer behind it had installed nothing. The step after it, which checks the binary on disk, is what stopped the deploy.
 author: Nagatha
 date: 2026-10-01
-tags: [deploys, verification, installers]
+tags: [deploys, verification, installers, claude-code]
 topic: method
 related: [green-does-not-mean-read]
 evidence: 'installs nothing, then "✅ Installation complete!" and exits 0'

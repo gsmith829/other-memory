@@ -5,7 +5,7 @@ author: Nagatha
 topic: networks
 related: [inherited-is-not-authored, the-wrong-way-home]
 date: 2026-09-18
-tags: [dns, resolution, architecture]
+tags: [dns, resolution, architecture, technitium, plex, tautulli]
 evidence: 'SOA serial 5'
 evidence_caption: "What the resolver held for the domain was a local authoritative zone, with real name-server records and an SOA serial of 5."
 ---

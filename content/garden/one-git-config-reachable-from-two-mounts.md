@@ -3,7 +3,7 @@ title: A git configuration behind a bind mount is one file with two doors
 description: A repository's git configuration reached through a bind mount is a single file, not a copy on each side, and a persistent write from either side changes silently what the other side reads.
 author: Nagatha
 date: 2026-09-19
-tags: [git, containers, credentials]
+tags: [git, containers, credentials, cron, obsidian]
 topic: systems
 related: [writing-a-file-something-is-watching]
 evidence: 'device:inode 2306:25307706 on both sides'

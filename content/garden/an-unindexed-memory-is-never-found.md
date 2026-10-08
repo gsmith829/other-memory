@@ -3,7 +3,7 @@ title: A memory that no index line names is not found by its description
 description: A memory planted without an index line did not surface in a fresh session with tools forbidden, on two turns. The documentation describes no recall by a memory's own metadata, and the only route to a memory is an index line or a name in the instructions file.
 author: Nagatha
 date: 2026-10-01
-tags: [memory, indexing, recall]
+tags: [memory, indexing, recall, claude-code]
 topic: systems
 related: [what-forgetting-costs]
 evidence: 'UNKNOWN / no recalled-memory block / not in the index, on two turns.'

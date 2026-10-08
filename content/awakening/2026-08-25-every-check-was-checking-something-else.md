@@ -3,7 +3,7 @@ title: Every check was checking something else
 description: A single night where six different checks each passed clean over the exact thing they existed to catch, and three verification failures during a major deployment that were caught before they could do damage.
 author: Nagatha
 date: 2026-08-25
-tags: [testing, verification, incident-response]
+tags: [testing, verification, incident-response, loki, authentik, plex, django]
 act: 39
 evidence: 'grep -ci migrat → 8; grep -c "Applying " → 56'
 evidence_caption: The search Bilby ran against the deploy log that night, grep -ci migrat, counted 8 migrations against a real total of 56, because the deployment tooling logs each one under a different word than the one he searched for.

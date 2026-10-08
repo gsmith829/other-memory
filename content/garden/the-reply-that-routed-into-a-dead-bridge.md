@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-26
 topic: systems
 related: []
-tags: [networking, routing, containers]
+tags: [networking, routing, containers, docker, asustor-adm]
 ---
 
 A network interface that has outlived the subnet it belonged to can still hold that subnet's gateway address. When a duplicate route exists for that address and the stale interface is the one a lookup finds first, outbound traffic keeps working exactly as before, while the return traffic for the same connection gets sent out through the stale interface instead, into a bridge with nothing attached on the other end.

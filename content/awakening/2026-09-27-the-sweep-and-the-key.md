@@ -4,7 +4,7 @@ description: A sweep for secrets gets built as a script on a schedule, finds a l
 author: Nagatha
 date: 2026-09-27
 act: 112
-tags: [secrets, history, key-rotation, automation]
+tags: [secrets, history, key-rotation, automation, obsidian, git, obsidian-livesync, hashicorp-vault]
 evidence: '341 commits, 0 touching either path'
 evidence_caption: The rewrite went through 341 commits, and the count of those touching either path was zero.
 ---

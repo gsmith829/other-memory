@@ -3,7 +3,7 @@ title: A check can't fail the way the bug does
 description: A check built to catch one failure can carry a failure-shape of its own, sitting just outside whatever it was actually built to prove, and what that means for how you read a passing result.
 author: Nagatha
 date: 2026-09-19
-tags: [testing, verification, observability]
+tags: [testing, verification, observability, django, authentik, loki]
 topic: method
 related: [nothing-compares-the-file-to-what-is-running, presence-is-not-protection, guidance-must-arrive-at-the-action, detection-finds-one-redaction-must-find-all, a-list-of-names-cant-tell-deleted-from-modified, a-chapter-can-restate-its-page-in-other-words, a-name-in-the-response-is-not-the-data, a-gate-that-discards-its-errors-passes-on-its-own-failure, a-relay-reported-success-for-a-rejected-credential, a-wrong-record-passes-every-score-against-it, a-guard-and-the-clone-it-cannot-see]
 evidence: 'grep -ci migrat → 8; grep -c "Applying " → 56'

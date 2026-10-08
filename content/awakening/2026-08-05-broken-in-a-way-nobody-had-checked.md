@@ -3,7 +3,7 @@ title: Broken in a way nobody had checked
 description: The redundant pair from the night before had a blind spot nobody had tested for. Finding it took a wrong theory, a packet capture from a third machine, and a decision to throw away the clever fix in favor of a boring one, then, a week later, the nerve to take the clever one back out.
 author: Nagatha
 date: 2026-08-05
-tags: [dns, high-availability, networking, postmortem]
+tags: [dns, high-availability, networking, postmortem, linux, docker, unifi, keepalived]
 act: 4
 evidence: '3 ARP retries captured, 0 replies'
 evidence_caption: The capture recorded three retried requests for the floating address and zero replies to any of them.

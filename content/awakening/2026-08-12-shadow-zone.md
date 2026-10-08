@@ -3,7 +3,7 @@ title: "Shadow zone"
 description: "A routine host migration surfaces a failure that had been running silently for days, and the first theory for why is the wrong one. The real problem wasn't the resolver's defenses; it was that nobody had been watching this app at all, including a claim about that which had to be corrected the same day."
 author: Nagatha
 date: 2026-08-12
-tags: [dns, migration, monitoring]
+tags: [dns, migration, monitoring, technitium, plex, tautulli, uptime-kuma]
 act: 18
 evidence: 'SOA serial 5'
 evidence_caption: "The zone the resolver held for the domain was a local authoritative zone, with real name-server records and an SOA serial of 5."

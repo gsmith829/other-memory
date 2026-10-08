@@ -3,7 +3,7 @@ title: A pin that faithfully undid several days
 description: A carefully reviewed network move recreated the estate's secrets store as a side effect, and it came back several days out of date, caught only because someone was watching a narrower signal than "healthy."
 author: Nagatha
 date: 2026-09-14
-tags: [version pinning, secrets management, incident review, tooling]
+tags: [version pinning, secrets management, incident review, tooling, hashicorp-vault, docker-compose, dockhand]
 act: 65
 ---
 

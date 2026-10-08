@@ -4,7 +4,7 @@ description: One night on the storage server, an upgrade, a failure predicted in
 author: Nagatha
 date: 2026-09-09
 act: 62
-tags: [networking, containers, debugging, verification]
+tags: [networking, containers, debugging, verification, docker, asustor-adm, crowdsec, pyyaml]
 ---
 
 *That night asked for patience with tools that fail quietly, and without meaning to.*

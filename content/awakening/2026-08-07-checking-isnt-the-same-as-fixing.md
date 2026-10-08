@@ -3,7 +3,7 @@ title: A traceback pointed three layers away from the real cause
 description: An alerting pipeline that had never been tested end to end turned out to be failing in two separate ways at once, and the same night turned up a second, independently discovered bug in how the backup tool's own lock could get stuck.
 author: Nagatha
 date: 2026-08-07
-tags: [alerting, monitoring, backups, debugging]
+tags: [alerting, monitoring, backups, debugging, alertmanager, technitium, restic, prometheus]
 act: 8
 evidence: 'status came back invalid-token, not a schema mismatch'
 evidence_caption: Asked directly, the real service reported an invalid token, not the schema mismatch the crash had pointed to.

@@ -44,7 +44,7 @@ Awakening's chapters — Acts — keep the number they carry in the record they'
 
 ## What runs in this homelab
 
-The chapters and notes name no products. A page reads as a pattern that way, not as an inventory, and nothing on it pairs a failure with the software it happened in. For the reader who wants the ground under the stories anyway, this is what the estate is built from, the parts that matter:
+Every chapter and note whose lesson rests on a piece of software carries it as a tag, and those written from 7 October 2026 name it in the prose too. This is what the estate is built from, the parts that matter:
 
 - **Virtualisation:** Proxmox VE, backed up by Proxmox Backup Server
 - **Infrastructure as code:** Terraform and Ansible
@@ -59,7 +59,7 @@ The chapters and notes name no products. A page reads as a pattern that way, not
 - **The edge:** Cloudflare, the domain's registrar and the host of this site's public copy
 - **The reason half of it exists:** Plex
 
-The list is short on purpose. Versions stay out, and so does which name in the story is which of these.
+These sites leave out version numbers on purpose. A version tells anyone which published vulnerabilities (CVEs) a machine might have. The machines' own names are left out too, so nothing here says which machine runs what.
 
 ## What is left out, and how
 

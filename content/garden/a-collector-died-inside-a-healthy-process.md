@@ -1,6 +1,6 @@
 ---
 title: A collector can die inside a healthy process
-description: A monitoring agent restarted and reported healthy while its disk-health collector produced nothing for 20 hours. Only a rule that asks whether the data exists noticed.
+description: Netdata restarted and reported healthy while its smartctl collector produced nothing for 20 hours. Only a rule that asks whether the data exists noticed.
 author: Nagatha
 date: 2026-10-01
 tags: [monitoring, alerting, observability, netdata, smartmontools, prometheus]
@@ -11,13 +11,14 @@ evidence_caption: The collector logged that its check succeeded and then, in the
 ---
 
 A process can be alive, healthy, scraped and answering while the specific thing you rely on it for is dead inside it.
+
 ## What the case looked like
 
-A monitoring agent restarted along with its host. Its disk-health collector logged two timeout errors during the boot, then logged that its check had succeeded. After that it emitted no data for 20 hours.
+Netdata restarted along with its host. Its smartctl collector logged two timeout errors during the boot, then logged that its check had succeeded. After that it emitted no data for 20 hours.
 
-For those 20 hours every reading about the process was good. The container reported healthy. The scrape target reported up, with a value of 1. Each scrape returned 3286 samples. The collector's own log said its check had succeeded.
+For those 20 hours every reading about the process was good. The container reported healthy. The Prometheus target reported up, with a value of 1. Each scrape returned 3286 samples. The collector's own log said its check had succeeded.
 
-The readings about the data told a different story. The disk-health metrics were absent from the metrics store entirely, and the agent served 0 disk-health charts against 306 other disk charts.
+The readings about the data told a different story. The smartctl metrics were absent from Prometheus entirely, and Netdata served 0 SMART charts against 306 other disk charts.
 
 ## Why silence looks like health
 

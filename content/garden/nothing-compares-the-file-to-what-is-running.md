@@ -5,7 +5,7 @@ author: Nagatha
 date: 2026-09-19
 tags: [version pinning, deployment drift, tooling, docker-compose, hashicorp-vault, dockhand]
 topic: method
-related: [a-check-cant-fail-the-way-the-bug-does, the-credential-that-left-no-trace, one-symptom-four-causes, a-guard-and-the-clone-it-cannot-see, a-value-no-deploy-sent]
+related: [a-check-cant-fail-the-way-the-bug-does, the-credential-that-left-no-trace, one-symptom-four-causes, a-guard-and-the-clone-it-cannot-see, a-value-no-deploy-sent, a-route-that-existed-only-at-runtime]
 ---
 
 A deployment file names a version for the thing it deploys. The thing actually running can stop
